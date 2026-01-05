@@ -1,30 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { useDarkMode } from '../contexts/DarkModeContext';
 import { Cog6ToothIcon, MoonIcon, SunIcon, BellIcon, UserIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
 
 const Settings = () => {
-  const [darkMode, setDarkMode] = useState(false);
+  const { darkMode, toggleDarkMode } = useDarkMode();
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [pushNotifications, setPushNotifications] = useState(true);
   const [language, setLanguage] = useState('English');
   const [timezone, setTimezone] = useState('UTC');
 
-  // Load dark mode preference from localStorage on component mount
-  useEffect(() => {
-    const savedDarkMode = localStorage.getItem('darkMode');
-    if (savedDarkMode !== null) {
-      const isDark = savedDarkMode === 'true';
-      setDarkMode(isDark);
-      document.documentElement.classList.toggle('dark', isDark);
-    }
-  }, []);
-
-  // Handle dark mode toggle
-  const handleDarkModeToggle = () => {
-    const newDarkMode = !darkMode;
-    setDarkMode(newDarkMode);
-    localStorage.setItem('darkMode', newDarkMode.toString());
-    document.documentElement.classList.toggle('dark', newDarkMode);
-  };
+  // No need to load dark mode preference or handle toggle here anymore
+  // as it's now handled by the DarkModeContext
 
   // Handle email notifications toggle
   const handleEmailNotificationsToggle = () => {
@@ -108,7 +94,7 @@ const Settings = () => {
                   </div>
                 </div>
                 <button
-                  onClick={handleDarkModeToggle}
+                  onClick={toggleDarkMode}
                   className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
                     darkMode ? 'bg-blue-600' : 'bg-gray-200'
                   }`}

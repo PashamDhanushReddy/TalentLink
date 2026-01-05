@@ -55,11 +55,11 @@ const Chats = () => {
   }
 
   return (
-    <div className="h-[calc(100vh-2rem)] flex bg-white md:rounded-2xl md:shadow-sm md:border md:border-gray-200 overflow-hidden m-0 md:m-4">
+    <div className="h-[calc(100vh-2rem)] flex bg-white dark:bg-gray-800 md:rounded-2xl md:shadow-sm md:border md:border-gray-200 dark:md:border-gray-700 overflow-hidden m-0 md:m-4">
       {/* Sidebar - Conversation List */}
-      <div className={`w-full md:w-80 bg-gray-50 md:border-r md:border-gray-200 flex flex-col ${selectedContractId ? 'hidden md:flex' : 'flex'}`}>
-        <div className="p-4 border-b border-gray-200 bg-white">
-          <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+      <div className={`w-full md:w-80 bg-gray-50 dark:bg-gray-900 md:border-r md:border-gray-200 dark:md:border-gray-700 flex flex-col ${selectedContractId ? 'hidden md:flex' : 'flex'}`}>
+        <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
             <ChatBubbleLeftRightIcon className="h-6 w-6 text-blue-600" />
             Messages
           </h2>
@@ -69,15 +69,15 @@ const Chats = () => {
               placeholder="Search conversations..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-gray-100 border-none rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
+              className="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-700 border-none rounded-lg text-sm focus:ring-2 focus:ring-blue-500 dark:text-white"
             />
-            <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 absolute left-3 top-2.5" />
+            <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 dark:text-gray-400 absolute left-3 top-2.5" />
           </div>
         </div>
 
         <div className="flex-1 overflow-y-auto">
           {filteredConversations.length === 0 ? (
-            <div className="p-4 text-center text-gray-500 text-sm">
+            <div className="p-4 text-center text-gray-500 dark:text-gray-400 text-sm">
               No conversations found
             </div>
           ) : (
@@ -85,8 +85,8 @@ const Chats = () => {
               <div
                 key={conv.id}
                 onClick={() => setSelectedContractId(conv.contract)}
-                className={`p-4 border-b border-gray-100 cursor-pointer transition-colors hover:bg-white ${
-                  selectedContractId === conv.contract ? 'bg-white border-l-4 border-l-blue-600 shadow-sm' : 'border-l-4 border-l-transparent'
+                className={`p-4 border-b border-gray-100 dark:border-gray-700 cursor-pointer transition-colors hover:bg-white dark:hover:bg-gray-800 ${
+                  selectedContractId === conv.contract ? 'bg-white dark:bg-gray-800 border-l-4 border-l-blue-600 shadow-sm' : 'border-l-4 border-l-transparent'
                 }`}
               >
                 <div className="flex items-start gap-3">
@@ -94,13 +94,13 @@ const Chats = () => {
                     {conv.contract_details?.title?.charAt(0) || 'C'}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-gray-900 truncate">
+                    <h4 className="font-semibold text-gray-900 dark:text-white truncate">
                       {conv.contract_details?.title || 'Contract Discussion'}
                     </h4>
-                    <p className="text-sm text-gray-500 truncate mt-0.5">
+                    <p className="text-sm text-gray-500 dark:text-gray-400 truncate mt-0.5">
                       {conv.participants_names?.filter(name => name !== user.name).join(', ') || 'Participants'}
                     </p>
-                    <p className="text-xs text-gray-400 mt-2">
+                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
                       {new Date(conv.created_at).toLocaleDateString()}
                     </p>
                   </div>
@@ -112,7 +112,7 @@ const Chats = () => {
       </div>
 
       {/* Main Chat Area */}
-      <div className={`flex-1 flex flex-col bg-gray-50 ${selectedContractId ? 'flex' : 'hidden md:flex'}`}>
+      <div className={`flex-1 flex flex-col bg-gray-50 dark:bg-gray-800 ${selectedContractId ? 'flex' : 'hidden md:flex'}`}>
         {selectedContractId ? (
           <div className="h-full">
             <Chat 
@@ -123,7 +123,7 @@ const Chats = () => {
             />
           </div>
         ) : (
-          <div className="flex-1 flex flex-col items-center justify-center text-gray-400">
+          <div className="flex-1 flex flex-col items-center justify-center text-gray-400 dark:text-gray-500">
             <ChatBubbleLeftRightIcon className="h-24 w-24 mb-4 opacity-20" />
             <p className="text-lg">Select a conversation to start messaging</p>
           </div>

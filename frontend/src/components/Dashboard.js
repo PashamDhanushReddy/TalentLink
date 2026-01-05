@@ -146,28 +146,28 @@ const Dashboard = () => {
     <div className="space-y-6">
       {/* Greeting Section */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Hi {user?.first_name || user?.username || 'User'}</h1>
-        <p className="text-gray-500">This is your Freelance Team dashboard overview</p>
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">Hi {user?.first_name || user?.username || 'User'}</h1>
+        <p className="text-gray-500 md:text-lg">This is your Freelance Team dashboard overview</p>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
-          <div key={index} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
+          <div key={index} className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
             <div>
-              <div className="flex items-center gap-2 mb-1">
-                <div className={`p-2 rounded-full ${stat.iconBg}`}>
-                  <stat.icon className={`h-5 w-5 ${stat.iconColor}`} />
+              <div className="flex items-center gap-2 mb-2">
+                <div className={`p-2 md:p-3 rounded-full ${stat.iconBg}`}>
+                  <stat.icon className={`h-5 w-5 md:h-6 md:w-6 ${stat.iconColor}`} />
                 </div>
               </div>
-              <div className="mt-3">
+              <div className="mt-4">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-2xl font-bold text-gray-900">{stat.value}</span>
-                  <span className={`text-xs font-medium ${stat.isPositive ? 'text-green-600' : 'text-red-600'}`}>
+                  <span className="text-2xl md:text-3xl font-bold text-gray-900">{stat.value}</span>
+                  <span className={`text-xs md:text-sm font-medium ${stat.isPositive ? 'text-green-600' : 'text-red-600'}`}>
                     {stat.isPositive ? '↑' : '↓'} {stat.change}
                   </span>
                 </div>
-                <p className="text-sm text-gray-500">{stat.title}</p>
+                <p className="text-sm md:text-base text-gray-500">{stat.title}</p>
               </div>
             </div>
           </div>
@@ -177,10 +177,10 @@ const Dashboard = () => {
       {/* Charts & Lists Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Task Progress Chart */}
-        <div className="lg:col-span-1 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="font-bold text-gray-900">Task Progress</h3>
-            <div className="flex bg-gray-100 rounded-lg p-1 text-xs">
+        <div className="lg:col-span-1 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
+          <div className="flex items-center justify-between mb-6 md:mb-8">
+            <h3 className="font-bold text-gray-900 text-lg md:text-xl">Task Progress</h3>
+            <div className="flex bg-gray-100 rounded-lg p-1 text-xs md:text-sm">
               {['Daily', 'Weekly', 'Monthly'].map((range) => (
                 <button
                   key={range}
@@ -194,7 +194,7 @@ const Dashboard = () => {
               ))}
             </div>
           </div>
-          <div className="h-64">
+          <div className="h-64 md:h-72">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={data}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
@@ -211,26 +211,26 @@ const Dashboard = () => {
         </div>
 
         {/* Active Projects */}
-        <div className="lg:col-span-1 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-bold text-gray-900">Active Projects</h2>
-            <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">See All</button>
+        <div className="lg:col-span-1 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
+          <div className="flex justify-between items-center mb-6 md:mb-8">
+            <h2 className="text-lg md:text-xl font-bold text-gray-900">Active Projects</h2>
+            <button className="text-sm md:text-base text-blue-600 hover:text-blue-700 font-medium">See All</button>
           </div>
-          <div className="space-y-6 relative">
+          <div className="space-y-6 md:space-y-8 relative">
              {/* Vertical Line */}
-             <div className="absolute left-2.5 top-2 bottom-2 w-0.5 bg-gray-100 -z-10"></div>
+             <div className="absolute left-2.5 md:left-3 top-2 bottom-2 w-0.5 bg-gray-100 -z-10"></div>
              
             {activeProjects.map((project, index) => (
-              <div key={index} className="flex items-start gap-4">
-                <div className={`mt-1.5 h-5 w-5 rounded-full border-4 border-white shadow-sm shrink-0 ${project.color}`}></div>
+              <div key={index} className="flex items-start gap-4 md:gap-5">
+                <div className={`mt-1.5 md:mt-2 h-5 w-5 md:h-6 md:w-6 rounded-full border-4 border-white shadow-sm shrink-0 ${project.color}`}></div>
                 <div className="flex-1 min-w-0">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h4 className="text-sm font-bold text-gray-900 truncate">{project.name}</h4>
-                      <p className="text-xs text-gray-500 truncate">{project.subtitle}</p>
+                      <h4 className="text-sm md:text-base font-bold text-gray-900 truncate">{project.name}</h4>
+                      <p className="text-xs md:text-sm text-gray-500 truncate">{project.subtitle}</p>
                     </div>
-                    <span className="text-xs text-gray-400 whitespace-nowrap flex items-center gap-1">
-                        <ClockIcon className="h-3 w-3" />
+                    <span className="text-xs md:text-sm text-gray-400 whitespace-nowrap flex items-center gap-1">
+                        <ClockIcon className="h-3 w-3 md:h-4 md:w-4" />
                         {project.days}
                     </span>
                   </div>
@@ -241,32 +241,32 @@ const Dashboard = () => {
         </div>
 
         {/* Recent Transactions */}
-        <div className="lg:col-span-1 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="font-bold text-gray-900">Recent Transactions</h3>
-            <button className="text-sm text-gray-500 hover:text-gray-700">Export</button>
+        <div className="lg:col-span-1 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
+          <div className="flex items-center justify-between mb-6 md:mb-8">
+            <h3 className="font-bold text-gray-900 text-lg md:text-xl">Recent Transactions</h3>
+            <button className="text-sm md:text-base text-gray-500 hover:text-gray-700">Export</button>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  <th className="pb-3">Invoice ID</th>
-                  <th className="pb-3">Client</th>
-                  <th className="pb-3">Amount</th>
-                  <th className="pb-3 text-right">Status</th>
+                <tr className="text-left text-xs md:text-sm font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="pb-3 md:pb-4">Invoice ID</th>
+                  <th className="pb-3 md:pb-4">Client</th>
+                  <th className="pb-3 md:pb-4">Amount</th>
+                  <th className="pb-3 md:pb-4 text-right">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
                 {transactions.map((tx, index) => (
                   <tr key={index}>
-                    <td className="py-3 text-sm font-medium text-gray-900">{tx.id}</td>
-                    <td className="py-3">
-                        <div className="text-sm text-gray-900">{tx.client}</div>
-                        <div className="text-xs text-gray-500">{tx.date}</div>
+                    <td className="py-3 md:py-4 text-sm md:text-base font-medium text-gray-900">{tx.id}</td>
+                    <td className="py-3 md:py-4">
+                        <div className="text-sm md:text-base text-gray-900">{tx.client}</div>
+                        <div className="text-xs md:text-sm text-gray-500">{tx.date}</div>
                     </td>
-                    <td className="py-3 text-sm text-gray-900">{tx.amount}</td>
-                    <td className="py-3 text-right">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${tx.statusColor}`}>
+                    <td className="py-3 md:py-4 text-sm md:text-base text-gray-900">{tx.amount}</td>
+                    <td className="py-3 md:py-4 text-right">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 md:px-3 md:py-1 rounded-full text-xs md:text-sm font-medium ${tx.statusColor}`}>
                         {tx.status}
                       </span>
                     </td>
@@ -280,30 +280,30 @@ const Dashboard = () => {
 
       {/* Bottom Section - Latest Clients */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-1 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-            <div className="flex items-center justify-between mb-6">
-                <h3 className="font-bold text-gray-900">Latest Clients</h3>
+        <div className="lg:col-span-1 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
+            <div className="flex items-center justify-between mb-6 md:mb-8">
+                <h3 className="font-bold text-gray-900 text-lg md:text-xl">Latest Clients</h3>
                 <button className="text-gray-400 hover:text-gray-600">
-                    <EllipsisHorizontalIcon className="h-6 w-6" />
+                    <EllipsisHorizontalIcon className="h-6 w-6 md:h-7 md:w-7" />
                 </button>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-4 md:space-y-6">
                 {latestClients.length === 0 ? (
-                    <p className="text-gray-500 text-sm">No recent clients found.</p>
+                    <p className="text-gray-500 text-sm md:text-base">No recent clients found.</p>
                 ) : (
                     latestClients.map((client, index) => (
                         <div key={index} className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <div className={`h-10 w-10 rounded-full flex items-center justify-center font-bold text-sm ${client.avatarColor}`}>
+                            <div className="flex items-center gap-3 md:gap-4">
+                                <div className={`h-10 w-10 md:h-12 md:w-12 rounded-full flex items-center justify-center font-bold text-sm md:text-base ${client.avatarColor}`}>
                                     {client.name.charAt(0).toUpperCase()}
                                 </div>
                                 <div>
-                                    <h4 className="text-sm font-bold text-gray-900">{client.name}</h4>
-                                    <p className="text-xs text-gray-500 truncate w-32">{client.project}</p>
+                                    <h4 className="text-sm md:text-base font-bold text-gray-900">{client.name}</h4>
+                                    <p className="text-xs md:text-sm text-gray-500 truncate w-32 md:w-40">{client.project}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-2">
-                                 <span className={`px-2 py-1 rounded text-xs font-medium ${client.statusBg}`}>
+                                 <span className={`px-2 py-1 md:px-3 md:py-1.5 rounded text-xs md:text-sm font-medium ${client.statusBg}`}>
                                     {client.status}
                                  </span>
 

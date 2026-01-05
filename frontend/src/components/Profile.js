@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useDarkMode } from '../contexts/DarkModeContext';
 import { authAPI } from '../api';
 import { 
   UserCircleIcon, 
@@ -21,6 +22,7 @@ import {
 
 function Profile() {
   const { user: authUser } = useAuth();
+  const { darkMode } = useDarkMode();
   const { userId } = useParams();
   const [profile, setProfile] = useState(null);
   const [isOwnProfile, setIsOwnProfile] = useState(true);
@@ -286,10 +288,18 @@ function Profile() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+      <div className={`min-h-screen flex items-center justify-center ${
+        darkMode 
+          ? 'bg-gradient-to-br from-gray-900 to-gray-800' 
+          : 'bg-gradient-to-br from-blue-50 to-indigo-100'
+      }`}>
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 font-medium">Loading profile...</p>
+          <div className={`animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 mx-auto mb-4 ${
+            darkMode ? 'border-blue-400' : 'border-blue-600'
+          }`}></div>
+          <p className={`font-medium ${
+            darkMode ? 'text-gray-300' : 'text-gray-600'
+          }`}>Loading profile...</p>
         </div>
       </div>
     );
@@ -298,39 +308,79 @@ function Profile() {
   const user = profile?.user || {};
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
+    <div className={`min-h-screen py-8 ${
+      darkMode 
+        ? 'bg-gradient-to-br from-gray-900 to-gray-800' 
+        : 'bg-gradient-to-br from-blue-50 to-indigo-100'
+    }`}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Enhanced Header Section */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden mb-8 transform hover:scale-[1.01] transition-all duration-300">
-          <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 px-8 py-12 relative overflow-hidden">
+        <div className={`rounded-2xl shadow-xl overflow-hidden mb-8 transform hover:scale-[1.01] transition-all duration-300 ${
+          darkMode 
+            ? 'bg-gray-800 border border-gray-700' 
+            : 'bg-white border border-gray-100'
+        }`}>
+          <div className={`px-8 py-12 relative overflow-hidden ${
+            darkMode 
+              ? 'bg-gradient-to-r from-gray-700 via-gray-600 to-gray-500' 
+              : 'bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600'
+          }`}>
             {/* Animated background elements */}
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20"></div>
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-32 translate-x-32"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-24 -translate-x-24"></div>
+            <div className={`absolute inset-0 ${
+              darkMode 
+                ? 'bg-gradient-to-r from-gray-700/20 to-gray-500/20'
+                : 'bg-gradient-to-r from-blue-600/20 to-purple-600/20'
+            }`}></div>
+            <div className={`absolute top-0 right-0 w-64 h-64 rounded-full -translate-y-32 translate-x-32 ${
+              darkMode ? 'bg-white/5' : 'bg-white/10'
+            }`}></div>
+            <div className={`absolute bottom-0 left-0 w-48 h-48 rounded-full translate-y-24 -translate-x-24 ${
+              darkMode ? 'bg-white/5' : 'bg-white/10'
+            }`}></div>
             
             <div className="relative z-10 flex items-center justify-between">
               <div className="flex items-center space-x-6">
                 {/* Enhanced Avatar */}
                 <div className="relative group">
-                  <div className="bg-white p-3 rounded-full shadow-2xl h-28 w-28 flex items-center justify-center overflow-hidden border-4 border-white/20">
-                    <UserCircleIcon className="h-24 w-24 text-blue-600 drop-shadow-lg" />
+                  <div className={`p-3 rounded-full shadow-2xl h-28 w-28 flex items-center justify-center overflow-hidden border-4 ${
+                    darkMode 
+                      ? 'bg-gray-700 border-white/10' 
+                      : 'bg-white border-white/20'
+                  }`}>
+                    <UserCircleIcon className={`h-24 w-24 drop-shadow-lg ${
+                      darkMode ? 'text-gray-300' : 'text-blue-600'
+                    }`} />
                   </div>
                   {/* Status indicator */}
-                  <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-green-500 rounded-full border-4 border-white flex items-center justify-center">
-                    <div className="w-3 h-3 bg-white rounded-full"></div>
+                  <div className={`absolute -bottom-1 -right-1 w-8 h-8 rounded-full border-4 flex items-center justify-center ${
+                    darkMode 
+                      ? 'bg-green-500 border-gray-800' 
+                      : 'bg-green-500 border-white'
+                  }`}>
+                    <div className={`w-3 h-3 rounded-full ${
+                      darkMode ? 'bg-gray-800' : 'bg-white'
+                    }`}></div>
                   </div>
                 </div>
                 
                 {/* Enhanced User Info */}
-                <div className="text-white">
+                <div className={`${
+                  darkMode ? 'text-gray-100' : 'text-white'
+                }`}>
                   <h1 className="text-4xl font-bold mb-2 drop-shadow-lg">
                     {authUser?.first_name || user.first_name} {authUser?.last_name || user.last_name}
                   </h1>
-                  <div className="flex items-center space-x-4 text-blue-100">
+                  <div className={`flex items-center space-x-4 ${
+                    darkMode ? 'text-gray-200' : 'text-blue-100'
+                  }`}>
                     <div className="flex items-center space-x-2">
                       <BriefcaseIcon className="h-5 w-5" />
-                      <span className="uppercase tracking-wide text-sm font-semibold bg-white/20 px-3 py-1 rounded-full">
+                      <span className={`uppercase tracking-wide text-sm font-semibold px-3 py-1 rounded-full ${
+                        darkMode 
+                          ? 'bg-white/10 text-white' 
+                          : 'bg-white/20 text-white'
+                      }`}>
                         {authUser?.role || user.role} Account
                       </span>
                     </div>
@@ -351,7 +401,9 @@ function Profile() {
                   className={`group relative px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
                     isEditing 
                       ? 'bg-white/20 hover:bg-white/30 text-white border-2 border-white/30' 
-                      : 'bg-white text-blue-600 hover:bg-blue-50 shadow-xl hover:shadow-2xl'
+                      : darkMode
+                        ? 'bg-gray-700 text-white hover:bg-gray-600 shadow-xl hover:shadow-2xl'
+                        : 'bg-white text-blue-600 hover:bg-blue-50 shadow-xl hover:shadow-2xl'
                   }`}
                 >
                   <div className="flex items-center space-x-2">
@@ -360,7 +412,7 @@ function Profile() {
                   </div>
                   {/* Button glow effect */}
                   <div className={`absolute inset-0 rounded-xl transition-all duration-300 ${
-                    isEditing ? 'bg-white/10' : 'bg-blue-600/10'
+                    isEditing ? 'bg-white/10' : darkMode ? 'bg-gray-600/10' : 'bg-blue-600/10'
                   } opacity-0 group-hover:opacity-100`}></div>
                 </button>
               )}
@@ -372,43 +424,85 @@ function Profile() {
           {/* Enhanced Sidebar */}
           <div className="lg:col-span-1 space-y-6">
             {/* Contact Information Card */}
-            <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden transform hover:scale-[1.02] transition-all duration-300">
-              <div className="bg-gradient-to-r from-gray-50 to-blue-50 px-6 py-4 border-b border-gray-100">
-                <h3 className="text-lg font-bold text-gray-900 flex items-center">
-                  <IdentificationIcon className="h-5 w-5 mr-2 text-blue-600" />
+            <div className={`rounded-xl shadow-lg overflow-hidden transform hover:scale-[1.02] transition-all duration-300 ${
+              darkMode 
+                ? 'bg-gray-800 border border-gray-700' 
+                : 'bg-white border border-gray-100'
+            }`}>
+              <div className={`px-6 py-4 border-b ${
+                darkMode 
+                  ? 'bg-gradient-to-r from-gray-700 to-gray-600 border-gray-600' 
+                  : 'bg-gradient-to-r from-gray-50 to-blue-50 border-gray-100'
+              }`}>
+                <h3 className={`text-lg font-bold flex items-center ${
+                  darkMode ? 'text-gray-100' : 'text-gray-900'
+                }`}>
+                  <IdentificationIcon className={`h-5 w-5 mr-2 ${
+                    darkMode ? 'text-blue-400' : 'text-blue-600'
+                  }`} />
                   Contact Information
                 </h3>
               </div>
               <div className="p-6 space-y-4">
                 <div className="group">
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide flex items-center">
-                    <AtSymbolIcon className="h-4 w-4 mr-1" />
+                  <label className={`text-xs font-semibold uppercase tracking-wide flex items-center ${
+                    darkMode ? 'text-gray-400' : 'text-gray-500'
+                  }`}>
+                    <AtSymbolIcon className={`h-4 w-4 mr-1 ${
+                      darkMode ? 'text-gray-400' : 'text-gray-500'
+                    }`} />
                     Username
                   </label>
-                  <div className="mt-2 flex items-center text-gray-900 bg-gray-50 rounded-lg px-3 py-2">
-                    <IdentificationIcon className="h-5 w-5 text-blue-600 mr-3" />
+                  <div className={`mt-2 flex items-center rounded-lg px-3 py-2 ${
+                    darkMode 
+                      ? 'bg-gray-700 text-gray-100' 
+                      : 'bg-gray-50 text-gray-900'
+                  }`}>
+                    <IdentificationIcon className={`h-5 w-5 mr-3 ${
+                      darkMode ? 'text-blue-400' : 'text-blue-600'
+                    }`} />
                     <span className="font-medium">{authUser?.username || user.username}</span>
                   </div>
                 </div>
                 
                 <div className="group">
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide flex items-center">
-                    <EnvelopeIcon className="h-4 w-4 mr-1" />
+                  <label className={`text-xs font-semibold uppercase tracking-wide flex items-center ${
+                    darkMode ? 'text-gray-400' : 'text-gray-500'
+                  }`}>
+                    <EnvelopeIcon className={`h-4 w-4 mr-1 ${
+                      darkMode ? 'text-gray-400' : 'text-gray-500'
+                    }`} />
                     Email Address
                   </label>
-                  <div className="mt-2 flex items-center text-gray-900 bg-gray-50 rounded-lg px-3 py-2">
-                    <EnvelopeIcon className="h-5 w-5 text-blue-600 mr-3" />
+                  <div className={`mt-2 flex items-center rounded-lg px-3 py-2 ${
+                    darkMode 
+                      ? 'bg-gray-700 text-gray-100' 
+                      : 'bg-gray-50 text-gray-900'
+                  }`}>
+                    <EnvelopeIcon className={`h-5 w-5 mr-3 ${
+                      darkMode ? 'text-blue-400' : 'text-blue-600'
+                    }`} />
                     <span className="font-medium truncate">{authUser?.email || user.email}</span>
                   </div>
                 </div>
                 
                 <div className="group">
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide flex items-center">
-                    <BriefcaseIcon className="h-4 w-4 mr-1" />
+                  <label className={`text-xs font-semibold uppercase tracking-wide flex items-center ${
+                    darkMode ? 'text-gray-400' : 'text-gray-500'
+                  }`}>
+                    <BriefcaseIcon className={`h-4 w-4 mr-1 ${
+                      darkMode ? 'text-gray-400' : 'text-gray-500'
+                    }`} />
                     Account Type
                   </label>
-                  <div className="mt-2 flex items-center text-gray-900 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg px-3 py-2 border border-blue-100">
-                    <BriefcaseIcon className="h-5 w-5 text-indigo-600 mr-3" />
+                  <div className={`mt-2 flex items-center rounded-lg px-3 py-2 border ${
+                    darkMode 
+                      ? 'bg-gradient-to-r from-gray-700 to-gray-600 text-gray-100 border-gray-600' 
+                      : 'bg-gradient-to-r from-blue-50 to-indigo-50 text-gray-900 border-blue-100'
+                  }`}>
+                    <BriefcaseIcon className={`h-5 w-5 mr-3 ${
+                      darkMode ? 'text-indigo-400' : 'text-indigo-600'
+                    }`} />
                     <span className="font-semibold capitalize">{authUser?.role || user.role}</span>
                   </div>
                 </div>
@@ -591,38 +685,66 @@ function Profile() {
 
                   <form onSubmit={handleSubmit} className="space-y-8">
                     {/* Personal Information Section */}
-                    <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-                      <h4 className="text-lg font-bold text-gray-900 mb-6 flex items-center">
-                        <UserCircleIcon className="h-5 w-5 mr-2 text-blue-600" />
+                    <div className={`rounded-xl p-6 border ${
+                      darkMode 
+                        ? 'bg-gray-800 border-gray-700' 
+                        : 'bg-gray-50 border-gray-200'
+                    }`}>
+                      <h4 className={`text-lg font-bold mb-6 flex items-center ${
+                        darkMode ? 'text-gray-100' : 'text-gray-900'
+                      }`}>
+                        <UserCircleIcon className={`h-5 w-5 mr-2 ${
+                          darkMode ? 'text-blue-400' : 'text-blue-600'
+                        }`} />
                         Personal Information
                       </h4>
                       
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="group">
-                          <label className="block text-sm font-bold text-gray-700 mb-3">First Name</label>
+                          <label className={`block text-sm font-bold mb-3 ${
+                            darkMode ? 'text-gray-300' : 'text-gray-700'
+                          }`}>First Name</label>
                           <div className="relative">
-                            <UserCircleIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-blue-600 transition-colors" />
+                            <UserCircleIcon className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors ${
+                              darkMode 
+                                ? 'text-gray-500 group-focus-within:text-blue-400' 
+                                : 'text-gray-400 group-focus-within:text-blue-600'
+                            }`} />
                             <input
                               type="text"
                               name="first_name"
                               value={formData.first_name}
                               onChange={handleChange}
-                              className="pl-10 pr-4 py-3 w-full border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white hover:border-gray-400"
+                              className={`pl-10 pr-4 py-3 w-full border-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none ${
+                                darkMode 
+                                  ? 'bg-gray-700 border-gray-600 text-gray-100 hover:border-gray-500 focus:ring-blue-400 focus:border-blue-400' 
+                                  : 'bg-white border-gray-300 text-gray-900 hover:border-gray-400'
+                              }`}
                               placeholder="Enter your first name"
                             />
                           </div>
                         </div>
                         
                         <div className="group">
-                          <label className="block text-sm font-bold text-gray-700 mb-3">Last Name</label>
+                          <label className={`block text-sm font-bold mb-3 ${
+                            darkMode ? 'text-gray-300' : 'text-gray-700'
+                          }`}>Last Name</label>
                           <div className="relative">
-                            <UserCircleIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-blue-600 transition-colors" />
+                            <UserCircleIcon className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors ${
+                              darkMode 
+                                ? 'text-gray-500 group-focus-within:text-blue-400' 
+                                : 'text-gray-400 group-focus-within:text-blue-600'
+                            }`} />
                             <input
                               type="text"
                               name="last_name"
                               value={formData.last_name}
                               onChange={handleChange}
-                              className="pl-10 pr-4 py-3 w-full border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white hover:border-gray-400"
+                              className={`pl-10 pr-4 py-3 w-full border-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
+                                darkMode 
+                                  ? 'bg-gray-700 border-gray-600 text-gray-100 hover:border-gray-500 focus:ring-blue-400 focus:border-blue-400' 
+                                  : 'bg-white border-gray-300 text-gray-900 hover:border-gray-400'
+                              }`}
                               placeholder="Enter your last name"
                             />
                           </div>
@@ -630,124 +752,204 @@ function Profile() {
                       </div>
 
                       <div className="mt-6 group">
-                        <label className="block text-sm font-bold text-gray-700 mb-3">Email Address</label>
+                        <label className={`block text-sm font-bold mb-3 ${
+                          darkMode ? 'text-gray-300' : 'text-gray-700'
+                        }`}>Email Address</label>
                         <div className="relative">
-                          <EnvelopeIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-blue-600 transition-colors" />
+                          <EnvelopeIcon className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors ${
+                            darkMode 
+                              ? 'text-gray-500 group-focus-within:text-blue-400' 
+                              : 'text-gray-400 group-focus-within:text-blue-600'
+                          }`} />
                           <input
                             type="email"
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            className="pl-10 pr-4 py-3 w-full border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white hover:border-gray-400"
+                            className={`pl-10 pr-4 py-3 w-full border-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
+                              darkMode 
+                                ? 'bg-gray-700 border-gray-600 text-gray-100 hover:border-gray-500 focus:ring-blue-400 focus:border-blue-400' 
+                                : 'bg-white border-gray-300 text-gray-900 hover:border-gray-400'
+                            }`}
                             placeholder="your.email@example.com"
                           />
                         </div>
                       </div>
 
                       <div className="mt-6 group">
-                        <label className="block text-sm font-bold text-gray-700 mb-3">About Me</label>
+                        <label className={`block text-sm font-bold mb-3 ${
+                          darkMode ? 'text-gray-300' : 'text-gray-700'
+                        }`}>About Me</label>
                         <div className="relative">
                           <textarea
                             name="bio"
                             rows={4}
                             value={formData.bio}
                             onChange={handleChange}
-                            className="px-4 py-3 w-full border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white hover:border-gray-400 resize-none"
+                            className={`px-4 py-3 w-full border-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none ${
+                              darkMode 
+                                ? 'bg-gray-700 border-gray-600 text-gray-100 hover:border-gray-500 focus:ring-blue-400 focus:border-blue-400' 
+                                : 'bg-white border-gray-300 text-gray-900 hover:border-gray-400'
+                            }`}
                             placeholder="Tell us about yourself, your background, and what makes you unique..."
                           />
                         </div>
-                        <p className="mt-2 text-sm text-gray-500">A great bio helps others understand your expertise and personality</p>
+                        <p className={`mt-2 text-sm ${
+                          darkMode ? 'text-gray-400' : 'text-gray-500'
+                        }`}>A great bio helps others understand your expertise and personality</p>
                       </div>
                     </div>
 
                     {/* Professional Information Section (Freelancers Only) */}
                     {authUser?.role === 'freelancer' && (
-                      <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl p-6 border border-purple-200">
-                        <h4 className="text-lg font-bold text-gray-900 mb-6 flex items-center">
-                          <BriefcaseIcon className="h-5 w-5 mr-2 text-purple-600" />
+                      <div className={`rounded-xl p-6 border ${
+                        darkMode 
+                          ? 'bg-gradient-to-r from-gray-800 to-gray-700 border-gray-600' 
+                          : 'bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200'
+                      }`}>
+                        <h4 className={`text-lg font-bold mb-6 flex items-center ${
+                          darkMode ? 'text-gray-100' : 'text-gray-900'
+                        }`}>
+                          <BriefcaseIcon className={`h-5 w-5 mr-2 ${
+                            darkMode ? 'text-purple-400' : 'text-purple-600'
+                          }`} />
                           Professional Information
                         </h4>
                         
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                           <div className="group">
-                            <label className="block text-sm font-bold text-gray-700 mb-3">Hourly Rate ($)</label>
+                            <label className={`block text-sm font-bold mb-3 ${
+                              darkMode ? 'text-gray-300' : 'text-gray-700'
+                            }`}>Hourly Rate ($)</label>
                             <div className="relative">
-                              <CurrencyDollarIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-green-600 transition-colors" />
+                              <CurrencyDollarIcon className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors ${
+                                darkMode 
+                                  ? 'text-gray-500 group-focus-within:text-green-400' 
+                                  : 'text-gray-400 group-focus-within:text-green-600'
+                              }`} />
                               <input
                                 type="number"
                                 name="hourly_rate"
                                 value={formData.hourly_rate}
                                 onChange={handleChange}
-                                className="pl-10 pr-4 py-3 w-full border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 bg-white hover:border-gray-400"
+                                className={`pl-10 pr-4 py-3 w-full border-2 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 ${
+                                  darkMode 
+                                    ? 'bg-gray-700 border-gray-600 text-gray-100 hover:border-gray-500 focus:ring-green-400 focus:border-green-400' 
+                                    : 'bg-white border-gray-300 text-gray-900 hover:border-gray-400'
+                                }`}
                                 placeholder="75.00"
                                 min="0"
                                 step="0.01"
                               />
                             </div>
-                            <p className="mt-2 text-sm text-gray-500">Set a competitive rate based on your experience</p>
+                            <p className={`mt-2 text-sm ${
+                              darkMode ? 'text-gray-400' : 'text-gray-500'
+                            }`}>Set a competitive rate based on your experience</p>
                           </div>
                           
                           <div className="group">
-                            <label className="block text-sm font-bold text-gray-700 mb-3">Years of Experience</label>
+                            <label className={`block text-sm font-bold mb-3 ${
+                              darkMode ? 'text-gray-300' : 'text-gray-700'
+                            }`}>Years of Experience</label>
                             <div className="relative">
-                              <CalendarIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-blue-600 transition-colors" />
+                              <CalendarIcon className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors ${
+                                darkMode 
+                                  ? 'text-gray-500 group-focus-within:text-blue-400' 
+                                  : 'text-gray-400 group-focus-within:text-blue-600'
+                              }`} />
                               <input
                                 type="number"
                                 name="experience"
                                 value={formData.experience}
                                 onChange={handleChange}
-                                className="pl-10 pr-4 py-3 w-full border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white hover:border-gray-400"
+                                className={`pl-10 pr-4 py-3 w-full border-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
+                                  darkMode 
+                                    ? 'bg-gray-700 border-gray-600 text-gray-100 hover:border-gray-500 focus:ring-blue-400 focus:border-blue-400' 
+                                    : 'bg-white border-gray-300 text-gray-900 hover:border-gray-400'
+                                }`}
                                 placeholder="5"
                                 min="0"
                                 max="50"
                               />
                             </div>
-                            <p className="mt-2 text-sm text-gray-500">Your total years of professional experience</p>
+                            <p className={`mt-2 text-sm ${
+                              darkMode ? 'text-gray-400' : 'text-gray-500'
+                            }`}>Your total years of professional experience</p>
                           </div>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div className="group">
-                            <label className="block text-sm font-bold text-gray-700 mb-3">Portfolio URL</label>
+                            <label className={`block text-sm font-bold mb-3 ${
+                              darkMode ? 'text-gray-300' : 'text-gray-700'
+                            }`}>Portfolio URL</label>
                             <div className="relative">
-                              <LinkIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-indigo-600 transition-colors" />
+                              <LinkIcon className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors ${
+                                darkMode 
+                                  ? 'text-gray-500 group-focus-within:text-indigo-400' 
+                                  : 'text-gray-400 group-focus-within:text-indigo-600'
+                              }`} />
                               <input
                                 type="url"
                                 name="portfolio"
                                 value={formData.portfolio}
                                 onChange={handleChange}
-                                className="pl-10 pr-4 py-3 w-full border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-white hover:border-gray-400"
+                                className={`pl-10 pr-4 py-3 w-full border-2 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 ${
+                                  darkMode 
+                                    ? 'bg-gray-700 border-gray-600 text-gray-100 hover:border-gray-500 focus:ring-indigo-400 focus:border-indigo-400' 
+                                    : 'bg-white border-gray-300 text-gray-900 hover:border-gray-400'
+                                }`}
                                 placeholder="https://your-portfolio.com"
                               />
                             </div>
-                            <p className="mt-2 text-sm text-gray-500">Link to your professional portfolio or website</p>
+                            <p className={`mt-2 text-sm ${
+                              darkMode ? 'text-gray-400' : 'text-gray-500'
+                            }`}>Link to your professional portfolio or website</p>
                           </div>
                           
                           <div className="group">
-                            <label className="block text-sm font-bold text-gray-700 mb-3">Skills</label>
+                            <label className={`block text-sm font-bold mb-3 ${
+                              darkMode ? 'text-gray-300' : 'text-gray-700'
+                            }`}>Skills</label>
                             <div className="relative">
-                              <AcademicCapIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-purple-600 transition-colors" />
+                              <AcademicCapIcon className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors ${
+                                darkMode 
+                                  ? 'text-gray-500 group-focus-within:text-purple-400' 
+                                  : 'text-gray-400 group-focus-within:text-purple-600'
+                              }`} />
                               <input
                                 type="text"
                                 name="skills"
                                 value={formData.skills}
                                 onChange={handleChange}
-                                className="pl-10 pr-4 py-3 w-full border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 bg-white hover:border-gray-400"
+                                className={`pl-10 pr-4 py-3 w-full border-2 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 ${
+                                  darkMode 
+                                    ? 'bg-gray-700 border-gray-600 text-gray-100 hover:border-gray-500 focus:ring-purple-400 focus:border-purple-400' 
+                                    : 'bg-white border-gray-300 text-gray-900 hover:border-gray-400'
+                                }`}
                                 placeholder="React, Python, UI/UX Design"
                               />
                             </div>
-                            <p className="mt-2 text-sm text-gray-500">Separate skills with commas (e.g., React, Python, Design)</p>
+                            <p className={`mt-2 text-sm ${
+                              darkMode ? 'text-gray-400' : 'text-gray-500'
+                            }`}>Separate skills with commas (e.g., React, Python, Design)</p>
                           </div>
                         </div>
                       </div>
                     )}
                     
                     {/* Action Buttons */}
-                    <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+                    <div className={`flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-6 border-t ${
+                      darkMode ? 'border-gray-700' : 'border-gray-200'
+                    }`}>
                       <button 
                         type="button"
                         onClick={() => setIsEditing(false)}
-                        className="px-8 py-3 border-2 border-gray-300 text-gray-700 font-bold rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 transform hover:scale-105"
+                        className={`px-6 py-3 font-bold rounded-xl transition-all duration-200 transform hover:scale-105 ${
+                          darkMode 
+                            ? 'border-2 border-gray-600 text-gray-300 hover:bg-gray-800 hover:border-gray-500' 
+                            : 'border-2 border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400'
+                        }`}
                       >
                         Cancel
                       </button>
@@ -755,10 +957,12 @@ function Profile() {
                         type="submit" 
                         disabled={saving}
                         className={`
-                          px-8 py-3 font-bold rounded-xl shadow-lg transition-all duration-200 transform hover:scale-105
+                          px-6 py-3 font-bold rounded-xl shadow-lg transition-all duration-200 transform hover:scale-105
                           ${saving 
-                            ? 'bg-gray-400 cursor-not-allowed' 
-                            : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-xl hover:shadow-2xl'
+                            ? 'bg-gray-600 cursor-not-allowed text-gray-300' 
+                            : darkMode
+                              ? 'bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white shadow-xl hover:shadow-2xl'
+                              : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-xl hover:shadow-2xl'
                           }
                         `}
                       >
@@ -783,15 +987,31 @@ function Profile() {
               </div>
             ) : (
               /* Enhanced View Mode */
-              <div className="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden transform transition-all duration-300">
-                <div className="bg-gradient-to-r from-green-50 to-emerald-50 px-8 py-6 border-b border-gray-200">
-                  <h3 className="text-2xl font-bold text-gray-900 flex items-center">
+              <div className={`rounded-xl shadow-xl overflow-hidden transform transition-all duration-300 ${
+                darkMode 
+                  ? 'bg-gray-800 border border-gray-700' 
+                  : 'bg-white border border-gray-100'
+              }`}>
+                <div className={`px-8 py-6 border-b ${
+                  darkMode 
+                    ? 'bg-gradient-to-r from-gray-700 to-gray-600 border-gray-600' 
+                    : 'bg-gradient-to-r from-green-50 to-emerald-50 border-gray-200'
+                }`}>
+                  <h3 className={`text-2xl font-bold flex items-center ${
+                    darkMode ? 'text-gray-100' : 'text-gray-900'
+                  }`}>
                     {authUser?.role === 'freelancer' ? 
-                      <><BriefcaseIcon className="h-6 w-6 mr-3 text-green-600" />Professional Profile</> : 
-                      <><UserCircleIcon className="h-6 w-6 mr-3 text-green-600" />Profile Information</>
+                      <><BriefcaseIcon className={`h-6 w-6 mr-3 ${
+                        darkMode ? 'text-green-400' : 'text-green-600'
+                      }`} />Professional Profile</> : 
+                      <><UserCircleIcon className={`h-6 w-6 mr-3 ${
+                        darkMode ? 'text-green-400' : 'text-green-600'
+                      }`} />Profile Information</>
                     }
                   </h3>
-                  <p className="text-gray-600 mt-2">
+                  <p className={`mt-2 ${
+                    darkMode ? 'text-gray-300' : 'text-gray-600'
+                  }`}>
                     {authUser?.role === 'freelancer' ? 
                       'Your professional details and expertise' : 
                       'Your account information and details'
@@ -803,12 +1023,22 @@ function Profile() {
                   {/* Bio Section */}
                   {profile.bio && (
                     <div className="mb-8 group">
-                      <h4 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                        <UserCircleIcon className="h-5 w-5 mr-2 text-green-600" />
+                      <h4 className={`text-xl font-bold mb-4 flex items-center ${
+                        darkMode ? 'text-gray-100' : 'text-gray-900'
+                      }`}>
+                        <UserCircleIcon className={`h-5 w-5 mr-2 ${
+                          darkMode ? 'text-green-400' : 'text-green-600'
+                        }`} />
                         About Me
                       </h4>
-                      <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-100">
-                        <p className="text-gray-700 leading-relaxed text-lg">{profile.bio}</p>
+                      <div className={`rounded-xl p-6 border ${
+                        darkMode 
+                          ? 'bg-gray-700 border-gray-600' 
+                          : 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-100'
+                      }`}>
+                        <p className={`leading-relaxed text-lg ${
+                          darkMode ? 'text-gray-300' : 'text-gray-700'
+                        }`}>{profile.bio}</p>
                       </div>
                     </div>
                   )}
@@ -821,13 +1051,21 @@ function Profile() {
                       {console.log('Main skills check:', profile.skills, 'length:', profile.skills?.length)}
                       {profile.skills && profile.skills.length > 0 && (
                         <div className="group">
-                          <h4 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                            <AcademicCapIcon className="h-5 w-5 mr-2 text-purple-600" />
+                          <h4 className={`text-xl font-bold mb-4 flex items-center ${
+                            darkMode ? 'text-gray-100' : 'text-gray-900'
+                          }`}>
+                            <AcademicCapIcon className={`h-5 w-5 mr-2 ${
+                              darkMode ? 'text-purple-400' : 'text-purple-600'
+                            }`} />
                             Skills & Expertise
                           </h4>
                           <div className="flex flex-wrap gap-3">
                             {profile.skills && profile.skills.length > 0 && profile.skills.map((skill, idx) => (
-                              <span key={idx} className="bg-gradient-to-r from-purple-100 via-blue-100 to-indigo-100 text-purple-700 px-4 py-2 rounded-full font-medium border border-purple-200 hover:shadow-md hover:scale-105 transition-all duration-200 cursor-pointer">
+                              <span key={idx} className={`px-4 py-2 rounded-full font-medium border hover:shadow-md hover:scale-105 transition-all duration-200 cursor-pointer ${
+                                darkMode
+                                  ? 'bg-gradient-to-r from-purple-900 via-blue-900 to-indigo-900 text-purple-300 border-purple-700'
+                                  : 'bg-gradient-to-r from-purple-100 via-blue-100 to-indigo-100 text-purple-700 border-purple-200'
+                              }`}>
                                 {typeof skill === 'string' ? skill.trim() : skill.skill_name || skill.name || skill}
                               </span>
                             ))}
@@ -839,26 +1077,50 @@ function Profile() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {profile.hourly_rate && (
                           <div className="group">
-                            <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center">
-                              <CurrencyDollarIcon className="h-5 w-5 mr-2 text-green-600" />
+                            <h4 className={`text-lg font-bold mb-3 flex items-center ${
+                              darkMode ? 'text-gray-100' : 'text-gray-900'
+                            }`}>
+                              <CurrencyDollarIcon className={`h-5 w-5 mr-2 ${
+                                darkMode ? 'text-green-400' : 'text-green-600'
+                              }`} />
                               Hourly Rate
                             </h4>
-                            <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-100">
-                              <div className="text-3xl font-bold text-green-600">${profile.hourly_rate}</div>
-                              <div className="text-sm text-gray-600 mt-1">per hour</div>
+                            <div className={`rounded-xl p-6 border ${
+                              darkMode 
+                                ? 'bg-gray-700 border-gray-600' 
+                                : 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-100'
+                            }`}>
+                              <div className={`text-3xl font-bold ${
+                                darkMode ? 'text-green-400' : 'text-green-600'
+                              }`}>${profile.hourly_rate}</div>
+                              <div className={`text-sm mt-1 ${
+                                darkMode ? 'text-gray-400' : 'text-gray-600'
+                              }`}>per hour</div>
                             </div>
                           </div>
                         )}
                         
                         {profile.experience && (
                           <div className="group">
-                            <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center">
-                              <CalendarIcon className="h-5 w-5 mr-2 text-blue-600" />
+                            <h4 className={`text-lg font-bold mb-3 flex items-center ${
+                              darkMode ? 'text-gray-100' : 'text-gray-900'
+                            }`}>
+                              <CalendarIcon className={`h-5 w-5 mr-2 ${
+                                darkMode ? 'text-blue-400' : 'text-blue-600'
+                              }`} />
                               Experience
                             </h4>
-                            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
-                              <div className="text-3xl font-bold text-blue-600">{profile.experience}</div>
-                              <div className="text-sm text-gray-600 mt-1">years</div>
+                            <div className={`rounded-xl p-6 border ${
+                              darkMode 
+                                ? 'bg-gray-700 border-gray-600' 
+                                : 'bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-100'
+                            }`}>
+                              <div className={`text-3xl font-bold ${
+                                darkMode ? 'text-blue-400' : 'text-blue-600'
+                              }`}>{profile.experience}</div>
+                              <div className={`text-sm mt-1 ${
+                                darkMode ? 'text-gray-400' : 'text-gray-600'
+                              }`}>years</div>
                             </div>
                           </div>
                         )}
@@ -867,15 +1129,23 @@ function Profile() {
                       {/* Portfolio Section */}
                       {profile.portfolio && (
                         <div className="group">
-                          <h4 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                            <GlobeAltIcon className="h-5 w-5 mr-2 text-indigo-600" />
+                          <h4 className={`text-lg font-bold mb-4 flex items-center ${
+                            darkMode ? 'text-gray-100' : 'text-gray-900'
+                          }`}>
+                            <GlobeAltIcon className={`h-5 w-5 mr-2 ${
+                              darkMode ? 'text-indigo-400' : 'text-indigo-600'
+                            }`} />
                             Portfolio
                           </h4>
                           <a 
                             href={profile.portfolio} 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl font-semibold hover:from-indigo-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                            className={`inline-flex items-center px-6 py-3 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl ${
+                              darkMode
+                                ? 'bg-gradient-to-r from-indigo-600 to-purple-700 text-white hover:from-indigo-700 hover:to-purple-800'
+                                : 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700'
+                            }`}
                           >
                             <LinkIcon className="h-5 w-5 mr-2" />
                             View Portfolio

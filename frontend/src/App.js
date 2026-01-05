@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import { DarkModeProvider } from './contexts/DarkModeContext';
 import Login from './components/Login';
 import Register from './components/Register';
 import Home from './components/Home';
@@ -27,34 +28,36 @@ function App() {
   return (
     <div className="App">
       <AuthProvider>
-        <Router>
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            
-            {/* Protected Routes with Layout (Navbar) */}
-            <Route element={<Layout />}>
-                <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-                <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-                <Route path="/projects" element={<ProtectedRoute><ProjectList mode="feed" /></ProtectedRoute>} />
-                <Route path="/my-projects" element={<ProtectedRoute><ProjectList mode="my" /></ProtectedRoute>} />
-                <Route path="/freelancers" element={<ProtectedRoute><FreelancerCandidates /></ProtectedRoute>} />
-                <Route path="/post-project" element={<ProtectedRoute><ProjectForm /></ProtectedRoute>} />
-                <Route path="/projects/:id" element={<ProtectedRoute><ProjectDetail /></ProtectedRoute>} />
-                <Route path="/projects/:id/edit" element={<ProtectedRoute><ProjectForm isEdit={true} /></ProtectedRoute>} />
-                <Route path="/proposals" element={<ProtectedRoute><Proposals /></ProtectedRoute>} />
-                <Route path="/contracts" element={<ProtectedRoute><Contracts /></ProtectedRoute>} />
-                <Route path="/chats" element={<ProtectedRoute><Chats /></ProtectedRoute>} />
-                <Route path="/calendar" element={<ProtectedRoute><Calendar /></ProtectedRoute>} />
-                <Route path="/clients" element={<ProtectedRoute><Clients /></ProtectedRoute>} />
-                <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-                <Route path="/profile/:username" element={<ProtectedRoute><FreelancerProfile /></ProtectedRoute>} />
-                <Route path="/notifications" element={<ProtectedRoute><NotificationPage /></ProtectedRoute>} />
-            </Route>
-          </Routes>
-        </Router>
+        <DarkModeProvider>
+          <Router>
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              
+              {/* Protected Routes with Layout (Navbar) */}
+              <Route element={<Layout />}>
+                  <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                  <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+                  <Route path="/projects" element={<ProtectedRoute><ProjectList mode="feed" /></ProtectedRoute>} />
+                  <Route path="/my-projects" element={<ProtectedRoute><ProjectList mode="my" /></ProtectedRoute>} />
+                  <Route path="/freelancers" element={<ProtectedRoute><FreelancerCandidates /></ProtectedRoute>} />
+                  <Route path="/post-project" element={<ProtectedRoute><ProjectForm /></ProtectedRoute>} />
+                  <Route path="/projects/:id" element={<ProtectedRoute><ProjectDetail /></ProtectedRoute>} />
+                  <Route path="/projects/:id/edit" element={<ProtectedRoute><ProjectForm isEdit={true} /></ProtectedRoute>} />
+                  <Route path="/proposals" element={<ProtectedRoute><Proposals /></ProtectedRoute>} />
+                  <Route path="/contracts" element={<ProtectedRoute><Contracts /></ProtectedRoute>} />
+                  <Route path="/chats" element={<ProtectedRoute><Chats /></ProtectedRoute>} />
+                  <Route path="/calendar" element={<ProtectedRoute><Calendar /></ProtectedRoute>} />
+                  <Route path="/clients" element={<ProtectedRoute><Clients /></ProtectedRoute>} />
+                  <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+                  <Route path="/profile/:username" element={<ProtectedRoute><FreelancerProfile /></ProtectedRoute>} />
+                  <Route path="/notifications" element={<ProtectedRoute><NotificationPage /></ProtectedRoute>} />
+              </Route>
+            </Routes>
+          </Router>
+        </DarkModeProvider>
       </AuthProvider>
     </div>
   );

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { conversationAPI } from '../services/chatService';
 import { useAuth } from '../contexts/AuthContext';
+import { useDarkMode } from '../contexts/DarkModeContext';
 
 // Custom CSS for WhatsApp-style animations
 const ChatStyles = () => (
@@ -8,6 +9,11 @@ const ChatStyles = () => (
     .bg-chat-bg {
       background-color: #e5ddd5;
       background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d1d1d1' fill-opacity='0.3'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    
+    .dark .bg-chat-bg {
+      background-color: #1a1a1a;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23404040' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
     
     .typing-indicator {
@@ -38,6 +44,7 @@ const ChatStyles = () => (
 
 const Chat = ({ contractId, isWidget = true, onBackClick }) => {
   const { user } = useAuth(); // eslint-disable-line no-unused-vars
+  const { darkMode } = useDarkMode();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(true);
@@ -620,8 +627,12 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
     return (
       <>
         <ChatStyles />
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
+        <div className={`flex items-center justify-center h-64 ${
+          darkMode ? 'bg-gray-800' : 'bg-gray-50'
+        }`}>
+          <div className={`animate-spin rounded-full h-8 w-8 border-b-2 ${
+            darkMode ? 'border-green-500' : 'border-green-600'
+          }`}></div>
         </div>
       </>
     );
@@ -631,7 +642,11 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
     return (
       <>
         <ChatStyles />
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+        <div className={`border px-4 py-3 rounded ${
+          darkMode 
+            ? 'bg-red-900 border-red-700 text-red-300'
+            : 'bg-red-50 border-red-200 text-red-700'
+        }`}>
           {error}
         </div>
       </>
@@ -640,11 +655,19 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
 
   if (!selectedConversation && contractId) {
     return (
-      <div className="text-center py-8">
-        <p className="text-gray-600 mb-4">No conversation found for this contract.</p>
+      <div className={`text-center py-8 ${
+        darkMode ? 'bg-gray-800 text-white' : 'bg-gray-50 text-gray-900'
+      }`}>
+        <p className={`mb-4 ${
+          darkMode ? 'text-gray-300' : 'text-gray-600'
+        }`}>No conversation found for this contract.</p>
         <button
           onClick={createConversation}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          className={`px-4 py-2 rounded ${
+            darkMode
+              ? 'bg-blue-600 text-white hover:bg-blue-700'
+              : 'bg-blue-600 text-white hover:bg-blue-700'
+          }`}
         >
           Start Conversation
         </button>
@@ -654,8 +677,12 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
 
   if (!selectedConversation) {
     return (
-      <div className="text-center py-8">
-        <p className="text-gray-600">Select a conversation to start messaging.</p>
+      <div className={`text-center py-8 ${
+        darkMode ? 'bg-gray-800 text-white' : 'bg-gray-50 text-gray-900'
+      }`}>
+        <p className={darkMode ? 'text-gray-300' : 'text-gray-600'}>
+          Select a conversation to start messaging.
+        </p>
       </div>
     );
   }
@@ -663,22 +690,26 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
   const messageGroups = groupMessagesByDate(messages);
 
   return (
-    <>
-      <ChatStyles />
-    <div className={`flex flex-col ${isWidget ? 'h-[500px]' : 'h-full'} bg-gray-50 rounded-lg shadow-lg overflow-hidden`}>
+      <>
+        <ChatStyles />
+    <div className={`flex flex-col ${isWidget ? 'h-[500px]' : 'h-full'} ${darkMode ? 'bg-gray-800' : 'bg-gray-50'} rounded-lg shadow-lg overflow-hidden`}>
       {/* Header - WhatsApp Style */}
-      <div className="bg-green-600 text-white px-4 py-3 border-b border-green-700">
+      <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-green-600 text-white'} px-4 py-3 border-b ${darkMode ? 'border-gray-700' : 'border-green-700'}`}>
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <button
               onClick={onBackClick}
-              className="md:hidden p-1 rounded-full hover:bg-green-700 transition-colors"
+              className={`md:hidden p-1 rounded-full transition-colors ${
+                darkMode ? 'hover:bg-gray-700' : 'hover:bg-green-700'
+              }`}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
             </button>
-            <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+              darkMode ? 'bg-gray-700' : 'bg-green-500'
+            }`}>
               <span className="text-lg font-semibold">
                 {selectedConversation.contract_details?.title?.charAt(0) || 'C'}
               </span>
@@ -687,7 +718,9 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
               <h3 className="font-semibold text-lg">
                 {selectedConversation.contract_details?.title || 'Contract Discussion'}
               </h3>
-              <p className="text-green-100 text-sm">
+              <p className={`text-sm ${
+                darkMode ? 'text-gray-300' : 'text-green-100'
+              }`}>
                 {typingUsers.length > 0 ? (
                   <span className="typing-indicator">typing...</span>
                 ) : (
@@ -700,15 +733,23 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
       </div>
 
       {/* Messages Container */}
-      <div className="flex-1 overflow-y-auto px-2 py-3 bg-chat-bg">
+      <div className={`flex-1 overflow-y-auto px-2 py-3 ${darkMode ? 'bg-gray-900' : 'bg-chat-bg'}`}>
         {/* Typing Indicator for Other Users */}
         {typingUsers.length > 0 && (
           <div className="flex justify-start mb-2 px-4">
-            <div className="bg-white text-gray-900 rounded-2xl rounded-bl-none px-3 py-2 shadow-sm">
+            <div className={`rounded-2xl rounded-bl-none px-3 py-2 shadow-sm ${
+              darkMode ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
+            }`}>
               <div className="flex space-x-1">
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0ms'}}></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '150ms'}}></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '300ms'}}></div>
+                <div className={`w-2 h-2 rounded-full animate-bounce ${
+                  darkMode ? 'bg-gray-300' : 'bg-gray-400'
+                }`} style={{animationDelay: '0ms'}}></div>
+                <div className={`w-2 h-2 rounded-full animate-bounce ${
+                  darkMode ? 'bg-gray-300' : 'bg-gray-400'
+                }`} style={{animationDelay: '150ms'}}></div>
+                <div className={`w-2 h-2 rounded-full animate-bounce ${
+                  darkMode ? 'bg-gray-300' : 'bg-gray-400'
+                }`} style={{animationDelay: '300ms'}}></div>
               </div>
             </div>
           </div>
@@ -718,7 +759,9 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
           <div key={date} className="mb-4">
             {/* Date Separator */}
             <div className="flex justify-center my-4">
-              <div className="bg-gray-200 text-gray-600 text-xs px-3 py-1 rounded-full">
+              <div className={`text-xs px-3 py-1 rounded-full ${
+                darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-600'
+              }`}>
                 {formatDate(dateMessages[0].created_at)}
               </div>
             </div>
@@ -742,8 +785,12 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                   }`}>
                     {/* Avatar for other user's messages - show only for first in sequence */}
                     {!message.is_mine && isFirstInSequence && (
-                      <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
-                        <span className="text-xs font-medium text-gray-600">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                        darkMode ? 'bg-gray-600' : 'bg-gray-300'
+                      }`}>
+                        <span className={`text-xs font-medium ${
+                          darkMode ? 'text-gray-300' : 'text-gray-600'
+                        }`}>
                           {message.sender_name?.charAt(0) || 'U'}
                         </span>
                       </div>
@@ -758,8 +805,12 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                     <div
                       className={`relative px-3 py-2 rounded-2xl max-w-[85%] md:max-w-[70%] ${
                         message.is_mine
-                          ? 'bg-green-500 text-white rounded-br-none'
-                          : 'bg-white text-gray-900 rounded-bl-none shadow-sm'
+                          ? darkMode 
+                            ? 'bg-green-600 text-white rounded-br-none'
+                            : 'bg-green-500 text-white rounded-br-none'
+                          : darkMode
+                            ? 'bg-gray-700 text-white rounded-bl-none shadow-sm'
+                            : 'bg-white text-gray-900 rounded-bl-none shadow-sm'
                       } ${
                         !message.is_mine && !isFirstInSequence ? 'rounded-tl-lg' : ''
                       } ${
@@ -767,7 +818,11 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                       } ${
                         !isLastInSequence ? 'mb-1' : ''
                       } ${
-                        message.status === 'failed' ? 'border-2 border-red-300 hover:bg-red-50' : ''
+                        message.status === 'failed' 
+                          ? darkMode 
+                            ? 'border-2 border-red-500 hover:bg-red-900'
+                            : 'border-2 border-red-300 hover:bg-red-50'
+                          : ''
                       } group`}
                       onClick={() => message.status === 'failed' && retryMessage(message)}
                       style={{ cursor: message.status === 'failed' ? 'pointer' : 'default' }}
@@ -784,16 +839,24 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                       {message.replying_to && (
                         <div className={`mb-2 p-2 rounded border-l-2 text-xs ${
                           message.is_mine 
-                            ? 'border-green-200 bg-green-400 bg-opacity-20' 
-                            : 'border-gray-300 bg-gray-50'
+                            ? darkMode
+                              ? 'border-green-400 bg-green-600 bg-opacity-30'
+                              : 'border-green-200 bg-green-400 bg-opacity-20'
+                            : darkMode
+                              ? 'border-gray-600 bg-gray-800'
+                              : 'border-gray-300 bg-gray-50'
                         }`}>
                           <div className={`font-medium ${
-                            message.is_mine ? 'text-green-100' : 'text-gray-600'
+                            message.is_mine 
+                              ? darkMode ? 'text-green-200' : 'text-green-100'
+                              : darkMode ? 'text-gray-300' : 'text-gray-600'
                           }`}>
                             {message.replying_to.sender_name}
                           </div>
                           <div className={`truncate ${
-                            message.is_mine ? 'text-green-100' : 'text-gray-700'
+                            message.is_mine 
+                              ? darkMode ? 'text-green-200' : 'text-green-100'
+                              : darkMode ? 'text-gray-300' : 'text-gray-700'
                           }`}>
                             {message.replying_to.text}
                           </div>
@@ -806,7 +869,9 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                       
                       {/* Message Footer */}
                       <div className={`flex items-center justify-end mt-1 space-x-1 ${
-                        message.is_mine ? 'text-green-100' : 'text-gray-500'
+                        message.is_mine 
+                          ? darkMode ? 'text-green-200' : 'text-green-100'
+                          : darkMode ? 'text-gray-400' : 'text-gray-500'
                       }`}>
                         <span className="text-xs">
                           {formatTime(message.created_at)}
@@ -830,7 +895,9 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                             handleReply(message);
                           }}
                           className={`p-1 rounded-full text-xs ${
-                            message.is_mine ? 'text-green-100 hover:text-white' : 'text-gray-400 hover:text-gray-600'
+                            message.is_mine 
+                              ? darkMode ? 'text-green-200 hover:text-white' : 'text-green-100 hover:text-white'
+                              : darkMode ? 'text-gray-500 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'
                           }`}
                           title="Reply to this message"
                         >
@@ -850,11 +917,19 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
         {/* Typing Indicator */}
         {isTyping && (
           <div className="flex justify-start mb-2 px-4">
-            <div className="bg-white text-gray-900 rounded-2xl rounded-bl-none px-3 py-2 shadow-sm">
+            <div className={`rounded-2xl rounded-bl-none px-3 py-2 shadow-sm ${
+              darkMode ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
+            }`}>
               <div className="flex space-x-1">
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                <div className={`w-2 h-2 rounded-full animate-bounce ${
+                  darkMode ? 'bg-gray-300' : 'bg-gray-400'
+                }`}></div>
+                <div className={`w-2 h-2 rounded-full animate-bounce ${
+                  darkMode ? 'bg-gray-300' : 'bg-gray-400'
+                }`} style={{animationDelay: '0.1s'}}></div>
+                <div className={`w-2 h-2 rounded-full animate-bounce ${
+                  darkMode ? 'bg-gray-300' : 'bg-gray-400'
+                }`} style={{animationDelay: '0.2s'}}></div>
               </div>
             </div>
           </div>
@@ -864,23 +939,33 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
       </div>
 
       {/* Message Input - WhatsApp Style */}
-        <div className="bg-white px-4 py-3 border-t border-gray-200">
+        <div className={`px-4 py-3 border-t ${
+          darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+        }`}>
           {/* Reply Preview */}
           {replyingTo && (
-            <div className="mb-3 p-3 bg-gray-50 rounded-lg border-l-4 border-green-500">
+            <div className={`mb-3 p-3 rounded-lg border-l-4 ${
+              darkMode ? 'bg-gray-700 border-green-600' : 'bg-gray-50 border-green-500'
+            }`}>
               <div className="flex items-center justify-between">
                 <div className="flex-1">
-                  <div className="text-xs text-gray-500 mb-1">
+                  <div className={`text-xs mb-1 ${
+                    darkMode ? 'text-gray-400' : 'text-gray-500'
+                  }`}>
                     Replying to {replyingTo.sender_name}
                   </div>
-                  <div className="text-sm text-gray-700 truncate">
+                  <div className={`text-sm truncate ${
+                    darkMode ? 'text-gray-300' : 'text-gray-700'
+                  }`}>
                     {replyingTo.text}
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={cancelReply}
-                  className="text-gray-400 hover:text-gray-600 ml-2"
+                  className={`ml-2 ${
+                    darkMode ? 'text-gray-500 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'
+                  }`}
                 >
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -905,7 +990,11 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
               }}
               placeholder={isSending ? "Sending..." : "Type a message"}
               disabled={isSending}
-              className={`w-full bg-gray-100 border-none rounded-full px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:bg-white transition-all ${
+              className={`w-full border-none rounded-full px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition-all ${
+                darkMode 
+                  ? 'bg-gray-700 text-white placeholder-gray-400 focus:bg-gray-600'
+                  : 'bg-gray-100 text-gray-900 focus:bg-white'
+              } ${
                 isSending ? 'opacity-50 cursor-not-allowed' : ''
               }`}
             />
@@ -916,8 +1005,12 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
             disabled={!newMessage.trim() || isSending}
             className={`p-3 rounded-full transition-all ${
               newMessage.trim() && !isSending
-                ? 'bg-green-500 text-white hover:bg-green-600'
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                ? darkMode
+                  ? 'bg-green-600 text-white hover:bg-green-700'
+                  : 'bg-green-500 text-white hover:bg-green-600'
+                : darkMode
+                  ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                  : 'bg-gray-300 text-gray-500 cursor-not-allowed'
             }`}
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">

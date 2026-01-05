@@ -1,44 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useDarkMode } from '../contexts/DarkModeContext';
 import { MagnifyingGlassIcon, MoonIcon, SunIcon, Bars3Icon } from '@heroicons/react/24/outline';
 import NotificationDropdown from './NotificationDropdown';
 
 const TopBar = ({ onMenuClick }) => {
   const { user } = useAuth();
-  const [darkMode, setDarkMode] = useState(false);
-
-  // Load dark mode preference from localStorage on component mount
-  useEffect(() => {
-    const savedDarkMode = localStorage.getItem('darkMode');
-    if (savedDarkMode !== null) {
-      const isDark = savedDarkMode === 'true';
-      setDarkMode(isDark);
-    }
-  }, []);
-
-  // Handle dark mode toggle
-  const handleDarkModeToggle = () => {
-    const newDarkMode = !darkMode;
-    setDarkMode(newDarkMode);
-    localStorage.setItem('darkMode', newDarkMode.toString());
-    document.documentElement.classList.toggle('dark', newDarkMode);
-  };
+  const { darkMode, toggleDarkMode } = useDarkMode();
 
   return (
-    <div className="h-16 bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between px-4 md:px-8 sticky top-0 z-10 transition-colors duration-200">
-      {/* Mobile menu button */}
-      <button
-        onClick={onMenuClick}
-        className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-        title="Open menu"
-      >
-        <Bars3Icon className="h-6 w-6 text-gray-600 dark:text-gray-300" />
-      </button>
-      
-      <div className="flex items-center gap-4 md:gap-6">
+    <div className="h-16 md:h-18 bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between px-4 md:px-6 lg:px-8 transition-colors duration-200">
+      {/* Left section - Menu button and logo/brand */}
+      <div className="flex items-center gap-4">
+        {/* Mobile menu button */}
         <button
-          onClick={handleDarkModeToggle}
+          onClick={onMenuClick}
+          className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          title="Open menu"
+        >
+          <Bars3Icon className="h-6 w-6 text-gray-600 dark:text-gray-300" />
+        </button>
+        
+        {/* App title/brand - hidden on mobile, shown on desktop */}
+        <div className="hidden md:block">
+          <h1 className="text-xl font-bold text-gray-900 dark:text-white">Talent Link</h1>
+        </div>
+      </div>
+      
+      {/* Center section - Search or other content (optional) */}
+      <div className="flex-1 max-w-2xl mx-8 hidden lg:block">
+        {/* You can add a search bar or other content here if needed */}
+      </div>
+      
+      {/* Right section - Profile, notifications, dark mode toggle */}
+      <div className="flex items-center gap-4 md:gap-6 lg:gap-8">
+        <button
+          onClick={toggleDarkMode}
           className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
           title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
         >
@@ -57,9 +55,9 @@ const TopBar = ({ onMenuClick }) => {
 
         <Link 
           to="/profile" 
-          className="flex items-center gap-2 md:gap-3 hover:bg-gray-50 rounded-lg px-2 md:px-3 py-2 transition-colors group"
+          className="flex items-center gap-2 md:gap-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg px-2 md:px-3 py-2 transition-colors group"
         >
-          <div className="text-right hidden lg:block">
+          <div className="text-right hidden md:block">
             <div className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-blue-600">{user?.first_name || user?.username || 'User'}</div>
             <div className="text-xs text-gray-500 dark:text-gray-400 uppercase group-hover:text-blue-500">{user?.role || 'USER'}</div>
           </div>
