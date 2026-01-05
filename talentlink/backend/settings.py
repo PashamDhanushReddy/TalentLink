@@ -114,12 +114,19 @@ if not DATABASE_URL:
 print(f"Using DATABASE_URL: {DATABASE_URL[:50]}...")  # Print first 50 chars for security
 print(f"=====================")
 
+# Force use of Neon database - override any localhost URLs
 DATABASES = {
-    'default': dj_database_url.config(
-        default=DATABASE_URL,
-        conn_max_age=600,
-        ssl_require=True
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'neondb',
+        'USER': 'neondb_owner',
+        'PASSWORD': 'npg_bC7xVc9gFGYR',
+        'HOST': 'ep-odd-rice-a16t7lgd-pooler.ap-southeast-1.aws.neon.tech',
+        'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
+    }
 }
 
 # Alternative: Use dj-database-url with explicit fallback
