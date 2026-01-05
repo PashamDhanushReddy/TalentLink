@@ -12,6 +12,11 @@ print(f"DEBUG: TEMPLATE_DIR is {TEMPLATE_DIR}")
 print(f"DEBUG: TEMPLATE_DIR exists? {TEMPLATE_DIR.exists()}")
 if TEMPLATE_DIR.exists():
     print(f"DEBUG: TEMPLATE_DIR contents: {[x.name for x in TEMPLATE_DIR.iterdir()]}")
+    
+# Check parent directory as well
+PARENT_DIR = BASE_DIR.parent
+print(f"DEBUG: PARENT_DIR is {PARENT_DIR}")
+print(f"DEBUG: PARENT_DIR contents: {[x.name for x in PARENT_DIR.iterdir()]}")
 
 SECRET_KEY = config('SECRET_KEY')
 
