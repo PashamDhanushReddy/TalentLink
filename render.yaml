@@ -25,4 +25,4 @@ services:
     publishDirectory: build
     envVars:
       - key: REACT_APP_API_URL
-        value: https://talentlink-backend.onrender.com/api
+        value: https://talentlink-7pqy.onrender.com/api
