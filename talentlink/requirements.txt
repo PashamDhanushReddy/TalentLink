@@ -7,3 +7,4 @@ psycopg2-binary
 whitenoise
 gunicorn
 djangorestframework-simplejwt
+django-filter
