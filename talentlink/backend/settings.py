@@ -9,9 +9,14 @@ SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-# Allow hosts from environment variable or default to localhost
-allowed_hosts_env = config('ALLOWED_HOSTS', default='localhost,127.0.0.1')
-ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_env.split(',') if host.strip()]
+# Allow hosts configuration
+# For production (Render), allow all hosts for now (you can restrict this later)
+# For development, only allow localhost
+if DEBUG:
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+else:
+    # In production, allow all hosts for Render deployment
+    ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
