@@ -13,3 +13,16 @@ services:
         value: 4
       - key: RENDER_EXTERNAL_HOSTNAME
         sync: false
+
+  - type: web
+    name: talentlink-frontend
+    env: static
+    buildCommand: "cd frontend && npm install && npm run build"
+    staticPublishPath: frontend/build
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://talentlink-backend.onrender.com/api/*
+    envVars:
+      - key: REACT_APP_API_URL
+        value: "https://talentlink-backend.onrender.com"

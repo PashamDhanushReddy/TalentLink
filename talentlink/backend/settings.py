@@ -128,5 +128,10 @@ SIMPLE_JWT = {
     'TOKEN_TYPE_CLAIM': 'token_type',
 }
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS configuration for frontend
+CORS_ALLOW_ALL_ORIGINS = True  # For development - adjust for production
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "https://talentlink-frontend.onrender.com",
+]
