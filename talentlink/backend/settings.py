@@ -74,6 +74,13 @@ DATABASES = {
     )
 }
 
+# Verification: Ensure we are not connecting to localhost in production
+if not DEBUG and DATABASES['default']['HOST'] in ['localhost', '127.0.0.1', '::1']:
+    raise ValueError(
+        f"Production Configuration Error: DATABASE_URL is pointing to {DATABASES['default']['HOST']}. "
+        "Please ensure the 'DATABASE_URL' Environment Variable in Render is set to your Neon DB connection string."
+    )
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
