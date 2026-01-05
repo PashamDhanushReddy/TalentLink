@@ -10,9 +10,9 @@ echo "--------------------------------------"
 echo "Installing backend dependencies..."
 pip install -r requirements.txt
 
-# Build frontend (relative to this script running in /talentlink)
+# Build frontend (relative to this script running from repo root)
 echo "Building frontend..."
-cd ../frontend
+cd frontend
 npm ci || npm install
 npm run build
 cd ..
