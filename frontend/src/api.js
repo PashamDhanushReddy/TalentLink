@@ -1,6 +1,12 @@
 import axios from 'axios';
 
+// Environment detection
+const isProduction = process.env.REACT_APP_ENVIRONMENT === 'production';
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
+
+// Log environment for debugging
+console.log(`Environment: ${isProduction ? 'Production' : 'Development'}`);
+console.log(`API Base URL: ${API_BASE_URL}`);
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -29,6 +35,11 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     
+    // Enhanced error logging for debugging
+    if (isProduction) {
+      console.error('API Error:', error.response?.status, error.response?.data);
+    }
+    
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       const refresh_token = localStorage.getItem('refresh_token');
@@ -47,6 +58,12 @@ api.interceptors.response.use(
         }
       }
     }
+    
+    // Handle network errors
+    if (!error.response) {
+      console.error('Network error - check if backend is running:', API_BASE_URL);
+    }
+    
     return Promise.reject(error);
   }
 );

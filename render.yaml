@@ -2,6 +2,7 @@ services:
   - type: web
     name: talentlink-backend
     env: python
+    region: oregon  # Specify region for better performance
     buildCommand: "cd talentlink && pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate"
     startCommand: "cd talentlink && gunicorn backend.wsgi:application --bind 0.0.0.0:$PORT"
     envVars:
@@ -13,16 +14,26 @@ services:
         value: 4
       - key: RENDER_EXTERNAL_HOSTNAME
         sync: false
+      - key: DEBUG
+        value: false
+      - key: ALLOWED_HOSTS
+        value: "*"
 
   - type: web
     name: talentlink-frontend
     env: static
+    region: oregon  # Same region as backend for better performance
     buildCommand: "cd frontend && npm install && npm run build"
     staticPublishPath: frontend/build
     routes:
       - type: rewrite
         source: /api/*
         destination: https://talentlink-backend.onrender.com/api/*
+      - type: rewrite
+        source: /admin/*
+        destination: https://talentlink-backend.onrender.com/admin/*
     envVars:
       - key: REACT_APP_API_URL
         value: "https://talentlink-backend.onrender.com"
+      - key: REACT_APP_ENVIRONMENT
+        value: "production"
