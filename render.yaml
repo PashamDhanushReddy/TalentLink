@@ -1,51 +1,25 @@
 services:
-  # FRONTEND FIRST - This will be the main URL
+  # Single Service Deployment (Django + React)
   - type: web
-    name: talentlink-frontend
-    env: static
-    region: oregon  # Same region as backend for better performance
-    buildCommand: "cd frontend && npm install && npm run build"
-    staticPublishPath: frontend/build
-    routes:
-      # API routes go to backend
-      - type: rewrite
-        source: /api/*
-        destination: https://talentlink-backend.onrender.com/api/*
-      # Admin routes go to backend
-      - type: rewrite
-        source: /admin/*
-        destination: https://talentlink-backend.onrender.com/admin/*
-      # Static files from Django
-      - type: rewrite
-        source: /static/*
-        destination: https://talentlink-backend.onrender.com/static/*
-      # Media files from Django
-      - type: rewrite
-        source: /media/*
-        destination: https://talentlink-backend.onrender.com/media/*
-    envVars:
-      - key: REACT_APP_API_URL
-        value: "https://talentlink-backend.onrender.com"
-      - key: REACT_APP_ENVIRONMENT
-        value: "production"
-
-  # BACKEND SECOND - This will be accessible via subdomain
-  - type: web
-    name: talentlink-backend
+    name: talentlink
     env: python
-    region: oregon  # Specify region for better performance
-    buildCommand: "cd talentlink && pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate"
+    region: oregon
+    # Use the build.sh script to build frontend and prepare backend
+    buildCommand: "chmod +x build.sh && ./build.sh"
+    # Start Gunicorn
     startCommand: "cd talentlink && gunicorn backend.wsgi:application --bind 0.0.0.0:$PORT"
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.0
       - key: DATABASE_URL
         sync: false
       - key: SECRET_KEY
         generateValue: true
       - key: WEB_CONCURRENCY
         value: 4
-      - key: RENDER_EXTERNAL_HOSTNAME
-        sync: false
       - key: DEBUG
         value: false
       - key: ALLOWED_HOSTS
         value: "*"
+      - key: REACT_APP_API_URL
+        value: "/api"
