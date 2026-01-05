@@ -98,8 +98,18 @@ print(f"DATABASE_URL from env: {os.environ.get('DATABASE_URL', 'Not set')}")
 print(f"Current working directory: {os.getcwd()}")
 print(f"BASE_DIR: {BASE_DIR}")
 
-# Get database URL from environment or use the Neon database as fallback
-DATABASE_URL = os.environ.get('DATABASE_URL', 'postgresql://neondb_owner:npg_bC7xVc9gFGYR@ep-odd-rice-a16t7lgd-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require')
+# Get database URL from environment
+DATABASE_URL = os.environ.get('DATABASE_URL', '')
+
+# If Render provides localhost database URL (which is wrong), use our Neon database instead
+if DATABASE_URL and ('localhost' in DATABASE_URL or '127.0.0.1' in DATABASE_URL):
+    print(f"WARNING: Render provided localhost database URL, using Neon database instead")
+    DATABASE_URL = 'postgresql://neondb_owner:npg_bC7xVc9gFGYR@ep-odd-rice-a16t7lgd-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require'
+
+# Fallback to Neon if no DATABASE_URL provided
+if not DATABASE_URL:
+    print(f"No DATABASE_URL found, using Neon database")
+    DATABASE_URL = 'postgresql://neondb_owner:npg_bC7xVc9gFGYR@ep-odd-rice-a16t7lgd-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require'
 
 print(f"Using DATABASE_URL: {DATABASE_URL[:50]}...")  # Print first 50 chars for security
 print(f"=====================")

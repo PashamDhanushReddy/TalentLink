@@ -28,6 +28,15 @@ fi
 echo "Frontend build successful!"
 echo "Contents of frontend/build: $(ls -la frontend/build/)"
 
+# Create the proper directory structure for Django
+# Create frontend/build directory in the talentlink folder
+echo "Creating frontend build directory structure..."
+mkdir -p talentlink/frontend/build
+
+# Copy the entire frontend build to the talentlink directory
+echo "Copying frontend build to talentlink/frontend/build..."
+cp -r frontend/build/* talentlink/frontend/build/ || echo "Warning: Could not copy frontend build"
+
 # Prepare backend directories (we're now back in the repo root)
 echo "Preparing backend directories..."
 mkdir -p talentlink/templates
@@ -51,6 +60,7 @@ cp frontend/build/robots.txt talentlink/static_src/ 2>/dev/null || echo "Warning
 
 # Debug: Show what we copied
 echo "=== DEBUG: Final directory contents ==="
+echo "talentlink/frontend/build: $(ls -la talentlink/frontend/build/ || echo 'empty')"
 echo "talentlink/templates: $(ls -la talentlink/templates/ || echo 'empty')"
 echo "talentlink/static_src: $(ls -la talentlink/static_src/ || echo 'empty')"
 
