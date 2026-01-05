@@ -8,9 +8,7 @@ services:
     startCommand: "gunicorn backend.wsgi:application"
     envVars:
       - key: DATABASE_URL
-        fromDatabase:
-          name: talentlink-db
-          property: connectionString
+        sync: false
       - key: SECRET_KEY
         generateValue: true
       - key: WEB_CONCURRENCY
@@ -28,8 +26,3 @@ services:
     envVars:
       - key: REACT_APP_API_URL
         value: https://talentlink-backend.onrender.com/api
-
-databases:
-  - name: talentlink-db
-    databaseName: talentlink
-    user: talentlink
