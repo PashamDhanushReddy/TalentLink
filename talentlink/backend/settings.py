@@ -89,16 +89,29 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 import dj_database_url
 
-# Use your Neon PostgreSQL database
-DATABASE_URL = config('DATABASE_URL', default='postgresql://neondb_owner:npg_bC7xVc9gFGYR@ep-odd-rice-a16t7lgd-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require')
-
+# Force use of Neon PostgreSQL database - bypass environment variable issues
 DATABASES = {
-    'default': dj_database_url.config(
-        default=DATABASE_URL,
-        conn_max_age=600,
-        ssl_require=True
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'neondb',
+        'USER': 'neondb_owner',
+        'PASSWORD': 'npg_bC7xVc9gFGYR',
+        'HOST': 'ep-odd-rice-a16t7lgd-pooler.ap-southeast-1.aws.neon.tech',
+        'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
+    }
 }
+
+# Alternative: Use dj-database-url with explicit fallback
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default='postgresql://neondb_owner:npg_bC7xVc9gFGYR@ep-odd-rice-a16t7lgd-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require',
+#         conn_max_age=600,
+#         ssl_require=True
+#     )
+# }
 
 # Custom user model
 AUTH_USER_MODEL = 'accounts.User'
