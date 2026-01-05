@@ -10,13 +10,19 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
 # Allow hosts configuration
-# For production (Render), allow all hosts for now (you can restrict this later)
-# For development, only allow localhost
-if DEBUG:
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+# First try to get from environment variable, then use our hardcoded list
+allowed_hosts_env = os.environ.get('ALLOWED_HOSTS')
+if allowed_hosts_env:
+    # If environment variable exists, use it
+    ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_env.split(',') if host.strip()]
 else:
-    # In production, allow all hosts for Render deployment
-    ALLOWED_HOSTS = ['*']
+    # Use our hardcoded list for Render deployment
+    ALLOWED_HOSTS = [
+        'talentlink-7pqy.onrender.com',
+        'localhost',
+        '127.0.0.1',
+        '.onrender.com'  # Allow all onrender.com subdomains
+    ]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
