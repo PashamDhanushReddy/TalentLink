@@ -89,19 +89,27 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 import dj_database_url
 
-# Force use of Neon PostgreSQL database - bypass environment variable issues
+# Database configuration - use Render's DATABASE_URL or fallback to Neon
+import dj_database_url
+
+# Debug: Print database configuration
+print(f"=== DATABASE DEBUG ===")
+print(f"DATABASE_URL from env: {os.environ.get('DATABASE_URL', 'Not set')}")
+print(f"Current working directory: {os.getcwd()}")
+print(f"BASE_DIR: {BASE_DIR}")
+
+# Get database URL from environment or use the Neon database as fallback
+DATABASE_URL = os.environ.get('DATABASE_URL', 'postgresql://neondb_owner:npg_bC7xVc9gFGYR@ep-odd-rice-a16t7lgd-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require')
+
+print(f"Using DATABASE_URL: {DATABASE_URL[:50]}...")  # Print first 50 chars for security
+print(f"=====================")
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'neondb',
-        'USER': 'neondb_owner',
-        'PASSWORD': 'npg_bC7xVc9gFGYR',
-        'HOST': 'ep-odd-rice-a16t7lgd-pooler.ap-southeast-1.aws.neon.tech',
-        'PORT': '5432',
-        'OPTIONS': {
-            'sslmode': 'require',
-        },
-    }
+    'default': dj_database_url.config(
+        default=DATABASE_URL,
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
 
 # Alternative: Use dj-database-url with explicit fallback
