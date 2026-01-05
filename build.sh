@@ -1,61 +1,68 @@
 #!/usr/bin/env bash
-# exit on error
 set -o errexit
 
-echo "--------------------------------------"
-echo "Build script started"
-echo "--------------------------------------"
+echo "=== TALENTLINK BUILD SCRIPT STARTED ==="
+echo "Current directory: $(pwd)"
+echo "Directory contents: $(ls -la)"
 
 # Install backend dependencies
 echo "Installing backend dependencies..."
 pip install -r requirements.txt
 
-# Build frontend (relative to this script running from repo root)
+# Build frontend
 echo "Building frontend..."
-cd frontend
+cd frontend || { echo "ERROR: frontend directory not found"; exit 1; }
+echo "In frontend directory: $(pwd)"
 npm ci || npm install
 npm run build
 cd ..
 
 # Verify build
 if [ ! -d "frontend/build" ]; then
-  echo "Error: frontend/build directory not found!"
+  echo "ERROR: frontend/build directory not found!"
+  echo "Contents of frontend: $(ls -la frontend/)"
   exit 1
 fi
 
-# Prepare backend directories for React artifacts
+echo "Frontend build successful!"
+echo "Contents of frontend/build: $(ls -la frontend/build/)"
+
+# Prepare backend directories
 echo "Preparing backend directories..."
 mkdir -p talentlink/templates
 mkdir -p talentlink/static_src
 
-# Copy React build output to Django
+# Copy React build to Django
+echo "Copying React build to Django..."
 echo "Copying index.html..."
-cp frontend/build/index.html talentlink/templates/ 2>/dev/null || :
+cp frontend/build/index.html talentlink/templates/ || echo "Warning: Could not copy index.html"
 
 if [ -d "frontend/build/static" ]; then
   echo "Copying static files..."
-  cp -r frontend/build/static/* talentlink/static_src/
+  cp -r frontend/build/static/* talentlink/static_src/ || echo "Warning: Could not copy static files"
 fi
 
 # Copy root files
 echo "Copying root files..."
-cp frontend/build/favicon.ico talentlink/static_src/ 2>/dev/null || :
-cp frontend/build/manifest.json talentlink/static_src/ 2>/dev/null || :
-cp frontend/build/robots.txt talentlink/static_src/ 2>/dev/null || :
-cp frontend/build/logo*.png talentlink/static_src/ 2>/dev/null || :
+cp frontend/build/favicon.ico talentlink/static_src/ 2>/dev/null || echo "Warning: No favicon.ico found"
+cp frontend/build/manifest.json talentlink/static_src/ 2>/dev/null || echo "Warning: No manifest.json found"
+cp frontend/build/robots.txt talentlink/static_src/ 2>/dev/null || echo "Warning: No robots.txt found"
 
-# Debug: Show directories
-echo "Debug: Listing talentlink/templates dir:"
-ls -l talentlink/templates/ || echo "templates dir empty or missing"
-echo "Debug: Listing talentlink/static_src dir:"
-ls -l talentlink/static_src/ || echo "static_src dir empty or missing"
+# Debug: Show what we copied
+echo "=== DEBUG: Final directory contents ==="
+echo "talentlink/templates: $(ls -la talentlink/templates/ || echo 'empty')"
+echo "talentlink/static_src: $(ls -la talentlink/static_src/ || echo 'empty')"
 
-# Run Django management commands
-echo "Running Django commands..."
-cd talentlink
+# Django commands
+echo "Running Django management commands..."
+cd talentlink || { echo "ERROR: talentlink directory not found"; exit 1; }
+echo "In talentlink directory: $(pwd)"
+echo "Contents: $(ls -la)"
+
 python manage.py collectstatic --no-input
-python manage.py migrate
+echo "Collectstatic completed"
 
-echo "--------------------------------------"
-echo "Build script completed successfully"
-echo "--------------------------------------"
+python manage.py migrate
+echo "Migrations completed"
+
+echo "=== TALENTLINK BUILD SCRIPT COMPLETED SUCCESSFULLY ==="
