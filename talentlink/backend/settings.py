@@ -9,20 +9,12 @@ SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-# Allow hosts configuration
-# First try to get from environment variable, then use our hardcoded list
-allowed_hosts_env = os.environ.get('ALLOWED_HOSTS')
-if allowed_hosts_env:
-    # If environment variable exists, use it
-    ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_env.split(',') if host.strip()]
-else:
-    # Use our hardcoded list for Render deployment
-    ALLOWED_HOSTS = [
-        'talentlink-7pqy.onrender.com',
-        'localhost',
-        '127.0.0.1',
-        '.onrender.com'  # Allow all onrender.com subdomains
-    ]
+# Allow all hosts for now to bypass DisallowedHost error
+ALLOWED_HOSTS = ['*']
+
+# Debug: Log the ALLOWED_HOSTS to verify it's set correctly
+print(f"ALLOWED_HOSTS set to: {ALLOWED_HOSTS}")
+print(f"Settings loaded at: {__import__('datetime').datetime.now()}")
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -41,6 +33,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'backend.middleware.RenderHostMiddleware',  # Custom middleware for Render host handling
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

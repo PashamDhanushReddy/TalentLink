@@ -3,7 +3,7 @@ services:
     name: talentlink-backend
     env: python
     buildCommand: "cd talentlink && pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate"
-    startCommand: "cd talentlink && gunicorn backend.wsgi:application"
+    startCommand: "cd talentlink && gunicorn backend.wsgi:application --bind 0.0.0.0:$PORT"
     envVars:
       - key: DATABASE_URL
         sync: false
