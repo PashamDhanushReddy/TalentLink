@@ -1,4 +1,35 @@
 services:
+  # FRONTEND FIRST - This will be the main URL
+  - type: web
+    name: talentlink-frontend
+    env: static
+    region: oregon  # Same region as backend for better performance
+    buildCommand: "cd frontend && npm install && npm run build"
+    staticPublishPath: frontend/build
+    routes:
+      # API routes go to backend
+      - type: rewrite
+        source: /api/*
+        destination: https://talentlink-backend.onrender.com/api/*
+      # Admin routes go to backend
+      - type: rewrite
+        source: /admin/*
+        destination: https://talentlink-backend.onrender.com/admin/*
+      # Static files from Django
+      - type: rewrite
+        source: /static/*
+        destination: https://talentlink-backend.onrender.com/static/*
+      # Media files from Django
+      - type: rewrite
+        source: /media/*
+        destination: https://talentlink-backend.onrender.com/media/*
+    envVars:
+      - key: REACT_APP_API_URL
+        value: "https://talentlink-backend.onrender.com"
+      - key: REACT_APP_ENVIRONMENT
+        value: "production"
+
+  # BACKEND SECOND - This will be accessible via subdomain
   - type: web
     name: talentlink-backend
     env: python
@@ -18,22 +49,3 @@ services:
         value: false
       - key: ALLOWED_HOSTS
         value: "*"
-
-  - type: web
-    name: talentlink-frontend
-    env: static
-    region: oregon  # Same region as backend for better performance
-    buildCommand: "cd frontend && npm install && npm run build"
-    staticPublishPath: frontend/build
-    routes:
-      - type: rewrite
-        source: /api/*
-        destination: https://talentlink-backend.onrender.com/api/*
-      - type: rewrite
-        source: /admin/*
-        destination: https://talentlink-backend.onrender.com/admin/*
-    envVars:
-      - key: REACT_APP_API_URL
-        value: "https://talentlink-backend.onrender.com"
-      - key: REACT_APP_ENVIRONMENT
-        value: "production"
