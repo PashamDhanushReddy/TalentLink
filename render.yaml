@@ -1,0 +1,35 @@
+services:
+  # Backend Service
+  - type: web
+    name: talentlink-backend
+    env: python
+    rootDirectory: talentlink
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn backend.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: talentlink-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
+      - key: PYTHON_VERSION
+        value: 3.11.5
+
+  # Frontend Service
+  - type: static
+    name: talentlink-frontend
+    env: static
+    rootDirectory: frontend
+    buildCommand: "npm install && npm run build"
+    publishDirectory: build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://talentlink-backend.onrender.com/api
+
+databases:
+  - name: talentlink-db
+    databaseName: talentlink
+    user: talentlink
