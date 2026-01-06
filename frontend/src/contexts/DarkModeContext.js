@@ -13,31 +13,41 @@ export const useDarkMode = () => {
 export const DarkModeProvider = ({ children }) => {
   const [darkMode, setDarkMode] = useState(false);
 
-  // Override system dark mode preference - force app to use its own theme
+  // Ultra-aggressive system dark mode override
   useEffect(() => {
-    // Force light mode by completely ignoring system preference
+    // Force light mode initialization
+    document.documentElement.style.colorScheme = 'light';
+    document.documentElement.style.backgroundColor = '#f9fafb';
+    document.body.style.colorScheme = 'light';
+    document.body.style.backgroundColor = '#f9fafb';
+    document.body.style.color = '#111827';
+    
+    // Remove any system dark mode classes
+    document.documentElement.classList.remove('dark');
+    document.documentElement.removeAttribute('data-theme');
+    
+    // Override system preference detection
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    // Force light mode regardless of system preference
     const savedDarkMode = localStorage.getItem('darkMode');
     if (savedDarkMode === null) {
-      // Default to light mode, ignore system completely
+      // Default to light mode, completely ignore system
       setDarkMode(false);
-      document.documentElement.classList.remove('dark');
       document.documentElement.style.colorScheme = 'light';
       document.body.style.backgroundColor = '#f9fafb';
       document.body.style.color = '#111827';
     }
     
-    // Block system theme detection completely
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    
+    // Block and override system theme changes
     const handleSystemThemeChange = (e) => {
-      // Completely ignore system theme changes
-      console.log('System theme change blocked - app uses its own theme');
-      // Force light mode if system tries to change
+      console.log('System theme change blocked - forcing app theme');
+      // Force light mode if system tries to override
       if (!darkMode) {
-        document.documentElement.classList.remove('dark');
         document.documentElement.style.colorScheme = 'light';
         document.body.style.backgroundColor = '#f9fafb';
         document.body.style.color = '#111827';
+        document.documentElement.classList.remove('dark');
       }
     };
     
@@ -48,18 +58,25 @@ export const DarkModeProvider = ({ children }) => {
     };
   }, [darkMode]);
 
-  // Load dark mode preference from localStorage on component mount
+  // Load user preference (not system preference)
   useEffect(() => {
     const savedDarkMode = localStorage.getItem('darkMode');
     if (savedDarkMode !== null) {
       const isDark = savedDarkMode === 'true';
       setDarkMode(isDark);
-      document.documentElement.classList.toggle('dark', isDark);
-      document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
       
-      // Force background color based on app theme, not system
-      document.body.style.backgroundColor = isDark ? '#0f172a' : '#f9fafb';
-      document.body.style.color = isDark ? '#e2e8f0' : '#111827';
+      // Apply user preference, ignore system completely
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+        document.documentElement.style.colorScheme = 'dark';
+        document.body.style.backgroundColor = '#0f172a';
+        document.body.style.color = '#e2e8f0';
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.style.colorScheme = 'light';
+        document.body.style.backgroundColor = '#f9fafb';
+        document.body.style.color = '#111827';
+      }
     }
   }, []);
 
@@ -68,12 +85,19 @@ export const DarkModeProvider = ({ children }) => {
     const newDarkMode = !darkMode;
     setDarkMode(newDarkMode);
     localStorage.setItem('darkMode', newDarkMode.toString());
-    document.documentElement.classList.toggle('dark', newDarkMode);
-    document.documentElement.style.colorScheme = newDarkMode ? 'dark' : 'light';
     
-    // Force background color based on app theme
-    document.body.style.backgroundColor = newDarkMode ? '#0f172a' : '#f9fafb';
-    document.body.style.color = newDarkMode ? '#e2e8f0' : '#111827';
+    // Apply user choice, ignore system completely
+    if (newDarkMode) {
+      document.documentElement.classList.add('dark');
+      document.documentElement.style.colorScheme = 'dark';
+      document.body.style.backgroundColor = '#0f172a';
+      document.body.style.color = '#e2e8f0';
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.documentElement.style.colorScheme = 'light';
+      document.body.style.backgroundColor = '#f9fafb';
+      document.body.style.color = '#111827';
+    }
   };
 
   return (
