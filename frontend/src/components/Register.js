@@ -50,22 +50,22 @@ const Register = () => {
     <div className="min-h-screen flex items-center justify-center relative">
       {/* Navbar */}
       <div className="absolute top-0 left-0 w-full z-20">
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Link to="/" className="flex items-center gap-2">
-              <div className="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
+              <div className="h-6 w-6 sm:h-8 sm:w-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm sm:text-lg">
                 TL
               </div>
-              <span className="text-xl font-bold text-white tracking-tight">
+              <span className="text-lg sm:text-xl font-bold text-white tracking-tight">
                 TalentLink
               </span>
             </Link>
           </div>
 
-          <div className="flex items-center gap-4">
-            <Link to="/" className="text-sm font-medium text-gray-200 hover:text-white hover:underline transition-colors">Home</Link>
-            <Link to="/login" className="text-sm font-medium text-gray-200 hover:text-white transition-colors">Log In</Link>
-            <Link to="/register" className="text-sm font-medium bg-blue-600 text-white px-5 py-2.5 rounded-full hover:bg-blue-700 transition shadow-sm hover:shadow-md">
+          <div className="flex items-center gap-2 sm:gap-4">
+            <Link to="/" className="text-xs sm:text-sm font-medium text-gray-200 hover:text-white hover:underline transition-colors">Home</Link>
+            <Link to="/login" className="text-xs sm:text-sm font-medium text-gray-200 hover:text-white transition-colors">Log In</Link>
+            <Link to="/register" className="text-xs sm:text-sm font-medium bg-blue-600 text-white px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-full hover:bg-blue-700 transition shadow-sm hover:shadow-md">
               Sign Up
             </Link>
           </div>
@@ -83,26 +83,26 @@ const Register = () => {
       </div>
 
       {/* Glassmorphism Card */}
-      <div className="relative z-10 max-w-xl w-full mx-4">
-        <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl shadow-2xl p-8 overflow-hidden">
+      <div className="relative z-10 max-w-xl w-full mx-2 sm:mx-4">
+        <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl shadow-2xl p-4 sm:p-6 md:p-8 overflow-hidden">
             {/* Header */}
-            <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-white mb-2">
+            <div className="text-center mb-6 sm:mb-8">
+                <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">
                     Create an Account
                 </h2>
-                <p className="text-blue-100 opacity-80 text-sm">
+                <p className="text-blue-100 opacity-80 text-xs sm:text-sm">
                     Join TalentLink today
                 </p>
             </div>
         
             {error && (
-            <div className="bg-red-500/20 border border-red-500/50 p-4 text-red-100 rounded-lg mb-6 backdrop-blur-sm">
+            <div className="bg-red-500/20 border border-red-500/50 p-3 sm:p-4 text-red-100 rounded-lg mb-4 sm:mb-6 backdrop-blur-sm">
                 <p className="font-medium text-sm text-center">{error}</p>
             </div>
             )}
 
-            <form className="space-y-5" onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <form className="space-y-4 sm:space-y-5" onSubmit={handleSubmit}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 {/* Names */}
                 <div>
                     <label className="block text-sm font-medium text-blue-50 mb-1 ml-1">First Name</label>
@@ -114,7 +114,7 @@ const Register = () => {
                         name="first_name"
                         type="text"
                         required
-                        className="block w-full pl-10 pr-3 py-3 bg-white/20 border border-white/10 rounded-lg placeholder-gray-300 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all sm:text-sm backdrop-blur-sm"
+                        className="block w-full pl-10 pr-3 py-2.5 sm:py-3 bg-white/20 border border-white/10 rounded-lg placeholder-gray-300 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm sm:text-sm backdrop-blur-sm"
                         placeholder="First Name"
                         value={formData.first_name}
                         onChange={handleChange}
@@ -131,7 +131,7 @@ const Register = () => {
                         name="last_name"
                         type="text"
                         required
-                        className="block w-full pl-10 pr-3 py-3 bg-white/20 border border-white/10 rounded-lg placeholder-gray-300 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all sm:text-sm backdrop-blur-sm"
+                        className="block w-full pl-10 pr-3 py-2.5 sm:py-3 bg-white/20 border border-white/10 rounded-lg placeholder-gray-300 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm sm:text-sm backdrop-blur-sm"
                         placeholder="Last Name"
                         value={formData.last_name}
                         onChange={handleChange}
@@ -151,7 +151,7 @@ const Register = () => {
                         name="email"
                         type="email"
                         required
-                        className="block w-full pl-10 pr-3 py-3 bg-white/20 border border-white/10 rounded-lg placeholder-gray-300 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all sm:text-sm backdrop-blur-sm"
+                        className="block w-full pl-10 pr-3 py-2.5 sm:py-3 bg-white/20 border border-white/10 rounded-lg placeholder-gray-300 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm sm:text-sm backdrop-blur-sm"
                         placeholder="Email Address"
                         value={formData.email}
                         onChange={handleChange}
@@ -170,7 +170,7 @@ const Register = () => {
                         name="username"
                         type="text"
                         required
-                        className="block w-full pl-10 pr-3 py-3 bg-white/20 border border-white/10 rounded-lg placeholder-gray-300 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all sm:text-sm backdrop-blur-sm"
+                        className="block w-full pl-10 pr-3 py-2.5 sm:py-3 bg-white/20 border border-white/10 rounded-lg placeholder-gray-300 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm sm:text-sm backdrop-blur-sm"
                         placeholder="Username"
                         value={formData.username}
                         onChange={handleChange}
@@ -189,7 +189,7 @@ const Register = () => {
                         name="role"
                         value={formData.role}
                         onChange={handleChange}
-                        className="block w-full pl-10 pr-3 py-3 bg-white/20 border border-white/10 rounded-lg placeholder-gray-300 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all sm:text-sm backdrop-blur-sm [&>option]:text-gray-900"
+                        className="block w-full pl-10 pr-3 py-2.5 sm:py-3 bg-white/20 border border-white/10 rounded-lg placeholder-gray-300 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm sm:text-sm backdrop-blur-sm [&>option]:text-gray-900"
                     >
                         <option value="client">Hire Talent (Client)</option>
                         <option value="freelancer">Find Work (Freelancer)</option>
@@ -198,7 +198,7 @@ const Register = () => {
              </div>
 
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 {/* Password */}
                 <div>
                     <label className="block text-sm font-medium text-blue-50 mb-1 ml-1">Password</label>
@@ -210,7 +210,7 @@ const Register = () => {
                         name="password"
                         type="password"
                         required
-                        className="block w-full pl-10 pr-3 py-3 bg-white/20 border border-white/10 rounded-lg placeholder-gray-300 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all sm:text-sm backdrop-blur-sm"
+                        className="block w-full pl-10 pr-3 py-2.5 sm:py-3 bg-white/20 border border-white/10 rounded-lg placeholder-gray-300 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm sm:text-sm backdrop-blur-sm"
                         placeholder="Password"
                         value={formData.password}
                         onChange={handleChange}
@@ -229,7 +229,7 @@ const Register = () => {
                         name="password_confirm"
                         type="password"
                         required
-                        className="block w-full pl-10 pr-3 py-3 bg-white/20 border border-white/10 rounded-lg placeholder-gray-300 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all sm:text-sm backdrop-blur-sm"
+                        className="block w-full pl-10 pr-3 py-2.5 sm:py-3 bg-white/20 border border-white/10 rounded-lg placeholder-gray-300 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm sm:text-sm backdrop-blur-sm"
                         placeholder="Confirm"
                         value={formData.password_confirm}
                         onChange={handleChange}
@@ -241,7 +241,7 @@ const Register = () => {
             <button
                 type="submit"
                 disabled={loading}
-                className="w-full mt-4 flex justify-center py-3.5 px-4 border border-transparent text-sm font-bold rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-lg transform transition-all active:scale-[0.98]"
+                className="w-full mt-4 flex justify-center py-2.5 sm:py-3.5 px-4 border border-transparent text-sm font-bold rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-lg transform transition-all active:scale-[0.98]"
             >
                 {loading ? (
                     <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -252,8 +252,8 @@ const Register = () => {
             </button>
             </form>
 
-            <div className="text-center mt-6">
-            <p className="text-sm text-blue-100 opacity-80">
+            <div className="text-center mt-4 sm:mt-6">
+            <p className="text-xs sm:text-sm text-blue-100 opacity-80">
                 Already have an account?{' '}
                 <Link to="/login" className="font-bold text-white hover:text-blue-200 transition-colors underline">
                 Log in

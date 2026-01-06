@@ -47,7 +47,8 @@ const TopBar = ({ onMenuClick }) => {
           )}
         </button>
 
-        <div className="relative">
+        {/* Desktop notification dropdown - hidden on mobile */}
+        <div className="hidden md:block relative">
             <NotificationDropdown />
         </div>
 
