@@ -1,28 +1,14 @@
 services:
-  # Backend Service
   - type: web
-    name: talentlink-backend
-    env: python
-    rootDirectory: talentlink
-    buildCommand: "./build.sh"
-    startCommand: "gunicorn backend.wsgi:application"
-    envVars:
-      - key: DATABASE_URL
-        sync: false
-      - key: SECRET_KEY
-        generateValue: true
-      - key: WEB_CONCURRENCY
-        value: 4
-      - key: PYTHON_VERSION
-        value: 3.11.5
-
-  # Frontend Service
-  - type: static
     name: talentlink-frontend
     env: static
-    rootDirectory: frontend
-    buildCommand: "npm install && npm run build"
-    publishDirectory: build
-    envVars:
-      - key: REACT_APP_API_URL
-        value: https://talentlink-7pqy.onrender.com/api
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/build
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
