@@ -3,28 +3,29 @@
   color-scheme: light !important;
 }
 
-/* Override system dark mode completely */
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: light !important;
-  }
-  
-  html, body {
-    background-color: #f9fafb !important;
-    color: #111827 !important;
-  }
-  
-  * {
-    background-color: inherit !important;
-    color: inherit !important;
-  }
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* System dark mode override - force light colors */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: light !important;
+  }
+  
+  html {
+    background-color: #f9fafb !important;
+    color-scheme: light !important;
+  }
+  
+  body {
+    background-color: #f9fafb !important;
+    color: #111827 !important;
+    color-scheme: light !important;
+  }
+}
 
 body {
   font-family: 'Inter', sans-serif;
@@ -32,6 +33,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #f9fafb !important;
   color: #111827 !important;
+  color-scheme: light !important;
 }
 
 /* Custom Scrollbar */
@@ -53,39 +55,11 @@ body {
   background: #94a3b8;
 }
 
-/* Dark Mode Styles */
+/* Dark Mode Styles - only apply when app explicitly sets dark mode */
 .dark body {
   background-color: #0f172a;
   color: #e2e8f0;
-}
-
-/* Force light mode - ignore system preference */
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: light !important;
-  }
-  
-  body {
-    background-color: #f9fafb !important;
-    color: #111827 !important;
-  }
-}
-
-/* iOS Safari specific fixes */
-@supports (-webkit-touch-callout: none) {
-  body {
-    background-color: #f9fafb !important;
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
-  }
-  
-  .dark body {
-    background-color: #0f172a !important;
-  }
-  
-  html {
-    height: -webkit-fill-available;
-  }
+  color-scheme: dark;
 }
 
 .dark .bg-gray-50 {
@@ -140,56 +114,19 @@ body {
   border-color: #475569;
 }
 
-.dark .border-gray-600 {
-  border-color: #475569;
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+  body {
+    background-color: #f9fafb !important;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+  
+  .dark body {
+    background-color: #0f172a !important;
+  }
+  
+  html {
+    height: -webkit-fill-available;
+  }
 }
-
-.dark .shadow {
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-}
-
-.dark .shadow-sm {
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-}
-
-.dark .shadow-md {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-}
-
-.dark .shadow-lg {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
-}
-
-.dark .hover\:bg-gray-50:hover {
-  background-color: #1e293b;
-}
-
-.dark .hover\:bg-gray-100:hover {
-  background-color: #334155;
-}
-
-.dark .hover\:bg-gray-700:hover {
-  background-color: #334155;
-}
-
-.dark .focus\:ring-blue-500:focus {
-  --tw-ring-color: #3b82f6;
-}
-
-.dark .focus\:border-blue-500:focus {
-  border-color: #3b82f6;
-}
-
-.dark ::-webkit-scrollbar-track {
-  background: #1e293b;
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background: #475569;
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: #64748b;
-}
-
-

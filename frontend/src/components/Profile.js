@@ -308,7 +308,7 @@ function Profile() {
   const user = profile?.user || {};
 
   return (
-    <div className={`min-h-screen py-8`} style={{ backgroundColor: darkMode ? '#0f172a' : '#f9fafb' }}>
+    <div className={`min-h-screen py-8 bg-transparent`}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Enhanced Header Section */}

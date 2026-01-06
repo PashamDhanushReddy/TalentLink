@@ -15,22 +15,30 @@ export const DarkModeProvider = ({ children }) => {
 
   // Override system dark mode preference - force app to use its own theme
   useEffect(() => {
-    // Remove system dark mode preference detection
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    
-    // Override system preference by always starting with light mode unless user explicitly chose dark
+    // Force light mode by completely ignoring system preference
     const savedDarkMode = localStorage.getItem('darkMode');
     if (savedDarkMode === null) {
-      // Only use system preference if no user preference is saved
-      setDarkMode(false); // Force light mode by default
+      // Default to light mode, ignore system completely
+      setDarkMode(false);
       document.documentElement.classList.remove('dark');
+      document.documentElement.style.colorScheme = 'light';
       document.body.style.backgroundColor = '#f9fafb';
+      document.body.style.color = '#111827';
     }
     
-    // Prevent system theme changes from affecting the app
+    // Block system theme detection completely
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    
     const handleSystemThemeChange = (e) => {
-      // Ignore system theme changes - app should only use its own theme
-      console.log('System theme change ignored - app uses its own theme setting');
+      // Completely ignore system theme changes
+      console.log('System theme change blocked - app uses its own theme');
+      // Force light mode if system tries to change
+      if (!darkMode) {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.style.colorScheme = 'light';
+        document.body.style.backgroundColor = '#f9fafb';
+        document.body.style.color = '#111827';
+      }
     };
     
     mediaQuery.addEventListener('change', handleSystemThemeChange);
@@ -38,47 +46,20 @@ export const DarkModeProvider = ({ children }) => {
     return () => {
       mediaQuery.removeEventListener('change', handleSystemThemeChange);
     };
-  }, []);
+  }, [darkMode]);
 
   // Load dark mode preference from localStorage on component mount
   useEffect(() => {
-    // Force remove any system dark mode classes
-    document.documentElement.classList.remove('dark');
-    document.documentElement.style.colorScheme = 'light';
-    
-    // Force light mode background immediately
-    document.body.style.backgroundColor = '#f9fafb';
-    document.body.style.color = '#111827';
-    
     const savedDarkMode = localStorage.getItem('darkMode');
     if (savedDarkMode !== null) {
       const isDark = savedDarkMode === 'true';
       setDarkMode(isDark);
+      document.documentElement.classList.toggle('dark', isDark);
+      document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
       
-      if (isDark) {
-        document.documentElement.classList.add('dark');
-        document.body.style.backgroundColor = '#0f172a';
-        document.body.style.color = '#e2e8f0';
-      } else {
-        document.documentElement.classList.remove('dark');
-        document.body.style.backgroundColor = '#f9fafb';
-        document.body.style.color = '#111827';
-      }
-      
-      // iOS Safari specific: Force complete repaint
-      setTimeout(() => {
-        document.documentElement.style.webkitTransform = 'translateZ(0)';
-        document.documentElement.style.webkitTransform = '';
-        document.body.style.webkitTransform = 'translateZ(0)';
-        document.body.style.webkitTransform = '';
-        
-        // Force iOS Safari to recalculate all styles
-        const elements = document.querySelectorAll('*');
-        elements.forEach(el => {
-          el.style.webkitTransform = 'translateZ(0)';
-          el.style.webkitTransform = '';
-        });
-      }, 100);
+      // Force background color based on app theme, not system
+      document.body.style.backgroundColor = isDark ? '#0f172a' : '#f9fafb';
+      document.body.style.color = isDark ? '#e2e8f0' : '#111827';
     }
   }, []);
 
@@ -87,48 +68,16 @@ export const DarkModeProvider = ({ children }) => {
     const newDarkMode = !darkMode;
     setDarkMode(newDarkMode);
     localStorage.setItem('darkMode', newDarkMode.toString());
+    document.documentElement.classList.toggle('dark', newDarkMode);
+    document.documentElement.style.colorScheme = newDarkMode ? 'dark' : 'light';
     
-    // Force theme change with immediate style updates
-    if (newDarkMode) {
-      document.documentElement.classList.add('dark');
-      document.documentElement.style.colorScheme = 'dark';
-      document.body.style.backgroundColor = '#0f172a';
-      document.body.style.color = '#e2e8f0';
-    } else {
-      document.documentElement.classList.remove('dark');
-      document.documentElement.style.colorScheme = 'light';
-      document.body.style.backgroundColor = '#f9fafb';
-      document.body.style.color = '#111827';
-    }
-    
-    // Force complete iOS Safari repaint
-    setTimeout(() => {
-      document.documentElement.style.webkitTransform = 'translateZ(0)';
-      document.documentElement.style.webkitTransform = '';
-      document.body.style.webkitTransform = 'translateZ(0)';
-      document.body.style.webkitTransform = '';
-      
-      // Force recalculation of all elements
-      const elements = document.querySelectorAll('*');
-      elements.forEach(el => {
-        el.style.webkitTransform = 'translateZ(0)';
-        el.style.webkitTransform = '';
-      });
-      
-      // Additional iOS Safari hack: force style recalculation
-      document.body.style.display = 'none';
-      void document.body.offsetHeight; // Force reflow
-      document.body.style.display = '';
-    }, 150);
-  };
-
-  const value = {
-    darkMode,
-    toggleDarkMode,
+    // Force background color based on app theme
+    document.body.style.backgroundColor = newDarkMode ? '#0f172a' : '#f9fafb';
+    document.body.style.color = newDarkMode ? '#e2e8f0' : '#111827';
   };
 
   return (
-    <DarkModeContext.Provider value={value}>
+    <DarkModeContext.Provider value={{ darkMode, toggleDarkMode }}>
       {children}
     </DarkModeContext.Provider>
   );
