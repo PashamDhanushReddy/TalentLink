@@ -47,7 +47,7 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative">
+    <div className="min-h-screen flex justify-center items-start relative pt-20 sm:pt-24">
       {/* Navbar */}
       <div className="absolute top-0 left-0 w-full z-20">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
@@ -71,9 +71,6 @@ const Register = () => {
           </div>
         </nav>
       </div>
-
-      {/* Spacer to prevent header overlap */}
-      <div className="h-16 sm:h-20"></div>
 
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
