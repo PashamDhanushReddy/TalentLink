@@ -24,7 +24,7 @@ export const DarkModeProvider = ({ children }) => {
       // Only use system preference if no user preference is saved
       setDarkMode(false); // Force light mode by default
       document.documentElement.classList.remove('dark');
-      document.body.style.backgroundColor = '#f9fafb';
+      document.body.style.backgroundColor = '#ffffff';
     }
     
     // Prevent system theme changes from affecting the app
@@ -42,21 +42,43 @@ export const DarkModeProvider = ({ children }) => {
 
   // Load dark mode preference from localStorage on component mount
   useEffect(() => {
+    // Force remove any system dark mode classes
+    document.documentElement.classList.remove('dark');
+    document.documentElement.style.colorScheme = 'light';
+    
+    // Force light mode background immediately
+    document.body.style.backgroundColor = '#ffffff';
+    document.body.style.color = '#111827';
+    
     const savedDarkMode = localStorage.getItem('darkMode');
     if (savedDarkMode !== null) {
       const isDark = savedDarkMode === 'true';
       setDarkMode(isDark);
-      document.documentElement.classList.toggle('dark', isDark);
       
-      // iOS Safari specific: Force repaint and background update
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+        document.body.style.backgroundColor = '#0f172a';
+        document.body.style.color = '#e2e8f0';
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.body.style.backgroundColor = '#ffffff';
+        document.body.style.color = '#111827';
+      }
+      
+      // iOS Safari specific: Force complete repaint
       setTimeout(() => {
-        document.body.style.backgroundColor = isDark ? '#0f172a' : '#f9fafb';
+        document.documentElement.style.webkitTransform = 'translateZ(0)';
+        document.documentElement.style.webkitTransform = '';
         document.body.style.webkitTransform = 'translateZ(0)';
         document.body.style.webkitTransform = '';
-      }, 0);
-    } else {
-      // Default to light mode
-      document.body.style.backgroundColor = '#f9fafb';
+        
+        // Force iOS Safari to recalculate all styles
+        const elements = document.querySelectorAll('*');
+        elements.forEach(el => {
+          el.style.webkitTransform = 'translateZ(0)';
+          el.style.webkitTransform = '';
+        });
+      }, 100);
     }
   }, []);
 
@@ -65,14 +87,39 @@ export const DarkModeProvider = ({ children }) => {
     const newDarkMode = !darkMode;
     setDarkMode(newDarkMode);
     localStorage.setItem('darkMode', newDarkMode.toString());
-    document.documentElement.classList.toggle('dark', newDarkMode);
     
-    // iOS Safari specific: Force repaint and background update
+    // Force theme change with immediate style updates
+    if (newDarkMode) {
+      document.documentElement.classList.add('dark');
+      document.documentElement.style.colorScheme = 'dark';
+      document.body.style.backgroundColor = '#0f172a';
+      document.body.style.color = '#e2e8f0';
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.documentElement.style.colorScheme = 'light';
+      document.body.style.backgroundColor = '#ffffff';
+      document.body.style.color = '#111827';
+    }
+    
+    // Force complete iOS Safari repaint
     setTimeout(() => {
-      document.body.style.backgroundColor = newDarkMode ? '#0f172a' : '#f9fafb';
+      document.documentElement.style.webkitTransform = 'translateZ(0)';
+      document.documentElement.style.webkitTransform = '';
       document.body.style.webkitTransform = 'translateZ(0)';
       document.body.style.webkitTransform = '';
-    }, 0);
+      
+      // Force recalculation of all elements
+      const elements = document.querySelectorAll('*');
+      elements.forEach(el => {
+        el.style.webkitTransform = 'translateZ(0)';
+        el.style.webkitTransform = '';
+      });
+      
+      // Additional iOS Safari hack: force style recalculation
+      document.body.style.display = 'none';
+      document.body.offsetHeight; // Force reflow
+      document.body.style.display = '';
+    }, 150);
   };
 
   const value = {

@@ -3,6 +3,23 @@
   color-scheme: light !important;
 }
 
+/* Override system dark mode completely */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: light !important;
+  }
+  
+  html, body {
+    background-color: #ffffff !important;
+    color: #111827 !important;
+  }
+  
+  * {
+    background-color: inherit !important;
+    color: inherit !important;
+  }
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,7 +30,7 @@ body {
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f9fafb !important;
+  background-color: #ffffff !important;
   color: #111827 !important;
 }
 
@@ -49,7 +66,7 @@ body {
   }
   
   body {
-    background-color: #f9fafb !important;
+    background-color: #ffffff !important;
     color: #111827 !important;
   }
 }
@@ -57,7 +74,7 @@ body {
 /* iOS Safari specific fixes */
 @supports (-webkit-touch-callout: none) {
   body {
-    background-color: #f9fafb !important;
+    background-color: #ffffff !important;
     min-height: 100vh;
     min-height: -webkit-fill-available;
   }
