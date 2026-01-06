@@ -9,21 +9,14 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* System dark mode override - force light colors */
+/* System dark mode override - target ONLY background color */
 @media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: light !important;
-  }
-  
   html {
     background-color: #f9fafb !important;
-    color-scheme: light !important;
   }
   
   body {
     background-color: #f9fafb !important;
-    color: #111827 !important;
-    color-scheme: light !important;
   }
 }
 
@@ -31,9 +24,8 @@ body {
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f9fafb !important;
-  color: #111827 !important;
-  color-scheme: light !important;
+  background-color: #f9fafb;
+  color: #111827;
 }
 
 /* Custom Scrollbar */
@@ -59,7 +51,6 @@ body {
 .dark body {
   background-color: #0f172a;
   color: #e2e8f0;
-  color-scheme: dark;
 }
 
 .dark .bg-gray-50 {
@@ -114,19 +105,15 @@ body {
   border-color: #475569;
 }
 
-/* iOS Safari specific fixes */
+/* iOS Safari specific fixes - only background */
 @supports (-webkit-touch-callout: none) {
+  html {
+    background-color: #f9fafb !important;
+  }
+  
   body {
     background-color: #f9fafb !important;
     min-height: 100vh;
     min-height: -webkit-fill-available;
-  }
-  
-  .dark body {
-    background-color: #0f172a !important;
-  }
-  
-  html {
-    height: -webkit-fill-available;
   }
 }

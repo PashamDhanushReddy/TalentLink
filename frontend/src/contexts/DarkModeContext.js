@@ -13,41 +13,23 @@ export const useDarkMode = () => {
 export const DarkModeProvider = ({ children }) => {
   const [darkMode, setDarkMode] = useState(false);
 
-  // Ultra-aggressive system dark mode override
+  // Target only background color override - preserve other colors
   useEffect(() => {
-    // Force light mode initialization
-    document.documentElement.style.colorScheme = 'light';
-    document.documentElement.style.backgroundColor = '#f9fafb';
-    document.body.style.colorScheme = 'light';
-    document.body.style.backgroundColor = '#f9fafb';
-    document.body.style.color = '#111827';
-    
-    // Remove any system dark mode classes
-    document.documentElement.classList.remove('dark');
-    document.documentElement.removeAttribute('data-theme');
-    
-    // Override system preference detection
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    
-    // Force light mode regardless of system preference
+    // Force light mode background only
     const savedDarkMode = localStorage.getItem('darkMode');
     if (savedDarkMode === null) {
-      // Default to light mode, completely ignore system
+      // Default to light mode background
       setDarkMode(false);
-      document.documentElement.style.colorScheme = 'light';
       document.body.style.backgroundColor = '#f9fafb';
-      document.body.style.color = '#111827';
     }
     
-    // Block and override system theme changes
+    // Block system theme changes for background only
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    
     const handleSystemThemeChange = (e) => {
-      console.log('System theme change blocked - forcing app theme');
-      // Force light mode if system tries to override
+      // Only override background color, preserve other colors
       if (!darkMode) {
-        document.documentElement.style.colorScheme = 'light';
         document.body.style.backgroundColor = '#f9fafb';
-        document.body.style.color = '#111827';
-        document.documentElement.classList.remove('dark');
       }
     };
     
@@ -58,46 +40,28 @@ export const DarkModeProvider = ({ children }) => {
     };
   }, [darkMode]);
 
-  // Load user preference (not system preference)
+  // Load user preference for background only
   useEffect(() => {
     const savedDarkMode = localStorage.getItem('darkMode');
     if (savedDarkMode !== null) {
       const isDark = savedDarkMode === 'true';
       setDarkMode(isDark);
       
-      // Apply user preference, ignore system completely
-      if (isDark) {
-        document.documentElement.classList.add('dark');
-        document.documentElement.style.colorScheme = 'dark';
-        document.body.style.backgroundColor = '#0f172a';
-        document.body.style.color = '#e2e8f0';
-      } else {
-        document.documentElement.classList.remove('dark');
-        document.documentElement.style.colorScheme = 'light';
-        document.body.style.backgroundColor = '#f9fafb';
-        document.body.style.color = '#111827';
-      }
+      // Only apply background color, let other colors work normally
+      document.documentElement.classList.toggle('dark', isDark);
+      document.body.style.backgroundColor = isDark ? '#0f172a' : '#f9fafb';
     }
   }, []);
 
-  // Handle dark mode toggle
+  // Handle dark mode toggle - only background color
   const toggleDarkMode = () => {
     const newDarkMode = !darkMode;
     setDarkMode(newDarkMode);
     localStorage.setItem('darkMode', newDarkMode.toString());
     
-    // Apply user choice, ignore system completely
-    if (newDarkMode) {
-      document.documentElement.classList.add('dark');
-      document.documentElement.style.colorScheme = 'dark';
-      document.body.style.backgroundColor = '#0f172a';
-      document.body.style.color = '#e2e8f0';
-    } else {
-      document.documentElement.classList.remove('dark');
-      document.documentElement.style.colorScheme = 'light';
-      document.body.style.backgroundColor = '#f9fafb';
-      document.body.style.color = '#111827';
-    }
+    // Only toggle background color, preserve other colors
+    document.documentElement.classList.toggle('dark', newDarkMode);
+    document.body.style.backgroundColor = newDarkMode ? '#0f172a' : '#f9fafb';
   };
 
   return (

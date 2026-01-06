@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="color-scheme: light !important; background-color: #f9fafb !important;">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
@@ -23,62 +23,35 @@
     <!-- iOS specific fixes -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     
     <style>
-      /* Ultra-aggressive system dark mode override */
-      * {
-        color-scheme: light !important;
-      }
-      
+      /* Target only background color override - preserve other colors */
       html {
         background-color: #f9fafb !important;
-        color-scheme: light !important;
-        filter: none !important;
       }
       
       body {
         background-color: #f9fafb !important;
-        color: #111827 !important;
-        color-scheme: light !important;
-        filter: none !important;
       }
       
-      /* iOS Safari background fix */
+      /* iOS Safari background fix - only background */
       @supports (-webkit-touch-callout: none) {
         html {
           background-color: #f9fafb !important;
-          color-scheme: light !important;
         }
         
         body {
           background-color: #f9fafb !important;
           min-height: 100vh;
           min-height: -webkit-fill-available;
-          color-scheme: light !important;
-          -webkit-text-fill-color: #111827 !important;
-        }
-        
-        * {
-          background-color: inherit !important;
-          color-scheme: light !important;
         }
       }
       
-      /* Android Chrome fix */
+      /* Android Chrome fix - only background */
       @media (prefers-color-scheme: dark) {
-        html, body, * {
+        html, body {
           background-color: #f9fafb !important;
-          color: #111827 !important;
-          color-scheme: light !important;
-          filter: none !important;
         }
-      }
-      
-      /* Force all elements to inherit light background */
-      div, span, p, h1, h2, h3, h4, h5, h6, section, article, main, nav, aside {
-        background-color: inherit !important;
-        color-scheme: light !important;
       }
     </style>
     <!--
@@ -92,7 +65,7 @@
     -->
     <title>React App</title>
   </head>
-  <body class="bg-gray-50" style="background-color: #f9fafb !important; color-scheme: light !important; color: #111827 !important;">
+  <body class="bg-gray-50">
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <!--
