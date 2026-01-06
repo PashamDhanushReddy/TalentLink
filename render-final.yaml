@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: talentlink-frontend-v2
+    env: node
+    buildCommand: |
+      echo "🚀 Starting TalentLink Frontend Build..."
+      cd frontend
+      npm install
+      npm run build
+      echo "✅ Build completed successfully"
+    startCommand: |
+      echo "🚀 Starting TalentLink Frontend Server..."
+      cd frontend
+      node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+    healthCheckPath: /
+    healthCheckTimeout: 30
+    autoDeploy: true
+    branch: main
+    buildFilter:
+      paths:
+        - frontend/**
+      ignoredPaths:
+        - frontend/node_modules/**
