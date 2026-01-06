@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { useDarkMode } from '../contexts/DarkModeContext';
 import { projectAPI } from '../api';
 import { Link } from 'react-router-dom';
 import { 
@@ -22,7 +21,6 @@ import {
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const { darkMode } = useDarkMode();
   const [timeRange, setTimeRange] = useState('Daily');
   const [latestClients, setLatestClients] = useState([]);
 
@@ -145,25 +143,17 @@ const Dashboard = () => {
 
 
   return (
-    <div className={`min-h-screen py-8 ${
-      darkMode 
-        ? 'bg-gradient-to-br from-gray-900 to-gray-800' 
-        : 'bg-gradient-to-br from-blue-50 to-indigo-100'
-    }`}>
+    <div className="space-y-6">
       {/* Greeting Section */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">Hi {user?.first_name || user?.username || 'User'}</h1>
-        <p className="text-gray-500 dark:text-gray-300 md:text-lg">This is your Freelance Team dashboard overview</p>
+      <div>
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">Hi {user?.first_name || user?.username || 'User'}</h1>
+        <p className="text-gray-500 md:text-lg">This is your Freelance Team dashboard overview</p>
       </div>
 
       {/* Stats Grid */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
-          <div key={index} className={`p-6 md:p-8 rounded-2xl shadow-sm border flex items-center justify-between ${
-            darkMode 
-              ? 'bg-gray-800 border-gray-700' 
-              : 'bg-white border-gray-100'
-          }`}>
+          <div key={index} className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <div className={`p-2 md:p-3 rounded-full ${stat.iconBg}`}>
@@ -171,40 +161,32 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="mt-4">
-                  <div className="flex items-baseline gap-2">
-                    <span className={`text-2xl md:text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{stat.value}</span>
-                    <span className={`text-xs md:text-sm font-medium ${stat.isPositive ? 'text-green-600' : 'text-red-600'}`}>
-                      {stat.isPositive ? '↑' : '↓'} {stat.change}
-                    </span>
-                  </div>
-                  <p className={`text-sm md:text-base ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>{stat.title}</p>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-2xl md:text-3xl font-bold text-gray-900">{stat.value}</span>
+                  <span className={`text-xs md:text-sm font-medium ${stat.isPositive ? 'text-green-600' : 'text-red-600'}`}>
+                    {stat.isPositive ? '↑' : '↓'} {stat.change}
+                  </span>
                 </div>
+                <p className="text-sm md:text-base text-gray-500">{stat.title}</p>
+              </div>
             </div>
           </div>
         ))}
       </div>
 
       {/* Charts & Lists Row */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Task Progress Chart */}
-        <div className={`lg:col-span-1 p-6 md:p-8 rounded-2xl shadow-sm border ${
-          darkMode 
-            ? 'bg-gray-800 border-gray-700' 
-            : 'bg-white border-gray-100'
-        }`}>
+        <div className="lg:col-span-1 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-6 md:mb-8">
-            <h3 className={`font-bold text-lg md:text-xl ${darkMode ? 'text-white' : 'text-gray-900'}`}>Task Progress</h3>
-            <div className={`flex rounded-lg p-1 text-xs md:text-sm ${
-              darkMode ? 'bg-gray-700' : 'bg-gray-100'
-            }`}>
+            <h3 className="font-bold text-gray-900 text-lg md:text-xl">Task Progress</h3>
+            <div className="flex bg-gray-100 rounded-lg p-1 text-xs md:text-sm">
               {['Daily', 'Weekly', 'Monthly'].map((range) => (
                 <button
                   key={range}
                   onClick={() => setTimeRange(range)}
                   className={`px-3 py-1 rounded-md transition-colors ${
-                    timeRange === range 
-                      ? (darkMode ? 'bg-gray-600 shadow-sm text-white' : 'bg-white shadow-sm text-gray-900')
-                      : (darkMode ? 'text-gray-300 hover:text-white' : 'text-gray-500 hover:text-gray-900')
+                    timeRange === range ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-900'
                   }`}
                 >
                   {range}
@@ -229,13 +211,9 @@ const Dashboard = () => {
         </div>
 
         {/* Active Projects */}
-        <div className={`lg:col-span-1 p-6 md:p-8 rounded-2xl shadow-sm border ${
-          darkMode 
-            ? 'bg-gray-800 border-gray-700' 
-            : 'bg-white border-gray-100'
-        }`}>
+        <div className="lg:col-span-1 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
           <div className="flex justify-between items-center mb-6 md:mb-8">
-            <h2 className={`text-lg md:text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Active Projects</h2>
+            <h2 className="text-lg md:text-xl font-bold text-gray-900">Active Projects</h2>
             <button className="text-sm md:text-base text-blue-600 hover:text-blue-700 font-medium">See All</button>
           </div>
           <div className="space-y-6 md:space-y-8 relative">
@@ -248,10 +226,10 @@ const Dashboard = () => {
                 <div className="flex-1 min-w-0">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h4 className={`text-sm md:text-base font-bold ${darkMode ? 'text-white' : 'text-gray-900'} truncate`}>{project.name}</h4>
-                      <p className={`text-xs md:text-sm ${darkMode ? 'text-gray-300' : 'text-gray-500'} truncate`}>{project.subtitle}</p>
+                      <h4 className="text-sm md:text-base font-bold text-gray-900 truncate">{project.name}</h4>
+                      <p className="text-xs md:text-sm text-gray-500 truncate">{project.subtitle}</p>
                     </div>
-                    <span className={`text-xs md:text-sm whitespace-nowrap flex items-center gap-1 ${darkMode ? 'text-gray-400' : 'text-gray-400'}`}>
+                    <span className="text-xs md:text-sm text-gray-400 whitespace-nowrap flex items-center gap-1">
                         <ClockIcon className="h-3 w-3 md:h-4 md:w-4" />
                         {project.days}
                     </span>
@@ -263,34 +241,30 @@ const Dashboard = () => {
         </div>
 
         {/* Recent Transactions */}
-        <div className={`lg:col-span-1 p-6 md:p-8 rounded-2xl shadow-sm border ${
-          darkMode 
-            ? 'bg-gray-800 border-gray-700' 
-            : 'bg-white border-gray-100'
-        }`}>
+        <div className="lg:col-span-1 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-6 md:mb-8">
-            <h3 className={`font-bold text-lg md:text-xl ${darkMode ? 'text-white' : 'text-gray-900'}`}>Recent Transactions</h3>
-            <button className={`text-sm md:text-base hover:text-gray-700 ${darkMode ? 'text-gray-300 hover:text-white' : 'text-gray-500 hover:text-gray-700'}`}>Export</button>
+            <h3 className="font-bold text-gray-900 text-lg md:text-xl">Recent Transactions</h3>
+            <button className="text-sm md:text-base text-gray-500 hover:text-gray-700">Export</button>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className={`text-left text-xs md:text-sm font-medium uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>
+                <tr className="text-left text-xs md:text-sm font-medium text-gray-500 uppercase tracking-wider">
                   <th className="pb-3 md:pb-4">Invoice ID</th>
                   <th className="pb-3 md:pb-4">Client</th>
                   <th className="pb-3 md:pb-4">Amount</th>
                   <th className="pb-3 md:pb-4 text-right">Status</th>
                 </tr>
               </thead>
-              <tbody className={`divide-y ${darkMode ? 'divide-gray-700' : 'divide-gray-50'}`}>
+              <tbody className="divide-y divide-gray-50">
                 {transactions.map((tx, index) => (
                   <tr key={index}>
-                    <td className={`py-3 md:py-4 text-sm md:text-base font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>{tx.id}</td>
+                    <td className="py-3 md:py-4 text-sm md:text-base font-medium text-gray-900">{tx.id}</td>
                     <td className="py-3 md:py-4">
-                        <div className={`text-sm md:text-base ${darkMode ? 'text-white' : 'text-gray-900'}`}>{tx.client}</div>
-                        <div className={`text-xs md:text-sm ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>{tx.date}</div>
+                        <div className="text-sm md:text-base text-gray-900">{tx.client}</div>
+                        <div className="text-xs md:text-sm text-gray-500">{tx.date}</div>
                     </td>
-                    <td className={`py-3 md:py-4 text-sm md:text-base ${darkMode ? 'text-white' : 'text-gray-900'}`}>{tx.amount}</td>
+                    <td className="py-3 md:py-4 text-sm md:text-base text-gray-900">{tx.amount}</td>
                     <td className="py-3 md:py-4 text-right">
                       <span className={`inline-flex items-center px-2.5 py-0.5 md:px-3 md:py-1 rounded-full text-xs md:text-sm font-medium ${tx.statusColor}`}>
                         {tx.status}
@@ -305,21 +279,17 @@ const Dashboard = () => {
       </div>
 
       {/* Bottom Section - Latest Clients */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className={`lg:col-span-1 p-6 md:p-8 rounded-2xl shadow-sm border ${
-          darkMode 
-            ? 'bg-gray-800 border-gray-700' 
-            : 'bg-white border-gray-100'
-        }`}>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-1 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
             <div className="flex items-center justify-between mb-6 md:mb-8">
-                <h3 className={`font-bold text-lg md:text-xl ${darkMode ? 'text-white' : 'text-gray-900'}`}>Latest Clients</h3>
+                <h3 className="font-bold text-gray-900 text-lg md:text-xl">Latest Clients</h3>
                 <button className="text-gray-400 hover:text-gray-600">
                     <EllipsisHorizontalIcon className="h-6 w-6 md:h-7 md:w-7" />
                 </button>
             </div>
             <div className="space-y-4 md:space-y-6">
                 {latestClients.length === 0 ? (
-                    <p className={`text-sm md:text-base ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>No recent clients found.</p>
+                    <p className="text-gray-500 text-sm md:text-base">No recent clients found.</p>
                 ) : (
                     latestClients.map((client, index) => (
                         <div key={index} className="flex items-center justify-between">
@@ -328,8 +298,8 @@ const Dashboard = () => {
                                     {client.name.charAt(0).toUpperCase()}
                                 </div>
                                 <div>
-                                    <h4 className={`text-sm md:text-base font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{client.name}</h4>
-                                    <p className={`text-xs md:text-sm ${darkMode ? 'text-gray-300' : 'text-gray-500'} truncate w-32 md:w-40`}>{client.project}</p>
+                                    <h4 className="text-sm md:text-base font-bold text-gray-900">{client.name}</h4>
+                                    <p className="text-xs md:text-sm text-gray-500 truncate w-32 md:w-40">{client.project}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-2">

@@ -20,13 +20,16 @@ export const DarkModeProvider = ({ children }) => {
       const isDark = savedDarkMode === 'true';
       setDarkMode(isDark);
       document.documentElement.classList.toggle('dark', isDark);
-      // Update body background color based on dark mode
-      document.body.classList.toggle('bg-gray-50', !isDark);
-      document.body.classList.toggle('bg-gray-900', isDark);
+      
+      // iOS Safari specific: Force repaint and background update
+      setTimeout(() => {
+        document.body.style.backgroundColor = isDark ? '#0f172a' : '#f9fafb';
+        document.body.style.webkitTransform = 'translateZ(0)';
+        document.body.style.webkitTransform = '';
+      }, 0);
     } else {
       // Default to light mode
-      document.body.classList.add('bg-gray-50');
-      document.body.classList.remove('bg-gray-900');
+      document.body.style.backgroundColor = '#f9fafb';
     }
   }, []);
 
@@ -36,9 +39,13 @@ export const DarkModeProvider = ({ children }) => {
     setDarkMode(newDarkMode);
     localStorage.setItem('darkMode', newDarkMode.toString());
     document.documentElement.classList.toggle('dark', newDarkMode);
-    // Update body background color based on dark mode
-    document.body.classList.toggle('bg-gray-50', !newDarkMode);
-    document.body.classList.toggle('bg-gray-900', newDarkMode);
+    
+    // iOS Safari specific: Force repaint and background update
+    setTimeout(() => {
+      document.body.style.backgroundColor = newDarkMode ? '#0f172a' : '#f9fafb';
+      document.body.style.webkitTransform = 'translateZ(0)';
+      document.body.style.webkitTransform = '';
+    }, 0);
   };
 
   const value = {
