@@ -612,11 +612,11 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
   }
 
   const messageGroups = groupMessagesByDate(messages);
-
+  
   return (
       <>
         <ChatStyles />
-    <div className={`flex flex-col ${isWidget ? 'h-[500px]' : 'h-full'} ${darkMode ? 'bg-gray-800' : 'bg-gray-50'} rounded-lg shadow-lg overflow-hidden`}>
+    <div className={`flex flex-col ${isWidget ? 'h-[380px] sm:h-[420px] md:h-[520px]' : 'h-full'} ${darkMode ? 'bg-gray-800' : 'bg-gray-50'} rounded-lg shadow-lg overflow-hidden`}>
       {/* Header - WhatsApp Style */}
       <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-green-600 text-white'} px-4 py-3 border-b ${darkMode ? 'border-gray-700' : 'border-green-700'}`}>
         <div className="flex items-center justify-between">
@@ -634,15 +634,15 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
             <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
               darkMode ? 'bg-gray-700' : 'bg-green-500'
             }`}>
-              <span className="text-lg font-semibold">
+              <span className="text-base md:text-lg font-semibold">
                 {selectedConversation.contract_details?.title?.charAt(0) || 'C'}
               </span>
             </div>
             <div>
-              <h3 className="font-semibold text-lg">
+              <h3 className="font-semibold text-base md:text-lg">
                 {selectedConversation.contract_details?.title || 'Contract Discussion'}
               </h3>
-              <p className={`text-sm ${
+              <p className={`text-xs sm:text-sm ${
                 darkMode ? 'text-gray-300' : 'text-green-100'
               }`}>
                 {typingUsers.length > 0 ? (
@@ -789,7 +789,7 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                       
                       {/* Voice Note removed */}
                       
-                      <p className="text-sm leading-relaxed">{message.text}</p>
+                      <p className="text-xs sm:text-sm leading-relaxed">{message.text}</p>
                       
                       {/* Message Footer */}
                       <div className={`flex items-center justify-end mt-1 space-x-1 ${
@@ -878,7 +878,7 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                   }`}>
                     Replying to {replyingTo.sender_name}
                   </div>
-                  <div className={`text-sm truncate ${
+                  <div className={`text-xs sm:text-sm truncate ${
                     darkMode ? 'text-gray-300' : 'text-gray-700'
                   }`}>
                     {replyingTo.text}
@@ -914,7 +914,7 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
               }}
               placeholder={isSending ? "Sending..." : "Type a message"}
               disabled={isSending}
-              className={`w-full border-none rounded-full px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition-all ${
+              className={`w-full border-none rounded-full px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition-all ${
                 darkMode 
                   ? 'bg-gray-700 text-white placeholder-gray-400 focus:bg-gray-600'
                   : 'bg-gray-100 text-gray-900 focus:bg-white'

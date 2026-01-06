@@ -59,7 +59,7 @@ const Chats = () => {
       {/* Sidebar - Conversation List */}
       <div className={`w-full md:w-80 bg-gray-50 md:border-r md:border-gray-200 flex flex-col ${selectedContractId ? 'hidden md:flex' : 'flex'}`}>
         <div className="p-4 border-b border-gray-200 bg-white">
-          <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
             <ChatBubbleLeftRightIcon className="h-6 w-6 text-blue-600" />
             Messages
           </h2>
@@ -90,14 +90,14 @@ const Chats = () => {
                 }`}
               >
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold shrink-0">
-                    {conv.contract_details?.title?.charAt(0) || 'C'}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-gray-900 truncate">
+                    <div className="w-9 h-9 md:w-10 md:h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold shrink-0 text-sm md:text-base">
+                      {conv.contract_details?.title?.charAt(0) || 'C'}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                    <h4 className="font-semibold text-sm md:text-base text-gray-900 truncate">
                       {conv.contract_details?.title || 'Contract Discussion'}
                     </h4>
-                    <p className="text-sm text-gray-500 truncate mt-0.5">
+                    <p className="text-xs sm:text-sm text-gray-500 truncate mt-0.5">
                       {conv.participants_names?.filter(name => name !== user.name).join(', ') || 'Participants'}
                     </p>
                     <p className="text-xs text-gray-400 mt-2">
