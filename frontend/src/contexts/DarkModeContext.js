@@ -20,6 +20,13 @@ export const DarkModeProvider = ({ children }) => {
       const isDark = savedDarkMode === 'true';
       setDarkMode(isDark);
       document.documentElement.classList.toggle('dark', isDark);
+      // Update body background color based on dark mode
+      document.body.classList.toggle('bg-gray-50', !isDark);
+      document.body.classList.toggle('bg-gray-900', isDark);
+    } else {
+      // Default to light mode
+      document.body.classList.add('bg-gray-50');
+      document.body.classList.remove('bg-gray-900');
     }
   }, []);
 
@@ -29,6 +36,9 @@ export const DarkModeProvider = ({ children }) => {
     setDarkMode(newDarkMode);
     localStorage.setItem('darkMode', newDarkMode.toString());
     document.documentElement.classList.toggle('dark', newDarkMode);
+    // Update body background color based on dark mode
+    document.body.classList.toggle('bg-gray-50', !newDarkMode);
+    document.body.classList.toggle('bg-gray-900', newDarkMode);
   };
 
   const value = {
