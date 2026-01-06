@@ -57,9 +57,9 @@ const TopBar = ({ onMenuClick }) => {
           to="/profile" 
           className="flex items-center gap-2 md:gap-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg px-2 md:px-3 py-2 transition-colors group"
         >
-          <div className="text-right hidden md:block">
+          <div className="text-right">
             <div className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-blue-600">{user?.first_name || user?.username || 'User'}</div>
-            <div className="text-xs text-gray-500 dark:text-gray-400 uppercase group-hover:text-blue-500">{user?.role || 'USER'}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400 uppercase group-hover:text-blue-500 hidden sm:block">{user?.role || 'USER'}</div>
           </div>
           <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-bold overflow-hidden group-hover:ring-2 group-hover:ring-blue-300 transition-all">
              {user?.avatar ? (
