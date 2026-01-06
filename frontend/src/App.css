@@ -8,6 +8,11 @@ body {
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f9fafb; /* bg-gray-50 */
+}
+
+.dark body {
+  background-color: #0f172a; /* bg-gray-900 */
 }
 
 /* Custom Scrollbar */
@@ -35,17 +40,10 @@ body {
   color: #e2e8f0;
 }
 
-.dark .bg-gray-50 {
-  background-color: #0f172a;
-}
-
-.dark .bg-white {
-  background-color: #1e293b;
-}
-
-.dark .bg-gray-100 {
-  background-color: #1e293b;
-}
+/* Remove conflicting background overrides that cause mobile light mode issues */
+/* .dark .bg-gray-50 { background-color: #0f172a; } */
+/* .dark .bg-white { background-color: #1e293b; } */
+/* .dark .bg-gray-100 { background-color: #1e293b; } */
 
 .dark .bg-gray-200 {
   background-color: #334155;
