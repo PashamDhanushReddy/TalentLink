@@ -56,7 +56,9 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
   const [typingUsers, setTypingUsers] = useState([]); // eslint-disable-line no-unused-vars
   const [messageStatus, setMessageStatus] = useState({}); // Track message delivery status
   const [isSending, setIsSending] = useState(false); // Track if a message is currently being sent (for UI)
+  const [isUserAtBottom, setIsUserAtBottom] = useState(true);
   const messagesEndRef = useRef(null);
+  const messagesContainerRef = useRef(null);
   const pollingIntervalRef = useRef(null);
   const typingTimeoutRef = useRef(null);
   const messagesRef = useRef(messages); // Ref to store current messages for polling
@@ -79,9 +81,8 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contractId]);
 
-  // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
-    scrollToBottom();
+    scrollToBottom(false);
   }, [messages]);
 
   // Keep messagesRef updated with current messages
@@ -369,8 +370,10 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
     }
   };
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToBottom = (force = false) => {
+    if (!messagesEndRef.current) return;
+    if (!force && !isUserAtBottom) return;
+    messagesEndRef.current.scrollIntoView({ behavior: force ? 'auto' : 'smooth' });
   };
 
   const handleInputChange = (e) => {
@@ -393,6 +396,14 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
     typingTimeoutRef.current = setTimeout(() => {
       setIsTyping(false);
     }, 2000);
+  };
+
+  const handleMessagesScroll = () => {
+    const el = messagesContainerRef.current;
+    if (!el) return;
+    const threshold = 80;
+    const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+    setIsUserAtBottom(distanceFromBottom <= threshold);
   };
 
   const handleFormSubmit = (e) => {
@@ -657,7 +668,11 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
       </div>
 
       {/* Messages Container */}
-      <div className={`flex-1 overflow-y-auto px-2 py-3 ${darkMode ? 'bg-gray-900' : 'bg-chat-bg'}`}>
+      <div
+        ref={messagesContainerRef}
+        onScroll={handleMessagesScroll}
+        className={`flex-1 overflow-y-auto px-2 sm:px-3 md:px-6 py-3 ${darkMode ? 'bg-gray-900' : 'bg-chat-bg'}`}
+      >
         {/* Typing Indicator for Other Users */}
         {typingUsers.length > 0 && (
           <div className="flex justify-start mb-2 px-4">
@@ -709,7 +724,7 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                   }`}>
                     {/* Avatar for other user's messages - show only for first in sequence */}
                     {!message.is_mine && isFirstInSequence && (
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                         darkMode ? 'bg-gray-600' : 'bg-gray-300'
                       }`}>
                         <span className={`text-xs font-medium ${
@@ -727,7 +742,7 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                     
                     {/* Message Bubble */}
                     <div
-                      className={`relative px-3 py-2 rounded-2xl max-w-[85%] md:max-w-[70%] ${
+                      className={`relative px-3 py-2 sm:px-3.5 sm:py-2.5 md:px-4 md:py-3 rounded-2xl max-w-[90%] md:max-w-[75%] lg:max-w-[65%] ${
                         message.is_mine
                           ? darkMode 
                             ? 'bg-green-600 text-white rounded-br-none'
@@ -789,7 +804,7 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                       
                       {/* Voice Note removed */}
                       
-                      <p className="text-xs sm:text-sm leading-relaxed">{message.text}</p>
+                      <p className="text-xs sm:text-sm md:text-base leading-relaxed">{message.text}</p>
                       
                       {/* Message Footer */}
                       <div className={`flex items-center justify-end mt-1 space-x-1 ${
