@@ -117,7 +117,7 @@ export const DarkModeProvider = ({ children }) => {
       
       // Additional iOS Safari hack: force style recalculation
       document.body.style.display = 'none';
-      document.body.offsetHeight; // Force reflow
+      void document.body.offsetHeight; // Force reflow - void operator to satisfy ESLint
       document.body.style.display = '';
     }, 150);
   };
