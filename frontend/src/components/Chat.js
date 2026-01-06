@@ -337,96 +337,21 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
   };
 
   const startPolling = () => {
-    // Prevent multiple polling instances
     if (pollingIntervalRef.current) {
       return;
     }
     
-    stopPolling(); // Clear any existing interval
+    stopPolling();
     
     const poll = async () => {
       if (!selectedConversation) return;
-      
-      // Prevent overlapping poll requests
       if (isPollingRequestRef.current) {
-        console.log('Skipping poll - previous request still in progress');
         return;
       }
       isPollingRequestRef.current = true;
       
-      const currentMessages = messagesRef.current;
-      // Find the last message that is not a temporary one to avoid sending temp IDs to the server
-      const realMessages = currentMessages.filter(msg => !String(msg.id).startsWith('temp-'));
-      const lastMessageId = realMessages.length > 0 ? realMessages[realMessages.length - 1].id : 0;
-      
       try {
-        console.log(`Polling for messages: conversation=${selectedConversation.id}, lastMessageId=${lastMessageId}`);
-        
-        // Poll for new messages
-        const response = await conversationAPI.pollMessages(
-          selectedConversation.id, 
-          lastMessageId
-        );
-        
-        console.log(`Polling response: ${response.data.length} messages received`);
-        
-        if (response.data && response.data.length > 0) {
-          // Filter out duplicate messages by ID
-          const existingMessageIds = new Set(currentMessages.map(msg => msg.id));
-          const uniqueNewMessages = response.data.filter(msg => !existingMessageIds.has(msg.id));
-          
-          console.log(`Polling: Found ${response.data.length} messages, ${uniqueNewMessages.length} unique`);
-          
-          if (uniqueNewMessages.length > 0) {
-            // Merge new messages with existing ones and sort chronologically
-            setMessages(prevMessages => {
-              // Re-check for duplicates against the latest state (prevMessages) to handle race conditions
-              // This is crucial because prevMessages might have been updated (e.g. by sendMessage success)
-              // while this poll request was in flight.
-              const currentIds = new Set(prevMessages.map(m => m.id));
-              const trulyUnique = uniqueNewMessages.filter(m => !currentIds.has(m.id));
-              
-              if (trulyUnique.length === 0) {
-                return prevMessages;
-              }
-
-              const allMessages = [...prevMessages, ...trulyUnique];
-              return allMessages.sort((a, b) => 
-                new Date(a.created_at) - new Date(b.created_at)
-              );
-            });
-            
-            // Mark new messages as delivered (for sender)
-            uniqueNewMessages.forEach(newMessage => {
-              if (newMessage.is_mine && newMessage.status === 'sent') {
-                setMessageStatus(prev => ({
-                  ...prev,
-                  [newMessage.id]: 'delivered'
-                }));
-              }
-            });
-          }
-        }
-        
-        // Check for message status updates (read receipts)
-        const unreadMessages = currentMessages.filter(msg => 
-          msg.is_mine && (msg.status === 'sent' || msg.status === 'delivered')
-        );
-        
-        if (unreadMessages.length > 0) {
-          // Simulate checking for read status (in real app, this would be a separate API call)
-          unreadMessages.forEach(msg => {
-            // Check if message should be marked as read (older than 2 seconds)
-            const messageAge = Date.now() - new Date(msg.created_at).getTime();
-            if (messageAge > 2000 && msg.status !== 'read') {
-              setMessageStatus(prev => ({
-                ...prev,
-                [msg.id]: 'read'
-              }));
-            }
-          });
-        }
-        
+        await loadMessages(selectedConversation.id);
       } catch (err) {
         console.error('Error polling messages:', err);
       } finally {
@@ -434,8 +359,7 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
       }
     };
     
-    // Poll every 5 seconds to reduce server load
-    pollingIntervalRef.current = setInterval(poll, 5000);
+    pollingIntervalRef.current = setInterval(poll, 3000);
   };
 
   const stopPolling = () => {
