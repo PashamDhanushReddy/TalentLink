@@ -321,7 +321,7 @@ function Profile() {
             ? 'bg-gray-800 border border-gray-700' 
             : 'bg-white border border-gray-100'
         }`}>
-          <div className={`px-8 py-12 relative overflow-hidden ${
+          <div className={`px-4 py-8 sm:px-8 sm:py-12 relative overflow-hidden ${
             darkMode 
               ? 'bg-gradient-to-r from-gray-700 via-gray-600 to-gray-500' 
               : 'bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600'
@@ -339,26 +339,26 @@ function Profile() {
               darkMode ? 'bg-white/5' : 'bg-white/10'
             }`}></div>
             
-            <div className="relative z-10 flex items-center justify-between">
-              <div className="flex items-center space-x-6">
+            <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between space-y-4 sm:space-y-0">
+              <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-6">
                 {/* Enhanced Avatar */}
-                <div className="relative group">
-                  <div className={`p-3 rounded-full shadow-2xl h-28 w-28 flex items-center justify-center overflow-hidden border-4 ${
+                <div className="relative group flex-shrink-0">
+                  <div className={`p-3 rounded-full shadow-2xl h-20 w-20 sm:h-28 sm:w-28 flex items-center justify-center overflow-hidden border-4 ${
                     darkMode 
                       ? 'bg-gray-700 border-white/10' 
                       : 'bg-white border-white/20'
                   }`}>
-                    <UserCircleIcon className={`h-24 w-24 drop-shadow-lg ${
+                    <UserCircleIcon className={`h-16 w-16 sm:h-24 sm:w-24 drop-shadow-lg ${
                       darkMode ? 'text-gray-300' : 'text-blue-600'
                     }`} />
                   </div>
                   {/* Status indicator */}
-                  <div className={`absolute -bottom-1 -right-1 w-8 h-8 rounded-full border-4 flex items-center justify-center ${
+                  <div className={`absolute -bottom-1 -right-1 w-6 h-6 sm:w-8 sm:h-8 rounded-full border-4 flex items-center justify-center ${
                     darkMode 
                       ? 'bg-green-500 border-gray-800' 
                       : 'bg-green-500 border-white'
                   }`}>
-                    <div className={`w-3 h-3 rounded-full ${
+                    <div className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full ${
                       darkMode ? 'bg-gray-800' : 'bg-white'
                     }`}></div>
                   </div>
@@ -367,16 +367,16 @@ function Profile() {
                 {/* Enhanced User Info */}
                 <div className={`${
                   darkMode ? 'text-gray-100' : 'text-white'
-                }`}>
-                  <h1 className="text-4xl font-bold mb-2 drop-shadow-lg">
+                } min-w-0`}>
+                  <h1 className="text-2xl sm:text-4xl font-bold mb-1 sm:mb-2 drop-shadow-lg break-words">
                     {authUser?.first_name || user.first_name} {authUser?.last_name || user.last_name}
                   </h1>
-                  <div className={`flex items-center space-x-4 ${
+                  <div className={`flex flex-wrap items-center gap-2 sm:space-x-4 ${
                     darkMode ? 'text-gray-200' : 'text-blue-100'
                   }`}>
                     <div className="flex items-center space-x-2">
-                      <BriefcaseIcon className="h-5 w-5" />
-                      <span className={`uppercase tracking-wide text-sm font-semibold px-3 py-1 rounded-full ${
+                      <BriefcaseIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+                      <span className={`uppercase tracking-wide text-xs sm:text-sm font-semibold px-2 py-1 sm:px-3 sm:py-1 rounded-full ${
                         darkMode 
                           ? 'bg-white/10 text-white' 
                           : 'bg-white/20 text-white'
@@ -386,8 +386,8 @@ function Profile() {
                     </div>
                     {authUser?.role === 'freelancer' && profile?.hourly_rate && (
                       <div className="flex items-center space-x-2">
-                        <CurrencyDollarIcon className="h-5 w-5" />
-                        <span className="font-semibold">${profile.hourly_rate}/hr</span>
+                        <CurrencyDollarIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+                        <span className="font-semibold text-sm sm:text-base">${profile.hourly_rate}/hr</span>
                       </div>
                     )}
                   </div>
@@ -398,7 +398,7 @@ function Profile() {
               {isOwnProfile && (
                 <button
                   onClick={() => setIsEditing(!isEditing)}
-                  className={`group relative px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
+                  className={`group relative px-4 py-2 sm:px-6 sm:py-3 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
                     isEditing 
                       ? 'bg-white/20 hover:bg-white/30 text-white border-2 border-white/30' 
                       : darkMode
@@ -407,11 +407,12 @@ function Profile() {
                   }`}
                 >
                   <div className="flex items-center space-x-2">
-                    <PencilIcon className="h-5 w-5" />
-                    <span>{isEditing ? 'Cancel Edit' : 'Edit Profile'}</span>
+                    <PencilIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+                    <span className="hidden sm:inline">{isEditing ? 'Cancel Edit' : 'Edit Profile'}</span>
+                    <span className="sm:hidden">{isEditing ? 'Cancel' : 'Edit'}</span>
                   </div>
                   {/* Button glow effect */}
-                  <div className={`absolute inset-0 rounded-xl transition-all duration-300 ${
+                  <div className={`absolute inset-0 rounded-lg sm:rounded-xl transition-all duration-300 ${
                     isEditing ? 'bg-white/10' : darkMode ? 'bg-gray-600/10' : 'bg-blue-600/10'
                   } opacity-0 group-hover:opacity-100`}></div>
                 </button>

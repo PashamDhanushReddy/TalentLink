@@ -23,11 +23,11 @@ const Layout = () => {
         <Sidebar />
       </div>
       
-      <div className="flex-1 flex flex-col ml-0 md:ml-80 overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden">
         <div className="sticky top-0 z-50">
           <TopBar onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
         </div>
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 dark:bg-gray-900 pt-0 md:pt-0">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 dark:bg-gray-900">
           <div className="w-full">
             <Outlet />
           </div>
