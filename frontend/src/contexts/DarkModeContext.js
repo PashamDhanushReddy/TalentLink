@@ -24,7 +24,7 @@ export const DarkModeProvider = ({ children }) => {
       // Only use system preference if no user preference is saved
       setDarkMode(false); // Force light mode by default
       document.documentElement.classList.remove('dark');
-      document.body.style.backgroundColor = '#ffffff';
+      document.body.style.backgroundColor = '#f9fafb';
     }
     
     // Prevent system theme changes from affecting the app
@@ -47,7 +47,7 @@ export const DarkModeProvider = ({ children }) => {
     document.documentElement.style.colorScheme = 'light';
     
     // Force light mode background immediately
-    document.body.style.backgroundColor = '#ffffff';
+    document.body.style.backgroundColor = '#f9fafb';
     document.body.style.color = '#111827';
     
     const savedDarkMode = localStorage.getItem('darkMode');
@@ -61,7 +61,7 @@ export const DarkModeProvider = ({ children }) => {
         document.body.style.color = '#e2e8f0';
       } else {
         document.documentElement.classList.remove('dark');
-        document.body.style.backgroundColor = '#ffffff';
+        document.body.style.backgroundColor = '#f9fafb';
         document.body.style.color = '#111827';
       }
       
@@ -97,7 +97,7 @@ export const DarkModeProvider = ({ children }) => {
     } else {
       document.documentElement.classList.remove('dark');
       document.documentElement.style.colorScheme = 'light';
-      document.body.style.backgroundColor = '#ffffff';
+      document.body.style.backgroundColor = '#f9fafb';
       document.body.style.color = '#111827';
     }
     
@@ -117,7 +117,7 @@ export const DarkModeProvider = ({ children }) => {
       
       // Additional iOS Safari hack: force style recalculation
       document.body.style.display = 'none';
-      void document.body.offsetHeight; // Force reflow - void operator to satisfy ESLint
+      document.body.offsetHeight; // Force reflow
       document.body.style.display = '';
     }, 150);
   };
