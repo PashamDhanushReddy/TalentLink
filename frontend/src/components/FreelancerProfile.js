@@ -54,10 +54,10 @@ const FreelancerProfile = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">Loading freelancer profile...</p>
+          <p className="text-gray-600">Loading freelancer profile...</p>
         </div>
       </div>
     );
@@ -65,11 +65,11 @@ const FreelancerProfile = () => {
 
   if (error || !freelancer) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="bg-red-100 dark:bg-red-900 border border-red-200 dark:border-red-700 rounded-lg p-6 max-w-md">
-            <h3 className="text-lg font-semibold text-red-800 dark:text-red-200 mb-2">Profile Not Found</h3>
-            <p className="text-red-600 dark:text-red-400 mb-4">{error || 'Freelancer profile could not be loaded.'}</p>
+          <div className="bg-red-100 border border-red-200 rounded-lg p-6 max-w-md">
+            <h3 className="text-lg font-semibold text-red-800 mb-2">Profile Not Found</h3>
+            <p className="text-red-600 mb-4">{error || 'Freelancer profile could not be loaded.'}</p>
             <button
               onClick={() => navigate(-1)}
               className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
@@ -98,39 +98,39 @@ const FreelancerProfile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-6">
           <button
             onClick={() => navigate(-1)}
-            className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+            className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
           >
             <XMarkIcon className="h-5 w-5" />
             Back
           </button>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           <div className="h-32 bg-gradient-to-r from-blue-500 to-purple-600"></div>
           
           <div className="px-6 pb-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-end -mt-16">
-              <div className="h-32 w-32 rounded-full border-4 border-white dark:border-gray-800 bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-bold text-3xl overflow-hidden">
+              <div className="h-32 w-32 rounded-full border-4 border-white bg-gray-200 flex items-center justify-center text-gray-600 font-bold text-3xl overflow-hidden">
                 <span>{((freelancer.profile?.name?.[0]) || (freelancer.user?.first_name?.[0]) || (freelancer.user?.username?.[0]) || 'U').toUpperCase()}</span>
               </div>
               
               <div className="mt-4 sm:mt-0 sm:ml-6 flex-1">
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                <h1 className="text-2xl font-bold text-gray-900">
                   {displayName}
                 </h1>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-gray-600">
                   @{freelancer.user?.username}
                 </p>
-                <p className="text-lg text-gray-700 dark:text-gray-300 mt-2">
+                <p className="text-lg text-gray-700 mt-2">
                   ${hourlyRate}/hr
                 </p>
                 {freelancer.user?.email && (
-                  <div className="mt-2 flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                  <div className="mt-2 flex items-center gap-2 text-gray-700">
                     <EnvelopeIcon className="h-4 w-4" />
                     <span>{freelancer.user.email}</span>
                   </div>
@@ -143,33 +143,33 @@ const FreelancerProfile = () => {
             <div className="grid md:grid-cols-1 gap-6">
               <div className="md:col-span-2 space-y-6">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">About</h3>
-                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3">About</h3>
+                  <p className="text-gray-600 leading-relaxed">
                     {bio}
                   </p>
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Skills & Expertise</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3">Skills & Expertise</h3>
                   {skills.length > 0 ? (
                     <div className="flex flex-wrap gap-2">
                       {skills.map((skill, index) => (
                         <span
                           key={index}
-                          className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm"
+                          className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
                         >
                           {getSkillLabel(skill)}
                         </span>
                       ))}
                     </div>
                   ) : (
-                    <p className="text-gray-600 dark:text-gray-400">No skills added</p>
+                    <p className="text-gray-600">No skills added</p>
                   )}
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Experience</h3>
-                  <p className="text-gray-600 dark:text-gray-400">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3">Experience</h3>
+                  <p className="text-gray-600">
                     {experience} years of experience
                   </p>
                 </div>

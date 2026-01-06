@@ -62,21 +62,21 @@ const Settings = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+    <div className="min-h-screen bg-gray-50 transition-colors duration-200">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Settings</h1>
-          <p className="mt-2 text-gray-600 dark:text-gray-400">Manage your account preferences and application settings</p>
+          <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
+          <p className="mt-2 text-gray-600">Manage your account preferences and application settings</p>
         </div>
 
         {/* Settings Sections */}
         <div className="space-y-6">
           {/* Appearance Settings */}
-          <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+          <div className="bg-white shadow rounded-lg p-6">
             <div className="flex items-center mb-4">
               <Cog6ToothIcon className="h-6 w-6 text-gray-400 mr-3" />
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Appearance</h2>
+              <h2 className="text-xl font-semibold text-gray-900">Appearance</h2>
             </div>
             
             <div className="space-y-4">
@@ -89,8 +89,8 @@ const Settings = () => {
                     <SunIcon className="h-5 w-5 text-gray-400 mr-3" />
                   )}
                   <div>
-                    <h3 className="text-sm font-medium text-gray-900 dark:text-white">Dark Mode</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Switch between light and dark themes</p>
+                    <h3 className="text-sm font-medium text-gray-900">Dark Mode</h3>
+                  <p className="text-sm text-gray-500">Switch between light and dark themes</p>
                   </div>
                 </div>
                 <button
@@ -110,18 +110,18 @@ const Settings = () => {
           </div>
 
           {/* Notifications Settings */}
-          <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+          <div className="bg-white shadow rounded-lg p-6">
             <div className="flex items-center mb-4">
               <BellIcon className="h-6 w-6 text-gray-400 mr-3" />
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Notifications</h2>
+              <h2 className="text-xl font-semibold text-gray-900">Notifications</h2>
             </div>
             
             <div className="space-y-4">
               {/* Email Notifications */}
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-medium text-gray-900 dark:text-white">Email Notifications</h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Receive notifications via email</p>
+                  <h3 className="text-sm font-medium text-gray-900">Email Notifications</h3>
+                  <p className="text-sm text-gray-500">Receive notifications via email</p>
                 </div>
                 <button
                   onClick={handleEmailNotificationsToggle}
@@ -140,8 +140,8 @@ const Settings = () => {
               {/* Push Notifications */}
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-medium text-gray-900 dark:text-white">Push Notifications</h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Receive push notifications in your browser</p>
+                  <h3 className="text-sm font-medium text-gray-900">Push Notifications</h3>
+                  <p className="text-sm text-gray-500">Receive push notifications in your browser</p>
                 </div>
                 <button
                   onClick={handlePushNotificationsToggle}
@@ -160,23 +160,23 @@ const Settings = () => {
           </div>
 
           {/* Account Settings */}
-          <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+          <div className="bg-white shadow rounded-lg p-6">
             <div className="flex items-center mb-4">
               <UserIcon className="h-6 w-6 text-gray-400 mr-3" />
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Account</h2>
+              <h2 className="text-xl font-semibold text-gray-900">Account</h2>
             </div>
             
             <div className="space-y-4">
               {/* Language */}
               <div>
-                <label htmlFor="language" className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                <label htmlFor="language" className="block text-sm font-medium text-gray-900 mb-2">
                   Language
                 </label>
                 <select
                   id="language"
                   value={language}
                   onChange={handleLanguageChange}
-                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                 >
                   <option value="English">English</option>
                   <option value="Spanish">Spanish</option>
@@ -188,14 +188,14 @@ const Settings = () => {
 
               {/* Timezone */}
               <div>
-                <label htmlFor="timezone" className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                <label htmlFor="timezone" className="block text-sm font-medium text-gray-900 mb-2">
                   Timezone
                 </label>
                 <select
                   id="timezone"
                   value={timezone}
                   onChange={handleTimezoneChange}
-                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                 >
                   <option value="UTC">UTC</option>
                   <option value="EST">Eastern Time (EST)</option>
@@ -210,26 +210,26 @@ const Settings = () => {
           </div>
 
           {/* Privacy & Security */}
-          <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+          <div className="bg-white shadow rounded-lg p-6">
             <div className="flex items-center mb-4">
               <ShieldCheckIcon className="h-6 w-6 text-gray-400 mr-3" />
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Privacy & Security</h2>
+              <h2 className="text-xl font-semibold text-gray-900">Privacy & Security</h2>
             </div>
             
             <div className="space-y-4">
-              <button className="w-full flex items-center justify-between p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                <span className="text-sm font-medium text-gray-900 dark:text-white">Change Password</span>
-                <span className="text-sm text-gray-500 dark:text-gray-400">→</span>
+              <button className="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                <span className="text-sm font-medium text-gray-900">Change Password</span>
+                <span className="text-sm text-gray-500">→</span>
               </button>
               
-              <button className="w-full flex items-center justify-between p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                <span className="text-sm font-medium text-gray-900 dark:text-white">Two-Factor Authentication</span>
-                <span className="text-sm text-gray-500 dark:text-gray-400">→</span>
+              <button className="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                <span className="text-sm font-medium text-gray-900">Two-Factor Authentication</span>
+                <span className="text-sm text-gray-500">→</span>
               </button>
               
-              <button className="w-full flex items-center justify-between p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                <span className="text-sm font-medium text-gray-900 dark:text-white">Privacy Settings</span>
-                <span className="text-sm text-gray-500 dark:text-gray-400">→</span>
+              <button className="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                <span className="text-sm font-medium text-gray-900">Privacy Settings</span>
+                <span className="text-sm text-gray-500">→</span>
               </button>
             </div>
           </div>
