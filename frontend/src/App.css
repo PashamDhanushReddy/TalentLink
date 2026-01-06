@@ -1,3 +1,8 @@
+/* Force light mode - prevent system dark mode override */
+:root {
+  color-scheme: light !important;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,6 +13,8 @@ body {
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f9fafb !important;
+  color: #111827 !important;
 }
 
 /* Custom Scrollbar */
@@ -33,6 +40,18 @@ body {
 .dark body {
   background-color: #0f172a;
   color: #e2e8f0;
+}
+
+/* Force light mode - ignore system preference */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: light !important;
+  }
+  
+  body {
+    background-color: #f9fafb !important;
+    color: #111827 !important;
+  }
 }
 
 /* iOS Safari specific fixes */

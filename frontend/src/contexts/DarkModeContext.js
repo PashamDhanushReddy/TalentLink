@@ -13,6 +13,33 @@ export const useDarkMode = () => {
 export const DarkModeProvider = ({ children }) => {
   const [darkMode, setDarkMode] = useState(false);
 
+  // Override system dark mode preference - force app to use its own theme
+  useEffect(() => {
+    // Remove system dark mode preference detection
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    // Override system preference by always starting with light mode unless user explicitly chose dark
+    const savedDarkMode = localStorage.getItem('darkMode');
+    if (savedDarkMode === null) {
+      // Only use system preference if no user preference is saved
+      setDarkMode(false); // Force light mode by default
+      document.documentElement.classList.remove('dark');
+      document.body.style.backgroundColor = '#f9fafb';
+    }
+    
+    // Prevent system theme changes from affecting the app
+    const handleSystemThemeChange = (e) => {
+      // Ignore system theme changes - app should only use its own theme
+      console.log('System theme change ignored - app uses its own theme setting');
+    };
+    
+    mediaQuery.addEventListener('change', handleSystemThemeChange);
+    
+    return () => {
+      mediaQuery.removeEventListener('change', handleSystemThemeChange);
+    };
+  }, []);
+
   // Load dark mode preference from localStorage on component mount
   useEffect(() => {
     const savedDarkMode = localStorage.getItem('darkMode');
