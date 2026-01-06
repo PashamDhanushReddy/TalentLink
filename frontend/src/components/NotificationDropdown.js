@@ -116,58 +116,65 @@ const NotificationDropdown = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
+        <div className="absolute right-0 mt-2 w-80 sm:w-96 max-w-[calc(100vw-2rem)] bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50 sm:max-w-sm md:w-96">
           <div className="p-4 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-medium text-gray-900">Notifications</h3>
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-1 text-gray-400 hover:text-gray-500"
+                className="p-2 text-gray-400 hover:text-gray-500 rounded-lg hover:bg-gray-100 transition-colors"
+                aria-label="Close notifications"
               >
                 <XMarkIcon className="h-5 w-5" />
               </button>
             </div>
           </div>
 
-          <div className="max-h-96 overflow-y-auto">
+          <div className="max-h-[calc(100vh-12rem)] sm:max-h-96 overflow-y-auto">
             {loading ? (
               <div className="p-4 text-center text-gray-500">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-3"></div>
                 Loading notifications...
               </div>
             ) : notifications.length === 0 ? (
-              <div className="p-4 text-center text-gray-500">
-                No notifications yet
+              <div className="p-6 text-center text-gray-500">
+                <BellIcon className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                <p className="text-base font-medium mb-1">No notifications yet</p>
+                <p className="text-sm">You\'ll receive notifications when there are updates.</p>
               </div>
             ) : (
               notifications.map((notification) => (
                 <div
                   key={notification.id}
-                  className={`p-4 border-b border-gray-100 hover:bg-gray-50 ${!notification.is_read ? 'bg-blue-50' : ''}`}
+                  className={`p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors ${!notification.is_read ? 'bg-blue-50' : ''}`}
                 >
                   <div className="flex items-start gap-3">
                     <div className="flex-shrink-0">
-                      <span className="text-lg">{getNotificationIcon(notification.notification_type)}</span>
+                      <span className="text-lg sm:text-xl" aria-label={notification.notification_type}>
+                        {getNotificationIcon(notification.notification_type)}
+                      </span>
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex-1">
-                          <p className="text-sm font-medium text-gray-900">
+                          <p className="text-sm font-medium text-gray-900 leading-tight">
                             {notification.title}
                           </p>
-                          <p className="text-sm text-gray-600 mt-1">
+                          <p className="text-sm text-gray-600 mt-1 leading-relaxed">
                             {notification.message}
                           </p>
                           <p className="text-xs text-gray-500 mt-2 flex items-center gap-1">
-                            <ClockIcon className="h-3 w-3" />
-                            {formatTime(notification.created_at)}
+                            <ClockIcon className="h-3 w-3 flex-shrink-0" />
+                            <span className="truncate">{formatTime(notification.created_at)}</span>
                           </p>
                         </div>
                         {!notification.is_read && (
                           <button
                             onClick={() => handleMarkAsRead(notification.id)}
-                            className="flex-shrink-0 text-xs text-blue-600 hover:text-blue-800"
+                            className="flex-shrink-0 text-xs text-blue-600 hover:text-blue-800 font-medium px-2 py-1 rounded hover:bg-blue-50 transition-colors"
+                            aria-label="Mark as read"
                           >
-                            Mark as read
+                            Read
                           </button>
                         )}
                       </div>
@@ -181,7 +188,8 @@ const NotificationDropdown = () => {
           <div className="p-4 border-t border-gray-200">
             <Link
               to="/notifications"
-              className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+              className="text-sm text-blue-600 hover:text-blue-800 font-medium block text-center py-2 px-4 rounded-lg hover:bg-blue-50 transition-colors"
+              onClick={() => setIsOpen(false)}
             >
               View all notifications
             </Link>

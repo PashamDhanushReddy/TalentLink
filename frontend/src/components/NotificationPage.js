@@ -96,12 +96,12 @@ const NotificationPage = () => {
       </div>
 
       <div className="bg-white rounded-lg shadow">
-        <div className="p-6 border-b border-gray-200">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+        <div className="p-4 sm:p-6 border-b border-gray-200">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               <button
                 onClick={() => setFilter('all')}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`px-3 sm:px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   filter === 'all'
                     ? 'bg-blue-100 text-blue-700'
                     : 'text-gray-600 hover:text-gray-900'
@@ -111,7 +111,7 @@ const NotificationPage = () => {
               </button>
               <button
                 onClick={() => setFilter('unread')}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`px-3 sm:px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   filter === 'unread'
                     ? 'bg-blue-100 text-blue-700'
                     : 'text-gray-600 hover:text-gray-900'
@@ -123,7 +123,7 @@ const NotificationPage = () => {
             {unreadCount > 0 && (
               <button
                 onClick={handleMarkAllAsRead}
-                className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+                className="text-sm text-blue-600 hover:text-blue-800 font-medium px-3 py-2 rounded-lg hover:bg-blue-50 transition-colors"
               >
                 Mark all as read
               </button>
@@ -134,6 +134,7 @@ const NotificationPage = () => {
         <div className="divide-y divide-gray-200">
           {loading ? (
             <div className="p-8 text-center text-gray-500">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
               Loading notifications...
             </div>
           ) : filteredNotifications.length === 0 ? (
@@ -150,28 +151,30 @@ const NotificationPage = () => {
             filteredNotifications.map((notification) => (
               <div
                 key={notification.id}
-                className={`p-6 hover:bg-gray-50 ${!notification.is_read ? 'bg-blue-50' : ''}`}
+                className={`p-4 sm:p-6 hover:bg-gray-50 transition-colors ${!notification.is_read ? 'bg-blue-50' : ''}`}
               >
-                <div className="flex items-start gap-4">
+                <div className="flex items-start gap-3 sm:gap-4">
                   <div className="flex-shrink-0">
-                    <span className="text-2xl">{getNotificationIcon(notification.notification_type)}</span>
+                    <span className="text-xl sm:text-2xl" aria-label={notification.notification_type}>
+                      {getNotificationIcon(notification.notification_type)}
+                    </span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-4">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
                       <div className="flex-1">
-                        <h3 className="text-lg font-medium text-gray-900 mb-2">
+                        <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-1 sm:mb-2 leading-tight">
                           {notification.title}
                         </h3>
-                        <p className="text-gray-600 mb-3">
+                        <p className="text-gray-600 mb-2 sm:mb-3 leading-relaxed">
                           {notification.message}
                         </p>
-                        <div className="flex items-center gap-4 text-sm text-gray-500">
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-sm text-gray-500">
                           <span className="flex items-center gap-1">
-                            <ClockIcon className="h-4 w-4" />
-                            {formatTime(notification.created_at)}
+                            <ClockIcon className="h-4 w-4 flex-shrink-0" />
+                            <span className="truncate">{formatTime(notification.created_at)}</span>
                           </span>
                           {notification.related_project_title && (
-                            <span>
+                            <span className="truncate">
                               Project: {notification.related_project_title}
                             </span>
                           )}
@@ -180,7 +183,8 @@ const NotificationPage = () => {
                       {!notification.is_read && (
                         <button
                           onClick={() => handleMarkAsRead(notification.id)}
-                          className="flex-shrink-0 text-sm text-blue-600 hover:text-blue-800 font-medium"
+                          className="flex-shrink-0 text-sm text-blue-600 hover:text-blue-800 font-medium px-3 py-1 rounded-lg hover:bg-blue-50 transition-colors mt-2 sm:mt-0"
+                          aria-label="Mark as read"
                         >
                           Mark as read
                         </button>

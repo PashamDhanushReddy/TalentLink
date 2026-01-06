@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useDarkMode } from '../contexts/DarkModeContext';
-import { MagnifyingGlassIcon, MoonIcon, SunIcon, Bars3Icon } from '@heroicons/react/24/outline';
+import { MagnifyingGlassIcon, MoonIcon, SunIcon, Bars3Icon, BellIcon } from '@heroicons/react/24/outline';
 import NotificationDropdown from './NotificationDropdown';
 
 const TopBar = ({ onMenuClick }) => {
@@ -49,6 +49,18 @@ const TopBar = ({ onMenuClick }) => {
 
         <div className="relative">
             <NotificationDropdown />
+        </div>
+
+        {/* Mobile notification button - hidden on desktop */}
+        <div className="md:hidden">
+          <Link 
+            to="/notifications" 
+            className="relative p-2 text-gray-400 hover:text-gray-500 transition-colors"
+            title="Notifications"
+          >
+            <BellIcon className="h-6 w-6" />
+            {/* You can add unread count badge here if needed */}
+          </Link>
         </div>
 
         <div className="h-8 w-px bg-gray-200"></div>
