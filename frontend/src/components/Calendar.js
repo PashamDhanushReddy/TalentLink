@@ -49,14 +49,14 @@ const Calendar = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex items-center justify-center h-full py-10">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
     );
   }
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <div className="w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-4 md:py-6 lg:py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Calendar & Deadlines</h1>
         <p className="text-gray-500 mt-2">Track your contract deadlines and remaining time</p>

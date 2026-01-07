@@ -55,12 +55,12 @@ const Chats = () => {
   }
 
   return (
-    <div className="h-full flex bg-white md:rounded-none md:shadow-none md:border-0 overflow-hidden m-0">
+    <div className="h-full flex bg-white md:rounded-none md:shadow-none md:border-0 overflow-hidden m-0 md:px-4 lg:px-6">
       {/* Sidebar - Conversation List */}
-      <div className={`w-full md:w-72 bg-gray-50 md:border-r md:border-gray-200 flex flex-col ${selectedContractId ? 'hidden md:flex' : 'flex'}`}>
+      <div className={`w-full md:w-60 bg-gray-50 md:border-r md:border-gray-200 flex flex-col ${selectedContractId ? 'hidden md:flex' : 'flex'}`}>
         <div className="p-4 border-b border-gray-200 bg-white">
-          <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <ChatBubbleLeftRightIcon className="h-6 w-6 text-blue-600" />
+          <h2 className="text-lg md:text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
+            <ChatBubbleLeftRightIcon className="h-6 w-6 md:h-5 md:w-5 text-blue-600" />
             Messages
           </h2>
           <div className="relative">
@@ -71,7 +71,7 @@ const Chats = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 bg-gray-100 border-none rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
             />
-            <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 absolute left-3 top-2.5" />
+            <MagnifyingGlassIcon className="h-5 w-5 md:h-4 md:w-4 text-gray-400 absolute left-3 top-2.5" />
           </div>
         </div>
 
@@ -89,12 +89,12 @@ const Chats = () => {
                   selectedContractId === conv.contract ? 'bg-white border-l-4 border-l-blue-600 shadow-sm' : 'border-l-4 border-l-transparent'
                 }`}
               >
-                <div className="flex items-start gap-3">
-                    <div className="w-9 h-9 md:w-10 md:h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold shrink-0 text-sm md:text-base">
+                <div className="flex items-start gap-3 md:gap-2">
+                    <div className="w-9 h-9 md:w-8 md:h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold shrink-0 text-sm md:text-xs">
                       {conv.contract_details?.title?.charAt(0) || 'C'}
                     </div>
                     <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-sm md:text-base text-gray-900 truncate">
+                    <h4 className="font-semibold text-sm md:text-xs text-gray-900 truncate">
                       {conv.contract_details?.title || 'Contract Discussion'}
                     </h4>
                     <p className="text-xs sm:text-sm text-gray-500 truncate mt-0.5">

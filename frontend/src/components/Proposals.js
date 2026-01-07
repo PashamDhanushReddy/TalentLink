@@ -102,10 +102,10 @@ const Proposals = () => {
           <p className="text-gray-500">No proposals found.</p>
         </div>
       ) : (
-        <div className="grid gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {proposals.map((proposal) => (
-            <div key={proposal.id} className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 transition hover:shadow-md">
-              <div className="flex flex-col md:flex-row justify-between gap-6">
+            <div key={proposal.id} className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 transition hover:shadow-md h-full flex flex-col">
+              <div className="flex flex-col md:flex-row justify-between gap-6 flex-1">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize

@@ -678,9 +678,9 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
       <div
         ref={messagesContainerRef}
         onScroll={handleMessagesScroll}
-        className={`flex-1 overflow-y-auto px-2 sm:px-3 md:px-4 lg:px-6 py-4 ${darkMode ? 'bg-gray-900' : 'bg-chat-bg'}`}
+        className={`flex-1 overflow-y-auto px-2 sm:px-3 md:px-6 lg:px-8 py-4 ${darkMode ? 'bg-gray-900' : 'bg-chat-bg'}`}
       >
-        <div className={`${isWidget ? 'max-w-2xl mx-auto' : 'max-w-4xl mx-auto'}`}>
+        <div className={`${isWidget ? 'max-w-2xl mx-auto' : 'w-full'}`}>
           {typingUsers.length > 0 && (
             <div className="flex justify-start mb-2 px-4">
               <div className={`rounded-2xl rounded-bl-none px-3 py-2 shadow-sm ${
@@ -744,8 +744,10 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                     )}
                     
                     <div
-                      className={`relative px-3 py-1.5 sm:px-3.5 sm:py-2 md:px-3.5 md:py-2.5 rounded-2xl ${
-                        isWidget ? 'max-w-[78%] md:max-w-[70%] lg:max-w-[62%]' : 'max-w-[75%] md:max-w-[65%] lg:max-w-[55%]'
+                      className={`relative rounded-2xl ${
+                        isWidget
+                          ? 'px-3 py-1.5 sm:px-3.5 sm:py-2 md:px-3 md:py-2 max-w-[78%] md:max-w-[68%] lg:max-w-[60%]'
+                          : 'px-3 py-1.5 sm:px-3.5 sm:py-1.5 md:px-4 md:py-1 max-w-[82%] md:max-w-[78%] lg:max-w-[72%]'
                       } ${
                         message.is_mine
                           ? darkMode 
