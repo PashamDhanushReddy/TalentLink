@@ -634,9 +634,9 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
   return (
       <>
         <ChatStyles />
-    <div className={`flex flex-col ${isWidget ? 'h-[380px] sm:h-[420px] md:h-[520px]' : 'h-full min-h-0'} ${darkMode ? 'bg-gray-800' : 'bg-gray-50'} rounded-lg shadow-lg overflow-hidden`}>
+    <div className={`flex flex-col ${isWidget ? 'h-[380px] sm:h-[420px] md:h-[520px]' : 'h-full min-h-0'} ${darkMode ? 'bg-gray-800' : 'bg-gray-50'} ${isWidget ? 'rounded-lg shadow-lg' : 'md:rounded-none md:shadow-none'} overflow-hidden`}>
       {/* Header - WhatsApp Style */}
-      <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-green-600 text-white'} px-4 py-3 border-b ${darkMode ? 'border-gray-700' : 'border-green-700'}`}>
+      <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-green-600 text-white'} px-4 py-3 md:px-6 md:py-4 border-b ${darkMode ? 'border-gray-700' : 'border-green-700'}`}>
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <button
@@ -680,7 +680,7 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
         onScroll={handleMessagesScroll}
         className={`flex-1 overflow-y-auto px-2 sm:px-3 md:px-4 lg:px-6 py-4 ${darkMode ? 'bg-gray-900' : 'bg-chat-bg'}`}
       >
-        <div className="max-w-2xl mx-auto">
+        <div className={`${isWidget ? 'max-w-2xl mx-auto' : 'max-w-4xl mx-auto'}`}>
           {typingUsers.length > 0 && (
             <div className="flex justify-start mb-2 px-4">
               <div className={`rounded-2xl rounded-bl-none px-3 py-2 shadow-sm ${
@@ -744,7 +744,9 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                     )}
                     
                     <div
-                      className={`relative px-3 py-1.5 sm:px-3.5 sm:py-2 md:px-3.5 md:py-2.5 rounded-2xl max-w-[78%] md:max-w-[70%] lg:max-w-[62%] ${
+                      className={`relative px-3 py-1.5 sm:px-3.5 sm:py-2 md:px-3.5 md:py-2.5 rounded-2xl ${
+                        isWidget ? 'max-w-[78%] md:max-w-[70%] lg:max-w-[62%]' : 'max-w-[75%] md:max-w-[65%] lg:max-w-[55%]'
+                      } ${
                         message.is_mine
                           ? darkMode 
                             ? 'bg-green-600 text-white rounded-br-none'
@@ -911,7 +913,7 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
             </div>
           )}
           
-          <div className="flex items-center space-x-3 px-2 md:px-0">
+          <div className={`flex items-center space-x-3 ${isWidget ? 'px-2 md:px-0' : 'px-4 md:px-6'}`}>
           <div className="flex-1 relative">
             <input
               type="text"

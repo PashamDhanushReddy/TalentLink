@@ -57,20 +57,20 @@ const Sidebar = ({ onLinkClick }) => {
   return (
     <div className={`h-full w-full ${darkMode ? 'bg-gray-900' : 'bg-[#0B1120]'} text-gray-400 flex flex-col overflow-y-auto transition-colors duration-200 pb-safe shadow-lg`}>
       {/* Logo Section */}
-      <div className="p-6 md:p-8 flex items-center gap-3 md:gap-4">
-        <div className="h-10 w-10 md:h-12 md:w-12 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl md:text-2xl">
+      <div className="p-6 md:p-6 flex items-center gap-3 md:gap-3">
+        <div className="h-10 w-10 md:h-10 md:w-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl md:text-xl">
           TL
         </div>
         <div>
-          <h1 className="text-white font-bold text-lg md:text-xl leading-tight">Talent Link</h1>
-          <p className="text-xs md:text-sm text-gray-500 font-medium tracking-wider">
+          <h1 className="text-white font-bold text-lg md:text-lg leading-tight">Talent Link</h1>
+          <p className="text-xs md:text-xs text-gray-500 font-medium tracking-wider">
             {user?.role === 'client' ? 'CLIENT PORTAL' : 'FREELANCER PORTAL'}
           </p>
         </div>
       </div>
 
       {/* Menu Items */}
-      <div className="flex-1 px-3 md:px-6 py-4 space-y-1">
+      <div className="flex-1 px-3 md:px-4 py-4 space-y-1">
         <div className="px-3 mb-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
           Menu
         </div>
@@ -85,21 +85,21 @@ const Sidebar = ({ onLinkClick }) => {
               }, 50);
             }}
             className={({ isActive }) =>
-              `flex items-center gap-4 px-3 md:px-4 py-3 md:py-3.5 rounded-lg text-sm md:text-base font-medium transition-colors ${
+              `flex items-center gap-3 px-3 md:px-3 py-3 md:py-3 rounded-lg text-sm md:text-sm font-medium transition-colors ${
                 isActive
                   ? 'bg-blue-600 text-white'
                   : 'hover:bg-gray-800 hover:text-white'
               }`
             }
           >
-            <item.icon className="h-5 w-5 md:h-6 md:w-6" />
+            <item.icon className="h-5 w-5 md:h-5 md:w-5" />
             {item.name}
           </NavLink>
         ))}
       </div>
 
       {/* Logout Button */}
-      <div className="p-4 md:p-6 border-t border-gray-800 pb-safe mb-4 md:mb-0 mobile-safe-bottom">
+      <div className="p-4 md:p-4 border-t border-gray-800 pb-safe mb-4 md:mb-0 mobile-safe-bottom">
         <button
           onClick={() => {
             handleLogout();
@@ -108,9 +108,9 @@ const Sidebar = ({ onLinkClick }) => {
               onLinkClick && onLinkClick();
             }, 100);
           }}
-          className="flex items-center gap-4 px-3 md:px-4 py-3 md:py-3.5 w-full rounded-lg text-sm md:text-base font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-colors"
+          className="flex items-center gap-3 px-3 md:px-3 py-3 md:py-3 w-full rounded-lg text-sm md:text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-colors"
         >
-          <ArrowRightOnRectangleIcon className="h-5 w-5 md:h-6 md:w-6" />
+          <ArrowRightOnRectangleIcon className="h-5 w-5 md:h-5 md:w-5" />
           Log Out
         </button>
       </div>
