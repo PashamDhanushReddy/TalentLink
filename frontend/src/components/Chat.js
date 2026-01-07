@@ -57,6 +57,7 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
   const [messageStatus, setMessageStatus] = useState({}); // Track message delivery status
   const [isSending, setIsSending] = useState(false); // Track if a message is currently being sent (for UI)
   const [isUserAtBottom, setIsUserAtBottom] = useState(true);
+  const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
   const pollingIntervalRef = useRef(null);
@@ -372,7 +373,7 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
 
   const scrollToBottom = (force = false) => {
     if (!messagesEndRef.current) return;
-    if (!force && !isUserAtBottom) return;
+    if (!force && (!isUserAtBottom || !autoScrollEnabled)) return;
     messagesEndRef.current.scrollIntoView({ behavior: force ? 'auto' : 'smooth' });
   };
 
@@ -403,7 +404,13 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
     if (!el) return;
     const threshold = 80;
     const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
-    setIsUserAtBottom(distanceFromBottom <= threshold);
+    const atBottom = distanceFromBottom <= threshold;
+    setIsUserAtBottom(atBottom);
+    if (!atBottom) {
+      setAutoScrollEnabled(false);
+    } else {
+      setAutoScrollEnabled(true);
+    }
   };
 
   const handleFormSubmit = (e) => {
