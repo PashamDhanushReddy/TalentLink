@@ -926,7 +926,7 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
               }}
               placeholder={isSending ? "Sending..." : "Type a message"}
               disabled={isSending}
-              className={`w-full border-none rounded-full px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition-all ${
+              className={`w-full border-none rounded-full px-3 sm:px-4 py-2.5 sm:py-3 text-base sm:text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-green-500 transition-all ${
                 darkMode 
                   ? 'bg-gray-700 text-white placeholder-gray-400 focus:bg-gray-600'
                   : 'bg-gray-100 text-gray-900 focus:bg-white'
