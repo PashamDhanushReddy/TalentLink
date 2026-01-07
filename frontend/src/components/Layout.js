@@ -9,7 +9,7 @@ const Layout = () => {
   const isChatsPage = location.pathname === '/chats';
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-50 overflow-hidden">
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div 
