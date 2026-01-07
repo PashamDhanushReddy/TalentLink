@@ -84,7 +84,7 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
 
   useEffect(() => {
     scrollToBottom(false);
-  }, [messages]);
+  }, [messages.length]);
 
   // Keep messagesRef updated with current messages
   useEffect(() => {
