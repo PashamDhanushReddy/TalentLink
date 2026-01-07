@@ -9,7 +9,7 @@ const Layout = () => {
   const isChatsPage = location.pathname === '/chats';
 
   return (
-    <div className="flex h-screen bg-gray-50 overflow-hidden">
+    <div className="flex min-h-screen bg-gray-50">
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div 
@@ -27,14 +27,14 @@ const Layout = () => {
         </div>
       </div>
       
-      <div className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden">
+      <div className="flex-1 flex flex-col">
         <div className="sticky top-0 z-40 bg-gray-50">
           <TopBar onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
         </div>
-        <main className={`flex-1 bg-gray-50 ${
+        <main className={`flex-1 bg-gray-50 overflow-y-auto ${
           isChatsPage ? 'p-0' : 'p-4 md:p-6 lg:p-8'
         }`}>
-          <div className="w-full">
+          <div className="w-full h-full flex flex-col min-h-0">
             <Outlet />
           </div>
         </main>

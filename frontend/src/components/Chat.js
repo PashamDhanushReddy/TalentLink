@@ -402,7 +402,7 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
   const handleMessagesScroll = () => {
     const el = messagesContainerRef.current;
     if (!el) return;
-    const threshold = 80;
+    const threshold = 10;
     const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
     const atBottom = distanceFromBottom <= threshold;
     setIsUserAtBottom(atBottom);
