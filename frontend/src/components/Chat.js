@@ -671,58 +671,55 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
       <div
         ref={messagesContainerRef}
         onScroll={handleMessagesScroll}
-        className={`flex-1 overflow-y-auto px-2 sm:px-3 md:px-6 py-3 ${darkMode ? 'bg-gray-900' : 'bg-chat-bg'}`}
+        className={`flex-1 overflow-y-auto px-2 sm:px-3 md:px-4 lg:px-6 py-4 ${darkMode ? 'bg-gray-900' : 'bg-chat-bg'}`}
       >
-        {/* Typing Indicator for Other Users */}
-        {typingUsers.length > 0 && (
-          <div className="flex justify-start mb-2 px-4">
-            <div className={`rounded-2xl rounded-bl-none px-3 py-2 shadow-sm ${
-              darkMode ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
-            }`}>
-              <div className="flex space-x-1">
-                <div className={`w-2 h-2 rounded-full animate-bounce ${
-                  darkMode ? 'bg-gray-300' : 'bg-gray-400'
-                }`} style={{animationDelay: '0ms'}}></div>
-                <div className={`w-2 h-2 rounded-full animate-bounce ${
-                  darkMode ? 'bg-gray-300' : 'bg-gray-400'
-                }`} style={{animationDelay: '150ms'}}></div>
-                <div className={`w-2 h-2 rounded-full animate-bounce ${
-                  darkMode ? 'bg-gray-300' : 'bg-gray-400'
-                }`} style={{animationDelay: '300ms'}}></div>
-              </div>
-            </div>
-          </div>
-        )}
-        
-        {Object.entries(messageGroups).map(([date, dateMessages]) => (
-          <div key={date} className="mb-4">
-            {/* Date Separator */}
-            <div className="flex justify-center my-4">
-              <div className={`text-xs px-3 py-1 rounded-full ${
-                darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-600'
+        <div className="max-w-2xl mx-auto">
+          {typingUsers.length > 0 && (
+            <div className="flex justify-start mb-2 px-4">
+              <div className={`rounded-2xl rounded-bl-none px-3 py-2 shadow-sm ${
+                darkMode ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
               }`}>
-                {formatDate(dateMessages[0].created_at)}
+                <div className="flex space-x-1">
+                  <div className={`w-2 h-2 rounded-full animate-bounce ${
+                    darkMode ? 'bg-gray-300' : 'bg-gray-400'
+                  }`} style={{animationDelay: '0ms'}}></div>
+                  <div className={`w-2 h-2 rounded-full animate-bounce ${
+                    darkMode ? 'bg-gray-300' : 'bg-gray-400'
+                  }`} style={{animationDelay: '150ms'}}></div>
+                  <div className={`w-2 h-2 rounded-full animate-bounce ${
+                    darkMode ? 'bg-gray-300' : 'bg-gray-400'
+                  }`} style={{animationDelay: '300ms'}}></div>
+                </div>
               </div>
             </div>
-            
-            {/* Messages for this date */}
-            {dateMessages.map((message, index) => {
+          )}
+          
+          {Object.entries(messageGroups).map(([date, dateMessages]) => (
+            <div key={date} className="mb-4">
+              <div className="flex justify-center my-4">
+                <div className={`text-xs px-3 py-1 rounded-full ${
+                  darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-600'
+                }`}>
+                  {formatDate(dateMessages[0].created_at)}
+                </div>
+              </div>
+              
+              {dateMessages.map((message, index) => {
               const isFirstInSequence = index === 0 || 
                 dateMessages[index - 1].sender !== message.sender;
               const isLastInSequence = index === dateMessages.length - 1 || 
                 dateMessages[index + 1].sender !== message.sender;
               
-              return (
-                <div
-                  key={message.id}
-                  className={`${message.is_mine ? 'flex justify-end' : 'flex justify-start'} ${
-                    isFirstInSequence ? 'mt-2' : ''
-                  }`}
-                >
-                  <div className={`flex items-end space-x-1 max-w-[85%] md:max-w-[70%] ${
-                    message.is_mine ? 'flex-row-reverse space-x-reverse' : ''
-                  }`}>
-                    {/* Avatar for other user's messages - show only for first in sequence */}
+                return (
+                  <div
+                    key={message.id}
+                    className={`${message.is_mine ? 'flex justify-end' : 'flex justify-start'} ${
+                      isFirstInSequence ? 'mt-2' : ''
+                    }`}
+                  >
+                    <div className={`flex items-end space-x-1 max-w-full ${
+                      message.is_mine ? 'flex-row-reverse space-x-reverse' : ''
+                    }`}>
                     {!message.is_mine && isFirstInSequence && (
             <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                         darkMode ? 'bg-gray-600' : 'bg-gray-300'
@@ -735,14 +732,12 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                       </div>
                     )}
                     
-                    {/* Spacer for non-first messages in sequence */}
                     {!message.is_mine && !isFirstInSequence && (
                       <div className="w-8 h-8 flex-shrink-0"></div>
                     )}
                     
-                    {/* Message Bubble */}
                     <div
-                      className={`relative px-3 py-2 sm:px-3.5 sm:py-2.5 md:px-4 md:py-3 rounded-2xl max-w-[90%] md:max-w-[75%] lg:max-w-[65%] ${
+                      className={`relative px-3 py-1.5 sm:px-3.5 sm:py-2 md:px-3.5 md:py-2.5 rounded-2xl max-w-[78%] md:max-w-[70%] lg:max-w-[62%] ${
                         message.is_mine
                           ? darkMode 
                             ? 'bg-green-600 text-white rounded-br-none'
@@ -802,11 +797,8 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                         </div>
                       )}
                       
-                      {/* Voice Note removed */}
+                      <p className="text-[11px] sm:text-[13px] md:text-sm leading-relaxed">{message.text}</p>
                       
-                      <p className="text-xs sm:text-sm md:text-base leading-relaxed">{message.text}</p>
-                      
-                      {/* Message Footer */}
                       <div className={`flex items-center justify-end mt-1 space-x-1 ${
                         message.is_mine 
                           ? darkMode ? 'text-green-200' : 'text-green-100'
@@ -816,7 +808,6 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                           {formatTime(message.created_at)}
                         </span>
                         
-                        {/* Message Status for Own Messages */}
                         {message.is_mine && (
                           <div className="flex items-center">
                             {getMessageStatusIcon(message)}
@@ -824,7 +815,6 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                         )}
                       </div>
                       
-                      {/* Context Menu */}
                       <div className={`absolute top-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity ${
                         message.is_mine ? 'mr-2' : 'ml-2'
                       }`}>
@@ -847,34 +837,34 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                       </div>
                     </div>
                   </div>
+                  </div>
+                );
+              })}
+            </div>
+          ))}
+          
+          {isTyping && (
+            <div className="flex justify-start mb-2 px-4">
+              <div className={`rounded-2xl rounded-bl-none px-3 py-2 shadow-sm ${
+                darkMode ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
+              }`}>
+                <div className="flex space-x-1">
+                  <div className={`w-2 h-2 rounded-full animate-bounce ${
+                    darkMode ? 'bg-gray-300' : 'bg-gray-400'
+                  }`}></div>
+                  <div className={`w-2 h-2 rounded-full animate-bounce ${
+                    darkMode ? 'bg-gray-300' : 'bg-gray-400'
+                  }`} style={{animationDelay: '0.1s'}}></div>
+                  <div className={`w-2 h-2 rounded-full animate-bounce ${
+                    darkMode ? 'bg-gray-300' : 'bg-gray-400'
+                  }`} style={{animationDelay: '0.2s'}}></div>
                 </div>
-              );
-            })}
-          </div>
-        ))}
-        
-        {/* Typing Indicator */}
-        {isTyping && (
-          <div className="flex justify-start mb-2 px-4">
-            <div className={`rounded-2xl rounded-bl-none px-3 py-2 shadow-sm ${
-              darkMode ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
-            }`}>
-              <div className="flex space-x-1">
-                <div className={`w-2 h-2 rounded-full animate-bounce ${
-                  darkMode ? 'bg-gray-300' : 'bg-gray-400'
-                }`}></div>
-                <div className={`w-2 h-2 rounded-full animate-bounce ${
-                  darkMode ? 'bg-gray-300' : 'bg-gray-400'
-                }`} style={{animationDelay: '0.1s'}}></div>
-                <div className={`w-2 h-2 rounded-full animate-bounce ${
-                  darkMode ? 'bg-gray-300' : 'bg-gray-400'
-                }`} style={{animationDelay: '0.2s'}}></div>
               </div>
             </div>
-          </div>
-        )}
-        
-        <div ref={messagesEndRef} />
+          )}
+          
+          <div ref={messagesEndRef} />
+        </div>
       </div>
 
       {/* Message Input - WhatsApp Style */}
