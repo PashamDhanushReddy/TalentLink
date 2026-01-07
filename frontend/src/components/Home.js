@@ -7,27 +7,29 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-white font-sans text-gray-900">
       {/* Navbar */}
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
-            TL
+      <nav className="fixed top-0 inset-x-0 z-50 bg-white border-b border-gray-100 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
+              TL
+            </div>
+            <span className="text-xl font-bold text-gray-900 tracking-tight">
+              TalentLink
+            </span>
           </div>
-          <span className="text-xl font-bold text-gray-900 tracking-tight">
-            TalentLink
-          </span>
-        </div>
 
-        <div className="flex items-center gap-4">
-          <Link to="/" className="text-sm font-medium text-gray-600 hover:text-gray-900 hover:underline transition-colors">Home</Link>
-          <Link to="/login" className="text-sm font-medium text-gray-600 hover:text-gray-900 hover:underline transition-colors">Log In</Link>
-          <Link to="/register" className="text-sm font-medium bg-blue-600 text-white px-5 py-2.5 rounded-full hover:bg-blue-700 transition shadow-sm hover:shadow-md">
-            Sign Up
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link to="/" className="text-sm font-medium text-gray-600 hover:text-gray-900 hover:underline transition-colors">Home</Link>
+            <Link to="/login" className="text-sm font-medium text-gray-600 hover:text-gray-900 hover:underline transition-colors">Log In</Link>
+            <Link to="/register" className="text-sm font-medium bg-blue-600 text-white px-5 py-2.5 rounded-full hover:bg-blue-700 transition shadow-sm hover:shadow-md">
+              Sign Up
+            </Link>
+          </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 grid lg:grid-cols-2 gap-12 items-center">
+      <div className="pt-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 grid lg:grid-cols-2 gap-12 items-center">
         <div>
           <div className="inline-block bg-blue-50 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full mb-6">
             #1 Freelance Marketplace

@@ -48,14 +48,14 @@ const Chats = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex items-center justify-center h-full">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
     );
   }
 
   return (
-    <div className="h-[calc(100vh-2rem)] flex bg-white md:rounded-2xl md:shadow-sm md:border md:border-gray-200 overflow-hidden m-0 md:m-4">
+    <div className="h-full flex bg-white md:rounded-2xl md:shadow-sm md:border md:border-gray-200 overflow-hidden m-0 md:m-4">
       {/* Sidebar - Conversation List */}
       <div className={`w-full md:w-80 bg-gray-50 md:border-r md:border-gray-200 flex flex-col ${selectedContractId ? 'hidden md:flex' : 'flex'}`}>
         <div className="p-4 border-b border-gray-200 bg-white">

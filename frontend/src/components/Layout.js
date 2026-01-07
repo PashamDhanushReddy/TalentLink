@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import TopBar from './TopBar';
 
 const Layout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const location = useLocation();
+  const isChatsPage = location.pathname === '/chats';
 
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">
@@ -29,7 +31,9 @@ const Layout = () => {
         <div className="sticky top-0 z-40">
           <TopBar onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
         </div>
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-4 md:p-6 lg:p-8">
+        <main className={`flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 ${
+          isChatsPage ? 'p-0' : 'p-4 md:p-6 lg:p-8'
+        }`}>
           <div className="w-full">
             <Outlet />
           </div>

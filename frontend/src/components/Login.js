@@ -39,7 +39,7 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center relative">
       {/* Navbar */}
-      <div className="absolute top-0 left-0 w-full z-20">
+      <div className="fixed top-0 left-0 w-full z-30">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Link to="/" className="flex items-center gap-2">
