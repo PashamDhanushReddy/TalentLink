@@ -808,22 +808,25 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                         </div>
                       )}
                       
-                      <p className="text-xs sm:text-[14px] md:text-sm leading-relaxed">{message.text}</p>
-                      
-                      <div className={`flex items-center justify-end mt-1 space-x-1 ${
-                        message.is_mine 
-                          ? darkMode ? 'text-blue-200' : 'text-blue-100'
-                          : darkMode ? 'text-gray-400' : 'text-gray-500'
-                      }`}>
-                        <span className="text-[10px] sm:text-[11px] md:text-xs">
-                          {formatTime(message.created_at)}
-                        </span>
-                        
-                        {message.is_mine && (
-                          <div className="flex items-center">
-                            {getMessageStatusIcon(message)}
-                          </div>
-                        )}
+                      <div className="flex items-end gap-2 mt-0.5">
+                        <p className="flex-1 text-xs sm:text-[14px] md:text-sm leading-relaxed whitespace-pre-wrap break-words">
+                          {message.text}
+                        </p>
+                        <div className={`flex items-center justify-end space-x-1 ${
+                          message.is_mine 
+                            ? darkMode ? 'text-blue-200' : 'text-blue-100'
+                            : darkMode ? 'text-gray-400' : 'text-gray-500'
+                        }`}>
+                          <span className="text-[10px] sm:text-[11px] md:text-xs whitespace-nowrap">
+                            {formatTime(message.created_at)}
+                          </span>
+                          
+                          {message.is_mine && (
+                            <div className="flex items-center">
+                              {getMessageStatusIcon(message)}
+                            </div>
+                          )}
+                        </div>
                       </div>
                       
                       <div className={`absolute top-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity ${
