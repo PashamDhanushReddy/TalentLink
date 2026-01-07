@@ -55,7 +55,7 @@ const Sidebar = () => {
   }
 
   return (
-    <div className={`h-screen w-64 md:w-80 ${darkMode ? 'bg-gray-900' : 'bg-[#0B1120]'} text-gray-400 flex flex-col fixed left-0 top-0 overflow-y-auto transition-colors duration-200`}>
+    <div className={`h-screen w-64 md:w-80 ${darkMode ? 'bg-gray-900' : 'bg-[#0B1120]'} text-gray-400 flex flex-col fixed left-0 top-0 overflow-y-auto transition-colors duration-200 pb-safe pt-safe`}>
       {/* Logo Section */}
       <div className="p-6 md:p-8 flex items-center gap-3 md:gap-4">
         <div className="h-10 w-10 md:h-12 md:w-12 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl md:text-2xl">
@@ -93,7 +93,7 @@ const Sidebar = () => {
       </div>
 
       {/* Logout Button */}
-      <div className="p-4 md:p-6 border-t border-gray-800">
+      <div className="p-4 md:p-6 border-t border-gray-800 pb-safe mb-4 md:mb-0 mobile-safe-bottom">
         <button
           onClick={handleLogout}
           className="flex items-center gap-4 px-3 md:px-4 py-3 md:py-3.5 w-full rounded-lg text-sm md:text-base font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-colors"

@@ -17,7 +17,7 @@ const Layout = () => {
       )}
       
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-64 md:w-80 bg-white shadow-lg transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 ${
+      <div className={`fixed top-16 md:top-0 left-0 bottom-0 z-60 w-64 md:w-80 shadow-lg transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
         <Sidebar />
