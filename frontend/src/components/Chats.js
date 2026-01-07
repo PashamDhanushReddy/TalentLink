@@ -112,9 +112,9 @@ const Chats = () => {
       </div>
 
       {/* Main Chat Area */}
-      <div className={`flex-1 flex flex-col bg-gray-50 ${selectedContractId ? 'flex' : 'hidden md:flex'}`}>
+      <div className={`flex-1 min-h-0 flex flex-col bg-gray-50 ${selectedContractId ? 'flex' : 'hidden md:flex'}`}>
         {selectedContractId ? (
-          <div className="h-full">
+          <div className="h-full min-h-0">
             <Chat 
               key={selectedContractId} 
               contractId={selectedContractId} 
