@@ -573,7 +573,7 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
           darkMode ? 'bg-gray-800' : 'bg-gray-50'
         }`}>
           <div className={`animate-spin rounded-full h-8 w-8 border-b-2 ${
-            darkMode ? 'border-green-500' : 'border-green-600'
+            darkMode ? 'border-blue-500' : 'border-blue-600'
           }`}></div>
         </div>
       </>
@@ -636,13 +636,13 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
         <ChatStyles />
     <div className={`flex flex-col ${isWidget ? 'h-[380px] sm:h-[420px] md:h-[520px]' : 'h-full min-h-0'} ${darkMode ? 'bg-gray-800' : 'bg-gray-50'} ${isWidget ? 'rounded-lg shadow-lg' : 'md:rounded-none md:shadow-none'} overflow-hidden`}>
       {/* Header - WhatsApp Style */}
-      <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-green-600 text-white'} px-4 py-3 md:px-6 md:py-4 border-b ${darkMode ? 'border-gray-700' : 'border-green-700'}`}>
+      <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-blue-600 text-white'} px-4 py-3 md:px-6 md:py-4 border-b ${darkMode ? 'border-gray-700' : 'border-blue-700'}`}>
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <button
               onClick={onBackClick}
               className={`md:hidden p-1 rounded-full transition-colors ${
-                darkMode ? 'hover:bg-gray-700' : 'hover:bg-green-700'
+                darkMode ? 'hover:bg-gray-700' : 'hover:bg-blue-700'
               }`}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -650,7 +650,7 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
               </svg>
             </button>
             <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-              darkMode ? 'bg-gray-700' : 'bg-green-500'
+              darkMode ? 'bg-gray-700' : 'bg-blue-500'
             }`}>
               <span className="text-base md:text-lg font-semibold">
                 {selectedConversation.contract_details?.title?.charAt(0) || 'C'}
@@ -661,7 +661,7 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                 {selectedConversation.contract_details?.title || 'Contract Discussion'}
               </h3>
               <p className={`text-xs sm:text-sm ${
-                darkMode ? 'text-gray-300' : 'text-green-100'
+                darkMode ? 'text-gray-300' : 'text-blue-100'
               }`}>
                 {typingUsers.length > 0 ? (
                   <span className="typing-indicator">typing...</span>
@@ -751,8 +751,8 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                       } ${
                         message.is_mine
                           ? darkMode 
-                            ? 'bg-green-600 text-white rounded-br-none'
-                            : 'bg-green-500 text-white rounded-br-none'
+                            ? 'bg-blue-600 text-white rounded-br-none'
+                            : 'bg-blue-500 text-white rounded-br-none'
                           : darkMode
                             ? 'bg-gray-700 text-white rounded-bl-none shadow-sm'
                             : 'bg-white text-gray-900 rounded-bl-none shadow-sm'
@@ -785,22 +785,22 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                         <div className={`mb-2 p-2 rounded border-l-2 text-xs ${
                           message.is_mine 
                             ? darkMode
-                              ? 'border-green-400 bg-green-600 bg-opacity-30'
-                              : 'border-green-200 bg-green-400 bg-opacity-20'
+                              ? 'border-blue-400 bg-blue-600 bg-opacity-30'
+                              : 'border-blue-200 bg-blue-400 bg-opacity-20'
                             : darkMode
                               ? 'border-gray-600 bg-gray-800'
                               : 'border-gray-300 bg-gray-50'
                         }`}>
                           <div className={`font-medium ${
                             message.is_mine 
-                              ? darkMode ? 'text-green-200' : 'text-green-100'
+                              ? darkMode ? 'text-blue-200' : 'text-blue-100'
                               : darkMode ? 'text-gray-300' : 'text-gray-600'
                           }`}>
                             {message.replying_to.sender_name}
                           </div>
                           <div className={`truncate ${
                             message.is_mine 
-                              ? darkMode ? 'text-green-200' : 'text-green-100'
+                              ? darkMode ? 'text-blue-200' : 'text-blue-100'
                               : darkMode ? 'text-gray-300' : 'text-gray-700'
                           }`}>
                             {message.replying_to.text}
@@ -812,7 +812,7 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                       
                       <div className={`flex items-center justify-end mt-1 space-x-1 ${
                         message.is_mine 
-                          ? darkMode ? 'text-green-200' : 'text-green-100'
+                          ? darkMode ? 'text-blue-200' : 'text-blue-100'
                           : darkMode ? 'text-gray-400' : 'text-gray-500'
                       }`}>
                         <span className="text-xs">
@@ -836,7 +836,7 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                           }}
                           className={`p-1 rounded-full text-xs ${
                             message.is_mine 
-                              ? darkMode ? 'text-green-200 hover:text-white' : 'text-green-100 hover:text-white'
+                              ? darkMode ? 'text-blue-200 hover:text-white' : 'text-blue-100 hover:text-white'
                               : darkMode ? 'text-gray-500 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'
                           }`}
                           title="Reply to this message"
@@ -885,7 +885,7 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
           {/* Reply Preview */}
           {replyingTo && (
             <div className={`mb-3 p-3 rounded-lg border-l-4 ${
-              darkMode ? 'bg-gray-700 border-green-600' : 'bg-gray-50 border-green-500'
+              darkMode ? 'bg-gray-700 border-blue-600' : 'bg-gray-50 border-blue-500'
             }`}>
               <div className="flex items-center justify-between">
                 <div className="flex-1">
@@ -930,7 +930,7 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
               }}
               placeholder={isSending ? "Sending..." : "Type a message"}
               disabled={isSending}
-              className={`w-full border-none rounded-full px-3 sm:px-4 py-2.5 sm:py-3 text-base sm:text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-green-500 transition-all ${
+              className={`w-full border-none rounded-full px-3 sm:px-4 py-2.5 sm:py-3 text-base sm:text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
                 darkMode 
                   ? 'bg-gray-700 text-white placeholder-gray-400 focus:bg-gray-600'
                   : 'bg-gray-100 text-gray-900 focus:bg-white'
@@ -946,8 +946,8 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
             className={`p-3 rounded-full transition-all ${
               newMessage.trim() && !isSending
                 ? darkMode
-                  ? 'bg-green-600 text-white hover:bg-green-700'
-                  : 'bg-green-500 text-white hover:bg-green-600'
+                  ? 'bg-blue-600 text-white hover:bg-blue-700'
+                  : 'bg-blue-500 text-white hover:bg-blue-600'
                 : darkMode
                   ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
                   : 'bg-gray-300 text-gray-500 cursor-not-allowed'
