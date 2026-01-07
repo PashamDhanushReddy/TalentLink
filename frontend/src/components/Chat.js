@@ -636,7 +636,7 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
         <ChatStyles />
     <div className={`flex flex-col ${isWidget ? 'h-[380px] sm:h-[420px] md:h-[520px]' : 'h-full min-h-0'} ${darkMode ? 'bg-gray-800' : 'bg-gray-50'} ${isWidget ? 'rounded-lg shadow-lg' : 'md:rounded-none md:shadow-none'} overflow-hidden`}>
       {/* Header - WhatsApp Style */}
-      <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-blue-600 text-white'} px-4 py-3 md:px-6 md:py-4 border-b ${darkMode ? 'border-gray-700' : 'border-blue-700'}`}>
+      <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-blue-600 text-white'} px-4 py-3 md:px-6 md:py-4 border-t border-b border-t-white ${darkMode ? 'border-b-gray-700' : 'border-b-blue-700'}`}>
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <button
