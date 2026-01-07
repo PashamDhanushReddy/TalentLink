@@ -11,20 +11,22 @@ const Layout = () => {
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden cursor-pointer"
           onClick={() => setSidebarOpen(false)}
         />
       )}
       
       {/* Sidebar */}
-      <div className={`fixed top-16 md:top-0 left-0 bottom-0 z-60 w-64 md:w-80 shadow-lg transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 ${
+      <div className={`fixed inset-y-0 left-0 z-50 w-64 md:w-80 transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
-        <Sidebar />
+        <div className="h-full pt-16 md:pt-0">
+          <Sidebar onLinkClick={() => setSidebarOpen(false)} />
+        </div>
       </div>
       
       <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="sticky top-0 z-50">
+        <div className="sticky top-0 z-40">
           <TopBar onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
         </div>
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-4 md:p-6 lg:p-8">
