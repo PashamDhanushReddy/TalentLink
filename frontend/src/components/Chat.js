@@ -808,14 +808,14 @@ const Chat = ({ contractId, isWidget = true, onBackClick }) => {
                         </div>
                       )}
                       
-                      <p className="text-[11px] sm:text-[13px] md:text-sm leading-relaxed">{message.text}</p>
+                      <p className="text-xs sm:text-[14px] md:text-sm leading-relaxed">{message.text}</p>
                       
                       <div className={`flex items-center justify-end mt-1 space-x-1 ${
                         message.is_mine 
                           ? darkMode ? 'text-blue-200' : 'text-blue-100'
                           : darkMode ? 'text-gray-400' : 'text-gray-500'
                       }`}>
-                        <span className="text-xs">
+                        <span className="text-[10px] sm:text-[11px] md:text-xs">
                           {formatTime(message.created_at)}
                         </span>
                         
