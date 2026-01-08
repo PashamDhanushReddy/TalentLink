@@ -211,6 +211,20 @@ class ContractViewSet(ModelViewSet):
         # Update progress and timestamp
         contract.progress = new_progress
         contract.progress_updated_at = timezone.now()
+        
+        # Automatically mark contract as completed when progress reaches 100%
+        if new_progress == 100 and contract.status != 'completed':
+            # Create status history entry
+            ContractStatusHistory.objects.create(
+                contract=contract,
+                old_status=contract.status,
+                new_status='completed',
+                changed_by=request.user,
+                reason="Automatically completed - progress reached 100%"
+            )
+            contract.status = 'completed'
+            contract.end_date = timezone.now().date()
+        
         contract.save()
         
         # Return updated contract

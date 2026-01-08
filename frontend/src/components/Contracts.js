@@ -10,6 +10,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { conversationAPI } from '../services/chatService';
 import { useAuth } from '../contexts/AuthContext';
+import ContractReviewSection from './ContractReviewSection';
 
 const Contracts = () => {
   const navigate = useNavigate();
@@ -229,6 +230,11 @@ const Contracts = () => {
                    </button>
                 </div>
               </div>
+
+              {/* Review Section for Completed Contracts */}
+              {contract.status === 'completed' && (
+                <ContractReviewSection contract={contract} />
+              )}
             </div>
           ))}
         </div>

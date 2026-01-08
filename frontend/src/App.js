@@ -23,6 +23,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
 import FreelancerCandidates from './components/FreelancerCandidates';
+import ReviewsPage from './components/ReviewsPage';
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
                   <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
                   <Route path="/profile/:username" element={<ProtectedRoute><FreelancerProfile /></ProtectedRoute>} />
                   <Route path="/notifications" element={<ProtectedRoute><NotificationPage /></ProtectedRoute>} />
+                  <Route path="/reviews" element={<ProtectedRoute><ReviewsPage /></ProtectedRoute>} />
               </Route>
             </Routes>
           </Router>

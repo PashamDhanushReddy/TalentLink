@@ -5,7 +5,7 @@ import { BellIcon, ClockIcon } from '@heroicons/react/24/outline';
 const NotificationPage = () => {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState('all'); // all, unread
+  const [filter, setFilter] = useState('all');
 
   useEffect(() => {
     fetchNotifications();

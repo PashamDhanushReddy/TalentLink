@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { proposalAPI } from '../api';
+import api from '../api';
 import { UserCircleIcon, BriefcaseIcon, StarIcon } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
 
@@ -7,6 +8,7 @@ const FreelancerCandidates = () => {
   const [candidates, setCandidates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [ratings, setRatings] = useState({});
 
   useEffect(() => {
     fetchCandidates();
@@ -50,6 +52,30 @@ const FreelancerCandidates = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const fetchRatings = async () => {
+      const ids = candidates
+        .map(c => c.details?.id)
+        .filter(Boolean);
+      const uniqueIds = Array.from(new Set(ids));
+      if (uniqueIds.length === 0) return;
+
+      const results = {};
+      await Promise.all(
+        uniqueIds.map(async (id) => {
+          try {
+            const response = await api.get(`/reviews/user/${id}/stats/`);
+            results[id] = response.data;
+          } catch {
+          }
+        })
+      );
+      setRatings(results);
+    };
+
+    fetchRatings();
+  }, [candidates]);
 
   const stringToColor = (str) => {
     const colors = [
@@ -103,6 +129,7 @@ const FreelancerCandidates = () => {
                 const { details, proposals } = candidate;
                 const profile = details.profile || {};
                 const avatarColor = stringToColor(details.username);
+                const rating = ratings[details.id];
                 
                 return (
                 <div key={index} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
@@ -120,6 +147,17 @@ const FreelancerCandidates = () => {
                             {details.first_name} {details.last_name}
                         </h3>
                         <p className="text-sm text-gray-500">@{details.username}</p>
+                        {rating && (
+                            <div className="flex items-center gap-1 mt-1 text-xs text-gray-600">
+                            <StarIcon className="h-4 w-4 text-yellow-400" />
+                            <span className="font-semibold">
+                                {rating.average_rating.toFixed(1)}
+                            </span>
+                            <span className="text-gray-500">
+                                ({rating.total_reviews} {rating.total_reviews === 1 ? 'review' : 'reviews'})
+                            </span>
+                            </div>
+                        )}
                         {profile.hourly_rate && (
                             <p className="text-sm font-medium text-gray-700 mt-1">${profile.hourly_rate}/hr</p>
                         )}

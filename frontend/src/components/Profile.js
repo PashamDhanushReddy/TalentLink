@@ -3,6 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useDarkMode } from '../contexts/DarkModeContext';
 import { authAPI } from '../api';
+import api from '../api';
+import ReviewStats from './ReviewStats';
 import { 
   UserCircleIcon, 
   EnvelopeIcon, 
@@ -25,7 +27,9 @@ function Profile() {
   const { darkMode } = useDarkMode();
   const { userId } = useParams();
   const [profile, setProfile] = useState(null);
+  const profileUser = profile?.user || authUser || {};
   const [isOwnProfile, setIsOwnProfile] = useState(true);
+  const [reviewStats, setReviewStats] = useState(null);
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
@@ -133,6 +137,22 @@ function Profile() {
     fetchProfile();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authUser, userId]);
+
+  useEffect(() => {
+    const loadReviewStats = async () => {
+      const targetId = profile?.user?.id || authUser?.id;
+      const targetRole = profile?.user?.role || authUser?.role;
+      if (!targetId || targetRole !== 'freelancer') return;
+      try {
+        const response = await api.get(`/reviews/user/${targetId}/stats/`);
+        setReviewStats(response.data);
+      } catch {
+        setReviewStats(null);
+      }
+    };
+
+    loadReviewStats();
+  }, [profile, authUser]);
 
   const handleChange = (e) => {
     setFormData({
@@ -364,9 +384,20 @@ function Profile() {
                 <div className={`${
                   darkMode ? 'text-gray-100' : 'text-white'
                 } min-w-0`}>
-                  <h1 className="text-2xl sm:text-4xl font-bold mb-1 sm:mb-2 drop-shadow-lg break-words">
-                    {authUser?.first_name || user.first_name} {authUser?.last_name || user.last_name}
+                  <h1 className="text-2xl sm:text-4xl font-bold mb-1 sm:mb-1 drop-shadow-lg break-words">
+                    {profileUser.first_name || profileUser.username} {profileUser.last_name || ''}
                   </h1>
+                  {profileUser.role === 'freelancer' && reviewStats && (
+                    <div className="flex items-center space-x-2 mb-1">
+                      <StarIcon className="h-5 w-5 text-yellow-400" />
+                      <span className="font-semibold">
+                        {reviewStats.average_rating.toFixed(1)}
+                      </span>
+                      <span className="text-xs opacity-80">
+                        ({reviewStats.total_reviews} {reviewStats.total_reviews === 1 ? 'review' : 'reviews'})
+                      </span>
+                    </div>
+                  )}
                   <div className={`flex flex-wrap items-center gap-2 sm:space-x-4 ${
                     darkMode ? 'text-gray-200' : 'text-blue-100'
                   }`}>
@@ -377,7 +408,7 @@ function Profile() {
                           ? 'bg-white/10 text-white' 
                           : 'bg-white/20 text-white'
                       }`}>
-                        {authUser?.role || user.role} Account
+                        {profileUser.role || 'User'} Account
                       </span>
                     </div>
                     {authUser?.role === 'freelancer' && profile?.hourly_rate && (
@@ -458,7 +489,7 @@ function Profile() {
                     <IdentificationIcon className={`h-5 w-5 mr-3 ${
                       darkMode ? 'text-blue-400' : 'text-blue-600'
                     }`} />
-                    <span className="font-medium">{authUser?.username || user.username}</span>
+                    <span className="font-medium">{profileUser.username || authUser?.username}</span>
                   </div>
                 </div>
                 
@@ -479,7 +510,7 @@ function Profile() {
                     <EnvelopeIcon className={`h-5 w-5 mr-3 ${
                       darkMode ? 'text-blue-400' : 'text-blue-600'
                     }`} />
-                    <span className="font-medium truncate">{authUser?.email || user.email}</span>
+                    <span className="font-medium truncate">{profileUser.email || authUser?.email}</span>
                   </div>
                 </div>
                 
@@ -500,7 +531,7 @@ function Profile() {
                     <BriefcaseIcon className={`h-5 w-5 mr-3 ${
                       darkMode ? 'text-indigo-400' : 'text-indigo-600'
                     }`} />
-                    <span className="font-semibold capitalize">{authUser?.role || user.role}</span>
+                    <span className="font-semibold capitalize">{profileUser.role || authUser?.role}</span>
                   </div>
                 </div>
               </div>
@@ -570,17 +601,26 @@ function Profile() {
           {/* Enhanced Main Content Area */}
           <div className="lg:col-span-3">
             {!isOwnProfile ? (
-              /* View Only Profile */
               <div className="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden transform transition-all duration-300">
                 <div className="bg-gradient-to-r from-blue-50 to-indigo-50 px-8 py-6 border-b border-gray-200">
                   <h3 className="text-2xl font-bold text-gray-900 flex items-center">
                     <UserCircleIcon className="h-6 w-6 mr-3 text-blue-600" />
-                    {user.role === 'freelancer' ? 'Professional Profile' : 'Profile Information'}
+                    {profileUser.role === 'freelancer' ? 'Professional Profile' : 'Profile Information'}
                   </h3>
                   <p className="text-gray-600 mt-2">Profile details and expertise</p>
                 </div>
                 
                 <div className="p-8">
+                  {profileUser.role === 'freelancer' && (
+                    <div className="mb-8">
+                      <h4 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                        <StarIcon className="h-5 w-5 mr-2 text-gray-500" />
+                        Reviews & Ratings
+                      </h4>
+                      <ReviewStats userId={profileUser.id} />
+                    </div>
+                  )}
+                  
                   {/* About Section */}
                   <div className="mb-8">
                     <h4 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
@@ -618,8 +658,7 @@ function Profile() {
                     </div>
                   </div>
 
-                  {/* Professional Details */}
-                  {user.role === 'freelancer' && (
+                  {profileUser.role === 'freelancer' && (
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <h4 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">

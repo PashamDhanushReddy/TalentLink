@@ -14,7 +14,8 @@ import {
   UsersIcon,
   ChartBarIcon,
   Cog6ToothIcon,
-  ArrowRightOnRectangleIcon
+  ArrowRightOnRectangleIcon,
+  StarIcon
 } from '@heroicons/react/24/outline';
 
 const Sidebar = ({ onLinkClick }) => {
@@ -45,13 +46,14 @@ const Sidebar = ({ onLinkClick }) => {
     { name: 'Contracts', icon: ClipboardDocumentCheckIcon, path: '/contracts' },
     { name: 'Chats', icon: ChatBubbleLeftRightIcon, path: '/chats' },
     { name: 'Calendar', icon: CalendarIcon, path: '/calendar' },
+    { name: 'Reviews', icon: StarIcon, path: '/reviews' },
     { name: 'Settings', icon: Cog6ToothIcon, path: '/settings' },
   );
 
   // Add Clients menu only for non-client users (freelancers might want to see clients)
   if (user?.role !== 'client') {
     // Insert before Settings (last item)
-    menuItems.splice(menuItems.length - 1, 0, { name: 'Clients', icon: UsersIcon, path: '/clients' });
+    menuItems.splice(menuItems.length - 2, 0, { name: 'Clients', icon: UsersIcon, path: '/clients' });
   }
 
   return (
@@ -98,20 +100,14 @@ const Sidebar = ({ onLinkClick }) => {
         ))}
       </div>
 
-      {/* Logout Button */}
-      <div className="p-4 md:p-3 border-t border-gray-800 pb-safe mb-4 md:mb-0 mobile-safe-bottom">
+      {/* Logout */}
+      <div className="p-3 md:p-3 border-t border-gray-800">
         <button
-          onClick={() => {
-            handleLogout();
-            // Small delay to ensure logout completes before closing
-            setTimeout(() => {
-              onLinkClick && onLinkClick();
-            }, 100);
-          }}
-          className="flex items-center gap-3 md:gap-2 px-3 md:px-2 py-3 md:py-2.5 w-full rounded-lg text-sm md:text-xs font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-colors"
+          onClick={handleLogout}
+          className="flex items-center gap-3 md:gap-2 w-full px-3 md:px-2 py-3 md:py-2.5 rounded-lg text-sm md:text-xs font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-colors"
         >
           <ArrowRightOnRectangleIcon className="h-5 w-5 md:h-4 md:w-4" />
-          Log Out
+          Logout
         </button>
       </div>
     </div>
