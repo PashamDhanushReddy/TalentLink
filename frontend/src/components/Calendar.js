@@ -22,7 +22,6 @@ const Calendar = () => {
         c => (c.status === 'active' || c.status === 'draft') && c.end_date
       );
       
-      // Sort by end date (soonest first)
       activeContracts.sort((a, b) => new Date(a.end_date) - new Date(b.end_date));
       
       setContracts(activeContracts);
@@ -43,10 +42,10 @@ const Calendar = () => {
   };
 
   const getUrgencyColor = (days) => {
-    if (days < 0) return 'bg-red-50 border-red-200 text-red-700'; // Overdue
-    if (days <= 3) return 'bg-orange-50 border-orange-200 text-orange-700'; // Urgent
-    if (days <= 7) return 'bg-yellow-50 border-yellow-200 text-yellow-700'; // Warning
-    return 'bg-white border-gray-100 text-gray-700'; // Normal
+    if (days < 0) return 'bg-red-50 border-red-200 text-red-700';
+    if (days <= 3) return 'bg-orange-50 border-orange-200 text-orange-700';
+    if (days <= 7) return 'bg-yellow-50 border-yellow-200 text-yellow-700';
+    return 'bg-white border-gray-100 text-gray-700';
   };
 
   if (loading) {
@@ -124,7 +123,7 @@ const Calendar = () => {
                     {contract.agreed_amount && (
                       <div className="flex items-center gap-1">
                         <span className="font-medium text-green-600">
-                          ${parseFloat(contract.agreed_amount).toLocaleString()}
+                          ₹{parseFloat(contract.agreed_amount).toLocaleString()}
                         </span>
                       </div>
                     )}

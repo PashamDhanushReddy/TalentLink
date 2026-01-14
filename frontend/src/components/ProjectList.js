@@ -218,10 +218,10 @@ const ProjectList = ({ mode = 'feed' }) => {
                   className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 appearance-none bg-white"
                 >
                   <option value="all">All Budgets</option>
-                  <option value="under-500">Under $500</option>
-                  <option value="500-1000">$500 - $1,000</option>
-                  <option value="1000-5000">$1,000 - $5,000</option>
-                  <option value="over-5000">Over $5,000</option>
+                  <option value="under-500">Under ₹500</option>
+                  <option value="500-1000">₹500 - ₹1,000</option>
+                  <option value="1000-5000">₹1,000 - ₹5,000</option>
+                  <option value="over-5000">Over ₹5,000</option>
                 </select>
               </div>
 
@@ -344,7 +344,7 @@ const ProjectList = ({ mode = 'feed' }) => {
                     </div>
                     <div>
                       <p className="text-xs text-gray-500 uppercase tracking-wide">Budget</p>
-                      <p className="font-semibold text-gray-900">${project.budget}</p>
+                      <p className="font-semibold text-gray-900">₹{project.budget}</p>
                     </div>
                   </div>
                   
