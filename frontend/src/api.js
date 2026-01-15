@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? (process.env.REACT_APP_API_URL_PROD || 'https://talentlink-7pqy.onrender.com/api')
+  ? (process.env.REACT_APP_API_URL_PROD || 'https://talentlink-b19c.onrender.com/api')
   : (process.env.REACT_APP_API_URL_LOCAL || 'http://localhost:8000/api');
 
 // Log API URL for debugging
