@@ -285,3 +285,37 @@ class SmartGmailDebugView(APIView):
                 "error": str(e),
                 "traceback": str(__import__('traceback').format_exc())
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class ChangePasswordView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def post(self, request, *args, **kwargs):
+        from django.contrib.auth import authenticate
+        
+        current_password = request.data.get('current_password')
+        new_password = request.data.get('new_password')
+        
+        if not current_password or not new_password:
+            return Response({
+                'error': 'Both current_password and new_password are required'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        if len(new_password) < 8:
+            return Response({
+                'error': 'New password must be at least 8 characters long'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Verify current password
+        user = authenticate(username=request.user.username, password=current_password)
+        if not user:
+            return Response({
+                'error': 'Current password is incorrect'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Change the password
+        request.user.set_password(new_password)
+        request.user.save()
+        
+        return Response({
+            'message': 'Password changed successfully'
+        }, status=status.HTTP_200_OK)

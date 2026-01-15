@@ -101,10 +101,19 @@ const Settings = () => {
     setIsChangingPassword(true);
 
     try {
-      await changePassword({
+      console.log('Attempting password change with data:', {
         current_password: passwordForm.currentPassword,
         new_password: passwordForm.newPassword
       });
+      
+      // Try different field name formats that are commonly used
+      const passwordData = {
+        current_password: passwordForm.currentPassword,
+        new_password: passwordForm.newPassword
+      };
+      
+      console.log('Sending password change request to /auth/change-password/');
+      await changePassword(passwordData);
       
       setPasswordSuccess('Password changed successfully!');
       // Clear form
@@ -121,7 +130,33 @@ const Settings = () => {
       }, 2000);
       
     } catch (error) {
-      setPasswordError(error.response?.data?.message || 'Failed to change password. Please check your current password.');
+      console.error('Password change error details:', {
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        message: error.message,
+        url: error.config?.url,
+        method: error.config?.method,
+        headers: error.config?.headers
+      });
+      
+      let errorMessage = 'Failed to change password. ';
+      
+      if (error.response?.status === 400) {
+        errorMessage += error.response.data?.message || 'Please check your current password and try again.';
+      } else if (error.response?.status === 401) {
+        errorMessage += 'Authentication failed. Please log in again.';
+      } else if (error.response?.status === 403) {
+        errorMessage += 'Access denied. You may not have permission to change this password.';
+      } else if (error.response?.status === 500) {
+        errorMessage += 'Server error. Please try again later.';
+      } else if (error.response?.data?.message) {
+        errorMessage += error.response.data.message;
+      } else {
+        errorMessage += 'Please check your current password and try again.';
+      }
+      
+      setPasswordError(errorMessage);
     } finally {
       setIsChangingPassword(false);
     }
