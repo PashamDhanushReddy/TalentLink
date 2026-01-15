@@ -484,7 +484,7 @@ const Register = () => {
                         </button>
                     </motion.div>
                 </motion.div>
-            
+            </div>
             {/* Role Selection */}
             <motion.div 
                 className="mt-6"
