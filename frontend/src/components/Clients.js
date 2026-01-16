@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { projectAPI } from '../api';
-import { BriefcaseIcon, ClockIcon, CurrencyDollarIcon } from '@heroicons/react/24/outline';
+import { BriefcaseIcon, ClockIcon, CurrencyRupeeIcon } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
 
 const Clients = () => {
@@ -187,7 +187,7 @@ const Clients = () => {
                     </div>
                     <div className="flex items-center gap-4 text-xs text-gray-500">
                       <div className="flex items-center gap-1">
-                        <CurrencyDollarIcon className="h-3 w-3" />
+                        <CurrencyRupeeIcon className="h-3 w-3" />
                         <span>₹{project.budget}</span>
                       </div>
                       <div className="flex items-center gap-1">

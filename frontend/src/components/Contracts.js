@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { 
   DocumentTextIcon, 
   CalendarIcon, 
-  CurrencyDollarIcon,
+  CurrencyRupeeIcon,
   ChatBubbleLeftRightIcon,
   PencilIcon
 } from '@heroicons/react/24/outline';
@@ -211,7 +211,7 @@ const Contracts = () => {
 
                 <div className="space-y-3 mb-6">
                   <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <CurrencyDollarIcon className="h-4 w-4 text-gray-400" />
+                    <CurrencyRupeeIcon className="h-4 w-4 text-gray-400" />
                     <span className="font-medium">${contract.amount || contract.agreed_amount}</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-gray-600">

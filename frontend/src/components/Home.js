@@ -272,7 +272,7 @@ const Home = () => {
            viewport={{ once: true }}
          >
             {[
-                { title: 'Safe Payments', desc: 'Secure transactions and payment protection for peace of mind.' },
+                { title: 'Trusted Clients', desc: 'We have worked with top clients around the world.' },
                 { title: 'Top Quality', desc: 'Access a curated network of professional freelancers.' },
                 { title: '24/7 Support', desc: 'Our dedicated team is here to help you anytime, anywhere.' }
             ].map((item, i) => (

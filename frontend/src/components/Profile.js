@@ -12,7 +12,7 @@ import {
   IdentificationIcon,
   CheckCircleIcon,
   XCircleIcon,
-  CurrencyDollarIcon,
+  CurrencyRupeeIcon,
   LinkIcon,
   PencilIcon,
   CalendarIcon,
@@ -413,7 +413,7 @@ function Profile() {
                     </div>
                     {authUser?.role === 'freelancer' && profile?.hourly_rate && (
                       <div className="flex items-center space-x-2">
-                        <CurrencyDollarIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+                        <CurrencyRupeeIcon className="h-4 w-4 sm:h-5 sm:w-5" />
                         <span className="font-semibold text-sm sm:text-base">₹{profile.hourly_rate}/hr</span>
                       </div>
                     )}
@@ -551,7 +551,7 @@ function Profile() {
                     <div className="group">
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium text-gray-600 flex items-center">
-                          <CurrencyDollarIcon className="h-4 w-4 mr-2 text-green-600" />
+                          <CurrencyRupeeIcon className="h-4 w-4 mr-2 text-green-600" />
                           Hourly Rate
                         </span>
                         <span className="text-lg font-bold text-gray-900">₹{profile.hourly_rate}</span>
@@ -858,7 +858,7 @@ function Profile() {
                               darkMode ? 'text-gray-300' : 'text-gray-700'
                             }`}>Hourly Rate ($)</label>
                             <div className="relative">
-                              <CurrencyDollarIcon className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors ${
+                              <CurrencyRupeeIcon className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors ${
                                 darkMode 
                                   ? 'text-gray-500 group-focus-within:text-green-400' 
                                   : 'text-gray-400 group-focus-within:text-green-600'
@@ -1116,7 +1116,7 @@ function Profile() {
                             <h4 className={`text-lg font-bold mb-3 flex items-center ${
                               darkMode ? 'text-gray-100' : 'text-gray-900'
                             }`}>
-                              <CurrencyDollarIcon className={`h-5 w-5 mr-2 ${
+                              <CurrencyRupeeIcon className={`h-5 w-5 mr-2 ${
                                 darkMode ? 'text-green-400' : 'text-green-600'
                               }`} />
                               Hourly Rate

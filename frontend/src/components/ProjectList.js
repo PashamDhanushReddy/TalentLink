@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { projectAPI } from '../api';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { MagnifyingGlassIcon, FunnelIcon, CurrencyDollarIcon, ClockIcon, PencilIcon, TrashIcon, XMarkIcon, BriefcaseIcon } from '@heroicons/react/24/outline';
+import { MagnifyingGlassIcon, FunnelIcon, CurrencyRupeeIcon, ClockIcon, PencilIcon, TrashIcon, XMarkIcon, BriefcaseIcon } from '@heroicons/react/24/outline';
 
 const ProjectList = ({ mode = 'feed' }) => {
   const { user } = useAuth();
@@ -210,7 +210,7 @@ const ProjectList = ({ mode = 'feed' }) => {
               {/* Budget Filter */}
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <CurrencyDollarIcon className="h-5 w-5 text-gray-400" />
+                  <CurrencyRupeeIcon className="h-5 w-5 text-gray-400" />
                 </div>
                 <select 
                   value={budgetFilter}
@@ -340,7 +340,7 @@ const ProjectList = ({ mode = 'feed' }) => {
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
                   <div className="flex items-center gap-3">
                     <div className="h-8 w-8 bg-green-50 rounded-full flex items-center justify-center">
-                      <CurrencyDollarIcon className="h-4 w-4 text-green-600" />
+                      <CurrencyRupeeIcon className="h-4 w-4 text-green-600" />
                     </div>
                     <div>
                       <p className="text-xs text-gray-500 uppercase tracking-wide">Budget</p>

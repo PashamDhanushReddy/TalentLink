@@ -6,7 +6,7 @@ import ProposalForm from './ProposalForm';
 import ContractManager from './ContractManager';
 import Chat from './Chat';
 import { 
-    CurrencyDollarIcon, 
+    CurrencyRupeeIcon, 
     ClockIcon, 
     CalendarIcon, 
     UserIcon, 
@@ -163,11 +163,11 @@ const ProjectDetail = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
                     <div className="h-10 w-10 bg-white rounded-full flex items-center justify-center shadow-sm text-brand-600">
-                        <CurrencyDollarIcon className="h-6 w-6" />
+                        <CurrencyRupeeIcon className="h-6 w-6" />
                     </div>
                     <div>
                         <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Budget</p>
-                        <p className="text-lg font-bold text-gray-900">${project.budget}</p>
+                        <p className="text-lg font-bold text-gray-900">₹{project.budget}</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
@@ -251,7 +251,7 @@ const ProjectDetail = () => {
                             
                             <div className="bg-gray-50 p-4 rounded-lg mb-4">
                                 <div className="flex gap-8 mb-2 text-sm">
-                                    <div className="font-medium text-gray-900">Bid: <span className="text-green-600 font-bold">${proposal.bid_amount}</span></div>
+                                    <div className="font-medium text-gray-900">Bid: <span className="text-green-600 font-bold">₹{proposal.bid_amount}</span></div>
                                     <div className="font-medium text-gray-900">Delivery: <span className="text-brand-600 font-bold">{proposal.estimated_days} days</span></div>
                                 </div>
                                 <p className="text-gray-600 text-sm whitespace-pre-wrap mt-2">{proposal.cover_letter}</p>
@@ -334,7 +334,7 @@ const ProjectDetail = () => {
                         <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
                             <div>
                                 <span className="text-gray-500 block">Bid Amount</span>
-                                <span className="font-bold text-gray-900">${myProposal.bid_amount}</span>
+                                <span className="font-bold text-gray-900">₹{myProposal.bid_amount}</span>
                             </div>
                             <div>
                                 <span className="text-gray-500 block">Status</span>

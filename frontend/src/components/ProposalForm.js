@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { proposalAPI } from '../api';
-import { PaperAirplaneIcon, CurrencyDollarIcon, DocumentTextIcon } from '@heroicons/react/24/outline';
+import { PaperAirplaneIcon, CurrencyRupeeIcon, DocumentTextIcon } from '@heroicons/react/24/outline';
 
 const ProposalForm = ({ projectId, onSubmitSuccess }) => {
   const [bidAmount, setBidAmount] = useState('');
@@ -78,7 +78,7 @@ const ProposalForm = ({ projectId, onSubmitSuccess }) => {
             </label>
             <div className="relative rounded-md shadow-sm">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <CurrencyDollarIcon className="h-5 w-5 text-gray-400" />
+                <CurrencyRupeeIcon className="h-5 w-5 text-gray-400" />
               </div>
               <input
                 type="number"

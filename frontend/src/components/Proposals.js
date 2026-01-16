@@ -7,7 +7,7 @@ import {
   CheckCircleIcon, 
   XCircleIcon, 
   ClockIcon, 
-  CurrencyDollarIcon, 
+  CurrencyRupeeIcon, 
   ChatBubbleLeftRightIcon,
   DocumentPlusIcon,
   UserIcon
@@ -150,7 +150,7 @@ const Proposals = () => {
                   </div>
 
                   <div className="flex items-center gap-2 text-gray-900 font-medium">
-                    <CurrencyDollarIcon className="h-5 w-5 text-gray-400" />
+                    <CurrencyRupeeIcon className="h-5 w-5 text-gray-400" />
                     Bid Amount: ₹{proposal.bid_amount}
                   </div>
                 </div>

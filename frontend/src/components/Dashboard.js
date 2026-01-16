@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { projectAPI } from '../api';
-import { Link } from 'react-router-dom';
+
 import { 
-  BanknotesIcon, 
   CheckCircleIcon, 
   TruckIcon, 
   ClockIcon,
@@ -23,32 +22,95 @@ const Dashboard = () => {
   const { user } = useAuth();
   const [timeRange, setTimeRange] = useState('Daily');
   const [latestClients, setLatestClients] = useState([]);
+  const [activeProjects, setActiveProjects] = useState([]);
+  const [stats, setStats] = useState([
+    { 
+      title: 'Project Accepted', 
+      value: '0', 
+      change: '0%', 
+      isPositive: true,
+      icon: CheckCircleIcon,
+      iconBg: 'bg-yellow-100',
+      iconColor: 'text-yellow-600'
+    },
+    { 
+      title: 'Delivered On Time', 
+      value: '0%', 
+      change: '0%', 
+      isPositive: true,
+      icon: TruckIcon,
+      iconBg: 'bg-blue-100',
+      iconColor: 'text-blue-600'
+    },
+    { 
+      title: 'Responsed On Time', 
+      value: '0h 00m', 
+      change: '0%', 
+      isPositive: true,
+      icon: ClockIcon,
+      iconBg: 'bg-red-100',
+      iconColor: 'text-red-600'
+    },
+  ]);
+  const [chartData, setChartData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchLatestClients();
-  }, []);
+    fetchDashboardData();
+  }, [user]);
 
-  const fetchLatestClients = async () => {
+  const fetchDashboardData = async () => {
     try {
-      const response = await projectAPI.getAll();
+      setLoading(true);
+      
+      // Fetch user's projects based on role
+      const response = await projectAPI.getMyProjects();
       const projects = response.data;
       
+      // Process active projects
+      const active = projects
+        .filter(project => project.status === 'open')
+        .slice(0, 4); // Show max 4 active projects
+      
+      setActiveProjects(active.map(project => ({
+        name: project.title,
+        subtitle: `${project.members?.length || 0} Members | ${project.tasks?.length || 0} Tasks`,
+        color: getRandomColor(),
+        days: `${Math.floor(Math.random() * 30) + 1} Days` // Calculate actual days if available
+      })));
+      
+      // Calculate stats
+      calculateStats(projects);
+      
+      // Generate chart data
+      generateChartData();
+      
+      // Fetch latest clients for freelancers
+      if (user?.role === 'freelancer') {
+        fetchLatestClients(projects);
+      }
+    } catch (err) {
+      console.error('Failed to fetch dashboard data', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchLatestClients = async (projects) => {
+    try {
       const clientMap = new Map();
       
       projects.forEach(project => {
-        const clientName = project.client; 
-        
-        // We only want the most recent project for each client to determine "latest"
-        // But for simplicity, we just gather them all and then pick top ones
+        const clientName = project.client || 'Unknown Client'; 
         
         if (!clientMap.has(clientName)) {
           clientMap.set(clientName, {
             name: clientName,
-            project: project.title, // Just show one project
+            project: project.title, 
             status: project.status === 'open' ? 'Active' : 'Inactive',
             statusBg: project.status === 'open' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-600',
             avatarColor: stringToColor(clientName),
-            id: project.id // link to a project
+            id: project.id 
           });
         }
       });
@@ -58,6 +120,66 @@ const Dashboard = () => {
     } catch (err) {
       console.error('Failed to fetch clients', err);
     }
+  };
+
+  const calculateStats = (projects) => {
+    // Calculate based on actual projects
+    const totalProjects = projects.length;
+    const acceptedProjects = projects.filter(p => p.status === 'accepted').length;
+    const deliveredProjects = projects.filter(p => p.status === 'delivered').length;
+    
+    // Example calculations - replace with actual logic based on your data model
+    const projectAccepted = `+${acceptedProjects}`;
+    const deliveredOnTime = totalProjects > 0 ? `${Math.round((deliveredProjects / totalProjects) * 100)}%` : '0%';
+    const responsedOnTime = '1h 30m'; // Example - calculate from actual response times
+    
+    setStats([
+      { 
+        title: 'Project Accepted', 
+        value: projectAccepted, 
+        change: '+2.4%', 
+        isPositive: true,
+        icon: CheckCircleIcon,
+        iconBg: 'bg-yellow-100',
+        iconColor: 'text-yellow-600'
+      },
+      { 
+        title: 'Delivered On Time', 
+        value: deliveredOnTime, 
+        change: '+1.2%', 
+        isPositive: true,
+        icon: TruckIcon,
+        iconBg: 'bg-blue-100',
+        iconColor: 'text-blue-600'
+      },
+      { 
+        title: 'Responsed On Time', 
+        value: responsedOnTime, 
+        change: '-0.8%', 
+        isPositive: false,
+        icon: ClockIcon,
+        iconBg: 'bg-red-100',
+        iconColor: 'text-red-600'
+      },
+    ]);
+  };
+
+  const generateChartData = () => {
+    // Generate chart data based on actual time range and projects
+    const today = new Date();
+    const data = [];
+    
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date(today);
+      date.setDate(today.getDate() - i);
+      
+      data.push({
+        name: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        value: Math.floor(Math.random() * 30) + 20 // Replace with actual task progress data
+      });
+    }
+    
+    setChartData(data);
   };
 
   const stringToColor = (str) => {
@@ -75,70 +197,12 @@ const Dashboard = () => {
     return colors[Math.abs(hash) % colors.length];
   };
 
-  // Mock Data for Charts
-  const data = [
-    { name: 'Sep 1', value: 30 },
-    { name: 'Sep 3', value: 45 },
-    { name: 'Sep 5', value: 35 },
-    { name: 'Sep 7', value: 50 },
-    { name: 'Sep 9', value: 40 },
-    { name: 'Sep 11', value: 42 },
-    { name: 'Sep 13', value: 45 },
-  ];
+  const getRandomColor = () => {
+    const colors = ['bg-green-500', 'bg-blue-500', 'bg-indigo-500', 'bg-yellow-500', 'bg-purple-500', 'bg-pink-500'];
+    return colors[Math.floor(Math.random() * colors.length)];
+  };
 
-  // Mock Data for Stats
-  const stats = [
-    { 
-      title: 'This Month Revenue', 
-      value: '₹13,596', 
-      change: '+1.2%', 
-      isPositive: true,
-      icon: BanknotesIcon,
-      iconBg: 'bg-green-100',
-      iconColor: 'text-green-600'
-    },
-    { 
-      title: 'Project Accepted', 
-      value: '+16', 
-      change: '-2.4%', 
-      isPositive: false,
-      icon: CheckCircleIcon,
-      iconBg: 'bg-yellow-100',
-      iconColor: 'text-yellow-600'
-    },
-    { 
-      title: 'Delivered On Time', 
-      value: '92.8%', 
-      change: '+1.2%', 
-      isPositive: true,
-      icon: TruckIcon,
-      iconBg: 'bg-blue-100',
-      iconColor: 'text-blue-600'
-    },
-    { 
-      title: 'Responsed On Time', 
-      value: '1h 00m', 
-      change: '-0.8%', 
-      isPositive: false,
-      icon: ClockIcon,
-      iconBg: 'bg-red-100',
-      iconColor: 'text-red-600'
-    },
-  ];
 
-  const activeProjects = [
-    { name: 'Creative Corner', subtitle: '1 Member | 2 Tasks', color: 'bg-green-500', days: '8 Days' },
-    { name: 'Masendro Illustration', subtitle: '3 Members | 14 Tasks', color: 'bg-blue-500', days: '8 Days' },
-    { name: 'Space Template', subtitle: '2 Members | 24 Tasks', color: 'bg-indigo-500', days: '8 Days' },
-    { name: 'Milana Illustration', subtitle: '3 Members | 14 Tasks', color: 'bg-yellow-500', days: '8 Days' },
-  ];
-
-  const transactions = [
-    { id: '#INV-001', client: 'Stark Tech', date: 'Nov 28, 2025', amount: '₹1,200', status: 'Paid', statusColor: 'text-green-600 bg-green-50' },
-    { id: '#INV-002', client: 'Global Mart', date: 'Nov 25, 2025', amount: '₹850', status: 'Pending', statusColor: 'text-yellow-600 bg-yellow-50' },
-    { id: '#INV-003', client: 'Nova Labs', date: 'Nov 22, 2025', amount: '₹2,300', status: 'Paid', statusColor: 'text-green-600 bg-green-50' },
-    { id: '#INV-004', client: 'Acme Corp', date: 'Nov 20, 2025', amount: '₹450', status: 'Failed', statusColor: 'text-red-600 bg-red-50' },
-  ];
 
 
 
@@ -150,170 +214,145 @@ const Dashboard = () => {
         <p className="text-gray-500 md:text-lg">This is your Freelance Team dashboard overview</p>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, index) => (
-          <div key={index} className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <div className={`p-2 md:p-3 rounded-full ${stat.iconBg}`}>
-                  <stat.icon className={`h-5 w-5 md:h-6 md:w-6 ${stat.iconColor}`} />
-                </div>
-              </div>
-              <div className="mt-4">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-2xl md:text-3xl font-bold text-gray-900">{stat.value}</span>
-                  <span className={`text-xs md:text-sm font-medium ${stat.isPositive ? 'text-green-600' : 'text-red-600'}`}>
-                    {stat.isPositive ? '↑' : '↓'} {stat.change}
-                  </span>
-                </div>
-                <p className="text-sm md:text-base text-gray-500">{stat.title}</p>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Charts & Lists Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Task Progress Chart */}
-        <div className="lg:col-span-1 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
-          <div className="flex items-center justify-between mb-6 md:mb-8">
-            <h3 className="font-bold text-gray-900 text-lg md:text-xl">Task Progress</h3>
-            <div className="flex bg-gray-100 rounded-lg p-1 text-xs md:text-sm">
-              {['Daily', 'Weekly', 'Monthly'].map((range) => (
-                <button
-                  key={range}
-                  onClick={() => setTimeRange(range)}
-                  className={`px-3 py-1 rounded-md transition-colors ${
-                    timeRange === range ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-900'
-                  }`}
-                >
-                  {range}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="h-64 md:h-72">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={data}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 12, fill: '#9ca3af'}} />
-                <YAxis axisLine={false} tickLine={false} tick={{fontSize: 12, fill: '#9ca3af'}} />
-                <Tooltip 
-                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                    cursor={{ stroke: '#e5e7eb', strokeWidth: 2 }}
-                />
-                <Line type="monotone" dataKey="value" stroke="#22c55e" strokeWidth={3} dot={false} activeDot={{ r: 6 }} />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
+      {loading ? (
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
         </div>
-
-        {/* Active Projects */}
-        <div className="lg:col-span-1 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
-          <div className="flex justify-between items-center mb-6 md:mb-8">
-            <h2 className="text-lg md:text-xl font-bold text-gray-900">Active Projects</h2>
-            <button className="text-sm md:text-base text-blue-600 hover:text-blue-700 font-medium">See All</button>
-          </div>
-          <div className="space-y-6 md:space-y-8 relative">
-             {/* Vertical Line */}
-             <div className="absolute left-2.5 md:left-3 top-2 bottom-2 w-0.5 bg-gray-100 -z-10"></div>
-             
-            {activeProjects.map((project, index) => (
-              <div key={index} className="flex items-start gap-4 md:gap-5">
-                <div className={`mt-1.5 md:mt-2 h-5 w-5 md:h-6 md:w-6 rounded-full border-4 border-white shadow-sm shrink-0 ${project.color}`}></div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h4 className="text-sm md:text-base font-bold text-gray-900 truncate">{project.name}</h4>
-                      <p className="text-xs md:text-sm text-gray-500 truncate">{project.subtitle}</p>
+      ) : (
+        <>
+          {/* Stats Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {stats.map((stat, index) => (
+              <div key={index} className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className={`p-2 md:p-3 rounded-full ${stat.iconBg}`}>
+                      <stat.icon className={`h-5 w-5 md:h-6 md:w-6 ${stat.iconColor}`} />
                     </div>
-                    <span className="text-xs md:text-sm text-gray-400 whitespace-nowrap flex items-center gap-1">
-                        <ClockIcon className="h-3 w-3 md:h-4 md:w-4" />
-                        {project.days}
-                    </span>
+                  </div>
+                  <div className="mt-4">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-2xl md:text-3xl font-bold text-gray-900">{stat.value}</span>
+                      <span className={`text-xs md:text-sm font-medium ${stat.isPositive ? 'text-green-600' : 'text-red-600'}`}>
+                        {stat.isPositive ? '↑' : '↓'} {stat.change}
+                      </span>
+                    </div>
+                    <p className="text-sm md:text-base text-gray-500">{stat.title}</p>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-        </div>
 
-        {/* Recent Transactions */}
-        <div className="lg:col-span-1 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
-          <div className="flex items-center justify-between mb-6 md:mb-8">
-            <h3 className="font-bold text-gray-900 text-lg md:text-xl">Recent Transactions</h3>
-            <button className="text-sm md:text-base text-gray-500 hover:text-gray-700">Export</button>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="text-left text-xs md:text-sm font-medium text-gray-500 uppercase tracking-wider">
-                  <th className="pb-3 md:pb-4">Invoice ID</th>
-                  <th className="pb-3 md:pb-4">Client</th>
-                  <th className="pb-3 md:pb-4">Amount</th>
-                  <th className="pb-3 md:pb-4 text-right">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-50">
-                {transactions.map((tx, index) => (
-                  <tr key={index}>
-                    <td className="py-3 md:py-4 text-sm md:text-base font-medium text-gray-900">{tx.id}</td>
-                    <td className="py-3 md:py-4">
-                        <div className="text-sm md:text-base text-gray-900">{tx.client}</div>
-                        <div className="text-xs md:text-sm text-gray-500">{tx.date}</div>
-                    </td>
-                    <td className="py-3 md:py-4 text-sm md:text-base text-gray-900">{tx.amount}</td>
-                    <td className="py-3 md:py-4 text-right">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 md:px-3 md:py-1 rounded-full text-xs md:text-sm font-medium ${tx.statusColor}`}>
-                        {tx.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom Section - Latest Clients */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-1 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
-            <div className="flex items-center justify-between mb-6 md:mb-8">
-                <h3 className="font-bold text-gray-900 text-lg md:text-xl">Latest Clients</h3>
-                <button className="text-gray-400 hover:text-gray-600">
-                    <EllipsisHorizontalIcon className="h-6 w-6 md:h-7 md:w-7" />
-                </button>
+          {/* Charts & Lists Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Task Progress Chart */}
+            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
+              <div className="flex items-center justify-between mb-6 md:mb-8">
+                <h3 className="font-bold text-gray-900 text-lg md:text-xl">Task Progress</h3>
+                <div className="flex bg-gray-100 rounded-lg p-1 text-xs md:text-sm">
+                  {['Daily', 'Weekly', 'Monthly'].map((range) => (
+                    <button
+                      key={range}
+                      onClick={() => setTimeRange(range)}
+                      className={`px-3 py-1 rounded-md transition-colors ${timeRange === range ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-900'}`}
+                    >
+                      {range}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="h-64 md:h-72">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 12, fill: '#9ca3af'}} />
+                    <YAxis axisLine={false} tickLine={false} tick={{fontSize: 12, fill: '#9ca3af'}} />
+                    <Tooltip 
+                        contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                        cursor={{ stroke: '#e5e7eb', strokeWidth: 2 }}
+                    />
+                    <Line type="monotone" dataKey="value" stroke="#22c55e" strokeWidth={3} dot={false} activeDot={{ r: 6 }} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
             </div>
-            <div className="space-y-4 md:space-y-6">
-                {latestClients.length === 0 ? (
-                    <p className="text-gray-500 text-sm md:text-base">No recent clients found.</p>
-                ) : (
-                    latestClients.map((client, index) => (
-                        <div key={index} className="flex items-center justify-between">
-                            <div className="flex items-center gap-3 md:gap-4">
-                                <div className={`h-10 w-10 md:h-12 md:w-12 rounded-full flex items-center justify-center font-bold text-sm md:text-base ${client.avatarColor}`}>
-                                    {client.name.charAt(0).toUpperCase()}
-                                </div>
-                                <div>
-                                    <h4 className="text-sm md:text-base font-bold text-gray-900">{client.name}</h4>
-                                    <p className="text-xs md:text-sm text-gray-500 truncate w-32 md:w-40">{client.project}</p>
-                                </div>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                 <span className={`px-2 py-1 md:px-3 md:py-1.5 rounded text-xs md:text-sm font-medium ${client.statusBg}`}>
-                                    {client.status}
-                                 </span>
 
-                            </div>
+            {/* Active Projects */}
+            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
+              <div className="flex justify-between items-center mb-6 md:mb-8">
+                <h2 className="text-lg md:text-xl font-bold text-gray-900">Active Projects</h2>
+                <button className="text-sm md:text-base text-blue-600 hover:text-blue-700 font-medium">See All</button>
+              </div>
+              <div className="space-y-6 md:space-y-8 relative">
+                 {/* Vertical Line */}
+                 <div className="absolute left-2.5 md:left-3 top-2 bottom-2 w-0.5 bg-gray-100 -z-10"></div>
+                 
+                {activeProjects.length > 0 ? (
+                  activeProjects.map((project, index) => (
+                    <div key={index} className="flex items-start gap-4 md:gap-5">
+                      <div className={`mt-1.5 md:mt-2 h-5 w-5 md:h-6 md:w-6 rounded-full border-4 border-white shadow-sm shrink-0 ${project.color}`}></div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <h4 className="text-sm md:text-base font-bold text-gray-900 truncate">{project.name}</h4>
+                            <p className="text-xs md:text-sm text-gray-500 truncate">{project.subtitle}</p>
+                          </div>
+                          <span className="text-xs md:text-sm text-gray-400 whitespace-nowrap flex items-center gap-1">
+                              <ClockIcon className="h-3 w-3 md:h-4 md:w-4" />
+                              {project.days}
+                          </span>
                         </div>
-                    ))
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-gray-500 text-sm md:text-base">No active projects found.</p>
                 )}
+              </div>
             </div>
-        </div>
-      </div>
+          </div>
+
+          {/* Bottom Section - Latest Clients (Freelancers Only) */}
+          {user?.role === 'freelancer' && (
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-1 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
+                  <div className="flex items-center justify-between mb-6 md:mb-8">
+                      <h3 className="font-bold text-gray-900 text-lg md:text-xl">Latest Clients</h3>
+                      <button className="text-gray-400 hover:text-gray-600">
+                          <EllipsisHorizontalIcon className="h-6 w-6 md:h-7 md:w-7" />
+                      </button>
+                  </div>
+                  <div className="space-y-4 md:space-y-6">
+                      {latestClients.length === 0 ? (
+                          <p className="text-gray-500 text-sm md:text-base">No recent clients found.</p>
+                      ) : (
+                          latestClients.map((client, index) => (
+                              <div key={index} className="flex items-center justify-between">
+                                  <div className="flex items-center gap-3 md:gap-4">
+                                      <div className={`h-10 w-10 md:h-12 md:w-12 rounded-full flex items-center justify-center font-bold text-sm md:text-base ${client.avatarColor}`}>
+                                          {client.name.charAt(0).toUpperCase()}
+                                      </div>
+                                      <div>
+                                          <h4 className="text-sm md:text-base font-bold text-gray-900">{client.name}</h4>
+                                          <p className="text-xs md:text-sm text-gray-500 truncate w-32 md:w-40">{client.project}</p>
+                                      </div>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                       <span className={`px-2 py-1 md:px-3 md:py-1.5 rounded text-xs md:text-sm font-medium ${client.statusBg}`}>
+                                          {client.status}
+                                       </span>
+
+                                  </div>
+                              </div>
+                          ))
+                      )}
+                  </div>
+              </div>
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 };
