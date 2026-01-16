@@ -176,7 +176,7 @@ const ProjectDetail = () => {
                     </div>
                     <div>
                         <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Duration</p>
-                        <p className="text-lg font-bold text-gray-900">${project.duration}</p>
+                        <p className="text-lg font-bold text-gray-900">{project.duration}</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
