@@ -132,7 +132,12 @@ const Dashboard = () => {
       {/* Greeting Section */}
       <div>
         <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">Hi {user?.first_name || user?.username || 'User'}</h1>
-        <p className="text-gray-500 md:text-lg">This is your Freelance Team dashboard overview</p>
+        <p className="text-gray-500 md:text-lg">
+          {user?.role === 'client' 
+            ? 'This is your Client dashboard overview' 
+            : 'This is your Freelance Team dashboard overview'
+          }
+        </p>
       </div>
 
       {/* Stats Grid */}
