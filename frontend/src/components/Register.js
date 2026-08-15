@@ -56,7 +56,7 @@ const Register = () => {
       // Add production debugging
       if (process.env.NODE_ENV === 'production') {
         console.log('Production environment detected');
-        console.log('API Base URL:', process.env.REACT_APP_API_URL_PROD || 'https://talentlink-7pqy.onrender.com/api');
+        console.log('API Base URL:', process.env.REACT_APP_API_URL_PROD || 'https://talentlink-nksb.onrender.com/api');
       }
       
       await register(formData);
