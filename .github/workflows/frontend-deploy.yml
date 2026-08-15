@@ -33,6 +33,7 @@ jobs:
         run: npm run build
         env:
           REACT_APP_API_URL_PROD: https://talentlink-nksb.onrender.com/api
+          CI: false
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
