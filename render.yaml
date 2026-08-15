@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: talentlink-backend
+    env: python
+    rootDir: talentlink
+    buildCommand: ./build.sh
+    startCommand: gunicorn backend.wsgi:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: talentlink-db
+          property: connectionString
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: "*"
+      - key: SECRET_KEY
+        generateValue: true
+
+databases:
+  - name: talentlink-db
+    databaseName: talentlink
+    user: talentlink
